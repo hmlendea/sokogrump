@@ -8,4 +8,8 @@ The game also includes a level editor that the players can use to create and sha
 # Details
 Programming language: C#
 
+Technologies used: .NET, Mono, GTK2
+
 Development environment: MonoDevelop
+
+Operating Systems: Linux
