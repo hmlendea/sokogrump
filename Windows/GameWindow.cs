@@ -3,6 +3,7 @@ using System.IO;
 using System.Drawing;
 
 using SokoGrump.Game;
+using System.Reflection;
 
 namespace SokoGrump.Windows
 {
