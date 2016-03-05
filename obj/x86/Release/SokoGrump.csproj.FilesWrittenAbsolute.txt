@@ -104,3 +104,4 @@
 /home/horatiu/Documents/Programming/CSharp/GTK/Jocuri/SokoGrump/SokoGrump/bin/Release/Resources/Tiles/tile7/0.png
 /home/horatiu/Documents/Programming/CSharp/GTK/Jocuri/SokoGrump/SokoGrump/bin/Release/Resources/Tiles/0.png
 /home/horatiu/Documents/Programming/CSharp/GTK/Jocuri/SokoGrump/SokoGrump/bin/Release/Resources/Images/grumpy_cat_good.jpg
+/home/horatiu/Documents/Programming/CSharp/GTK/Jocuri/SokoGrump/SokoGrump/obj/x86/Release/SokoGrump.Resources.Images.grumpy_cat_good.jpg
