@@ -6,9 +6,21 @@ namespace SokoGrump.Game
 {
     public enum PlayerDirection
     {
+        /// <summary>
+        /// The north.
+        /// </summary>
         North,
+        /// <summary>
+        /// The west.
+        /// </summary>
         West,
+        /// <summary>
+        /// The south.
+        /// </summary>
         South,
+        /// <summary>
+        /// The east.
+        /// </summary>
         East
     }
 
@@ -18,49 +30,105 @@ namespace SokoGrump.Game
         PlayerDirection plD;
         Gdk.Window gdkWindowTable, gdkWindowInfoBar;
         Color bgColor, fgColor;
-        int width, height, tileSize;
+        int tableWidth, tableHeight, tileSize;
         int plX, plY;
         int level, moves, gameTime, targetsLeft;
         bool isRunning;
 
-        public int Width { get { return width; } }
+        /// <summary>
+        /// Gets the width of the table.
+        /// </summary>
+        /// <value>The width of the table.</value>
+        public int TableWidth { get { return tableWidth; } }
 
-        public int Height { get { return height; } }
+        /// <summary>
+        /// Gets the height of the table.
+        /// </summary>
+        /// <value>The height of the table.</value>
+        public int TableHeight { get { return tableHeight; } }
 
+        /// <summary>
+        /// Gets the size of the tile.
+        /// </summary>
+        /// <value>The size of the tile.</value>
         public int TileSize { get { return tileSize; } }
 
+        /// <summary>
+        /// Gets the player direction.
+        /// </summary>
+        /// <value>The player direction.</value>
         public PlayerDirection PlayerDirection { get { return plD; } }
 
+        /// <summary>
+        /// Gets the level.
+        /// </summary>
+        /// <value>The level.</value>
         public int Level { get { return level; } }
 
+        /// <summary>
+        /// Gets the game time.
+        /// </summary>
+        /// <value>The game time.</value>
         public int GameTime { get { return gameTime; } }
 
+        /// <summary>
+        /// Gets the moves.
+        /// </summary>
+        /// <value>The moves.</value>
         public int Moves { get { return moves; } }
 
+        /// <summary>
+        /// Gets the targets left.
+        /// </summary>
+        /// <value>The targets left.</value>
         public int TargetsLeft { get { return targetsLeft; } }
 
+        /// <summary>
+        /// Gets a value indicating whether this instance is running.
+        /// </summary>
+        /// <value><c>true</c> if this instance is running; otherwise, <c>false</c>.</value>
         public bool IsRunning { get { return isRunning; } }
 
+        /// <summary>
+        /// Gets a value indicating whether this <see cref="SokoGrump.Game.GameEngine"/> is completed.
+        /// </summary>
+        /// <value><c>true</c> if completed; otherwise, <c>false</c>.</value>
         public bool Completed { get { return targetsLeft == 0; } }
 
+        /// <summary>
+        /// Gets or sets the color of the background.
+        /// </summary>
+        /// <value>The color of the background.</value>
         public Color BackgroundColor
         {
             get { return bgColor; }
             set { bgColor = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the color of the foreground.
+        /// </summary>
+        /// <value>The color of the foreground.</value>
         public Color ForegroundColor
         {
             get { return fgColor; }
             set { fgColor = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the player position x.
+        /// </summary>
+        /// <value>The player position x.</value>
         public int PlayerPosX
         {
             get { return plX; }
             set { plX = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the player position y.
+        /// </summary>
+        /// <value>The player position y.</value>
         public int PlayerPosY
         {
             get { return plY; }
@@ -68,22 +136,33 @@ namespace SokoGrump.Game
         }
 
 
+        /// <summary>
+        /// Gets or sets the gdk window table.
+        /// </summary>
+        /// <value>The gdk window table.</value>
         public Gdk.Window GdkWindowTable
         {
             get { return gdkWindowTable; }
             set { gdkWindowTable = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the gdk window info bar.
+        /// </summary>
+        /// <value>The gdk window info bar.</value>
         public Gdk.Window GdkWindowInfoBar
         {
             get { return gdkWindowInfoBar; }
             set { gdkWindowInfoBar = value; }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SokoGrump.Game.GameEngine"/> class.
+        /// </summary>
         public GameEngine()
         {
-            width = 16;
-            height = 14;
+            tableWidth = 16;
+            tableHeight = 14;
             tileSize = 48;
 
             plD = PlayerDirection.North;
@@ -96,6 +175,10 @@ namespace SokoGrump.Game
             GLib.Timeout.Add(1000, new GLib.TimeoutHandler(TimerTick));
         }
 
+        /// <summary>
+        /// Creates a new game.
+        /// </summary>
+        /// <param name="level">Level.</param>
         public void NewGame(int level)
         {
             this.level = level;
@@ -122,8 +205,8 @@ namespace SokoGrump.Game
 
         void GenerateVariations()
         {
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++)
+            for (int y = 0; y < tableHeight; y++)
+                for (int x = 0; x < tableWidth; x++)
                 {
                     DirectoryInfo di = new DirectoryInfo(Path.Combine(
                                                Globals.DataPath, "Resources", "Tiles", "tile" + tiles[x, y].ID));
@@ -134,11 +217,11 @@ namespace SokoGrump.Game
         void Load(int level)
         {
             string[] rows = File.ReadAllLines(Path.Combine(Globals.DataPath, "Levels", level + ".lvl"));
-            tiles = new Tile[width, height];
+            tiles = new Tile[tableWidth, tableHeight];
             targetsLeft = 0;
 
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++)
+            for (int y = 0; y < tableHeight; y++)
+                for (int x = 0; x < tableWidth; x++)
                 {
                     int id = (int)Char.GetNumericValue(rows[y][x]);
 
@@ -165,11 +248,18 @@ namespace SokoGrump.Game
             Console.WriteLine("Level " + level + " loaded");
         }
 
+        /// <summary>
+        /// Retry this instance.
+        /// </summary>
         public void Retry()
         {
             NewGame(level);
         }
 
+        /// <summary>
+        /// Moves the player.
+        /// </summary>
+        /// <param name="playerDirection">Player direction.</param>
         public void MovePlayer(PlayerDirection playerDirection)
         {
             int dirX, dirY;
@@ -210,15 +300,15 @@ namespace SokoGrump.Game
 
             moved = false;
 
-            if (destX < 0 || destX >= width || destY < 0 || destY >= height)
+            if (destX < 0 || destX >= tableWidth || destY < 0 || destY >= tableHeight)
                 return;
 
             if (tiles[destX, destY].Type == TileType.Transparent)
                 moved = true;
             else if (tiles[destX, destY].Type == TileType.Moveable)
             {
-                if ((dirX < 0 && plX >= 2) || (dirX > 0 && plX < width - 2) ||
-                    (dirY < 0 && plY >= 2) || (dirY > 0 && plY < height - 2))
+                if ((dirX < 0 && plX >= 2) || (dirX > 0 && plX < tableWidth - 2) ||
+                    (dirY < 0 && plY >= 2) || (dirY > 0 && plY < tableHeight - 2))
                 {
                     if (tiles[destX, destY].ID == 2 || tiles[destX, destY].ID == 5)
                     {
@@ -274,6 +364,9 @@ namespace SokoGrump.Game
             DrawInfoBar();
         }
 
+        /// <summary>
+        /// Draws the table.
+        /// </summary>
         public void DrawTable()
         {
             if (!isRunning)
@@ -282,8 +375,8 @@ namespace SokoGrump.Game
             Graphics g = Gtk.DotNet.Graphics.FromDrawable(gdkWindowTable);
             int x, y;
 
-            for (y = 0; y < height; y++)
-                for (x = 0; x < width; x++)
+            for (y = 0; y < tableHeight; y++)
+                for (x = 0; x < tableWidth; x++)
                 {
                     string resourceName;
 
@@ -313,6 +406,9 @@ namespace SokoGrump.Game
             g.Dispose();
         }
 
+        /// <summary>
+        /// Draws the info bar.
+        /// </summary>
         public void DrawInfoBar()
         {
             if (!isRunning)
@@ -354,7 +450,7 @@ namespace SokoGrump.Game
             else
                 w = false;
 
-            if (x < width - 1)
+            if (x < tableWidth - 1)
                 e = (tiles[x + 1, y].ID == id);
             else
                 e = false;

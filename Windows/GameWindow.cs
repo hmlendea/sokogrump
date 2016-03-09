@@ -3,7 +3,6 @@ using System.IO;
 using System.Drawing;
 
 using SokoGrump.Game;
-using System.Reflection;
 
 namespace SokoGrump.Windows
 {
@@ -11,10 +10,13 @@ namespace SokoGrump.Windows
     {
         GameEngine game;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SokoGrump.Windows.GameWindow"/> class.
+        /// </summary>
         public GameWindow()
             : base(Gtk.WindowType.Toplevel)
         {
-            this.Build();
+            Build();
             daTable.DoubleBuffered = false;
 
             game = new GameEngine();

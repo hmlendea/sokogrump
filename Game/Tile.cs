@@ -2,8 +2,17 @@
 {
     public enum TileType
     {
+        /// <summary>
+        /// The transparent.
+        /// </summary>
         Transparent,
+        /// <summary>
+        /// The solid.
+        /// </summary>
         Solid,
+        /// <summary>
+        /// The moveable.
+        /// </summary>
         Moveable
     }
 
@@ -13,16 +22,33 @@
         TileType type;
         int variation;
 
+        /// <summary>
+        /// Gets the ID.
+        /// </summary>
+        /// <value>The ID.</value>
         public int ID { get { return id; } }
 
+        /// <summary>
+        /// Gets the type.
+        /// </summary>
+        /// <value>The type.</value>
         public TileType Type { get { return type; } }
 
+        /// <summary>
+        /// Gets or sets the variation.
+        /// </summary>
+        /// <value>The variation.</value>
         public int Variation
         {
             get { return variation; }
             set { variation = value; }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SokoGrump.Game.Tile"/> class.
+        /// </summary>
+        /// <param name="id">Identifier.</param>
+        /// <param name="type">Type.</param>
         public Tile(int id, TileType type)
         {
             this.id = id;
@@ -33,6 +59,11 @@
 
     public static class Tiles
     {
+        /// <summary>
+        /// Gets by ID.
+        /// </summary>
+        /// <returns>The tile.</returns>
+        /// <param name="id">Identifier.</param>
         public static Tile ByID(int id)
         {
             switch (id)

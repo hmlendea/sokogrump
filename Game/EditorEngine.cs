@@ -12,42 +12,77 @@ namespace SokoGrump.Game
         int width, height, tileSize;
         int plX, plY;
 
+        /// <summary>
+        /// Gets the width.
+        /// </summary>
+        /// <value>The width.</value>
         public int Width { get { return width; } }
 
+        /// <summary>
+        /// Gets the height.
+        /// </summary>
+        /// <value>The height.</value>
         public int Height { get { return height; } }
 
+        /// <summary>
+        /// Gets the size of the tile.
+        /// </summary>
+        /// <value>The size of the tile.</value>
         public int TileSize { get { return tileSize; } }
 
+        /// <summary>
+        /// Gets or sets the player position x.
+        /// </summary>
+        /// <value>The player position x.</value>
         public int PlayerPosX
         {
             get { return plX; }
             set { plX = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the player position y.
+        /// </summary>
+        /// <value>The player position y.</value>
         public int PlayerPosY
         {
             get { return plY; }
             set { plY = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the color of the background.
+        /// </summary>
+        /// <value>The color of the background.</value>
         public Color BackgroundColor
         {
             get { return bgColor; }
             set { bgColor = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the color of the foreground.
+        /// </summary>
+        /// <value>The color of the foreground.</value>
         public Color ForegroundColor
         {
             get { return fgColor; }
             set { fgColor = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the gdk window table.
+        /// </summary>
+        /// <value>The gdk window table.</value>
         public Gdk.Window GdkWindowTable
         {
             get { return gdkWindowTable; }
             set { gdkWindowTable = value; }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SokoGrump.Game.EditorEngine"/> class.
+        /// </summary>
         public EditorEngine()
         {
             width = 16;
@@ -58,6 +93,9 @@ namespace SokoGrump.Game
             fgColor = Color.White;
         }
 
+        /// <summary>
+        /// News the level.
+        /// </summary>
         public void NewLevel()
         {
             tiles = new Tile[width, height];
@@ -69,6 +107,10 @@ namespace SokoGrump.Game
             DrawTable();
         }
 
+        /// <summary>
+        /// Open the specified path.
+        /// </summary>
+        /// <param name="path">Path.</param>
         public void Open(string path)
         {
             string[] rows = File.ReadAllLines(path);
@@ -97,6 +139,10 @@ namespace SokoGrump.Game
             DrawTable();
         }
 
+        /// <summary>
+        /// Save the specified path.
+        /// </summary>
+        /// <param name="path">Path.</param>
         public void Save(string path)
         {
             StreamWriter sw = new StreamWriter(path);
@@ -114,6 +160,9 @@ namespace SokoGrump.Game
             sw.Dispose();
         }
 
+        /// <summary>
+        /// Draws the table.
+        /// </summary>
         public void DrawTable()
         {
             Graphics g = Gtk.DotNet.Graphics.FromDrawable(gdkWindowTable);
@@ -134,12 +183,24 @@ namespace SokoGrump.Game
             g.Dispose();
         }
 
+        /// <summary>
+        /// Sets the tile.
+        /// </summary>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        /// <param name="id">Identifier.</param>
         public void SetTile(int x, int y, int id)
         {
             tiles[x, y] = Tiles.ByID(id);
             DrawTable();
         }
 
+        /// <summary>
+        /// Gets the tile I.
+        /// </summary>
+        /// <returns>The tile I.</returns>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
         public int GetTileID(int x, int y)
         {
             return tiles[x, y].ID;

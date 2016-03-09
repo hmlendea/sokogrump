@@ -10,6 +10,9 @@ namespace SokoGrump
         string fileName;
         int selectedTileID;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SokoGrump.EditorWindow"/> class.
+        /// </summary>
         public EditorWindow()
             : base(WindowType.Toplevel)
         {
