@@ -163,6 +163,7 @@
     <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="gtk-gui\SokoGrump.EditorWindow.cs" />
     <Compile Include="gtk-gui\SokoGrump.Windows.GameWindow.cs" />
+    <Compile Include="Globals.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

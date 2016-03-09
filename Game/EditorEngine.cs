@@ -123,12 +123,12 @@ namespace SokoGrump.Game
                 for (x = 0; x < width; x++)
                 {
                     g.DrawImage(
-                        new Bitmap(Path.Combine(SokoGrumpGlobals.DataPath, "Tiles", "tile" + tiles[x, y].ID, "0.png")),
+                        new Bitmap(Path.Combine(Globals.DataPath, "Tiles", "tile" + tiles[x, y].ID, "0.png")),
                         new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize));
 
                     if (x == plX && y == plY)
                         g.DrawImage(
-                            new Bitmap(Path.Combine(SokoGrumpGlobals.DataPath, "Tiles", "player", "player.png")),
+                            new Bitmap(Path.Combine(Globals.DataPath, "Tiles", "player", "player.png")),
                             new Rectangle(plX * tileSize, plY * tileSize, tileSize, tileSize));
                 }
             g.Dispose();

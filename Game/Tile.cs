@@ -9,25 +9,19 @@
 
     public class Tile
     {
-        public int ID
-        {
-            get { return id; }
-        }
+        readonly int id;
+        TileType type;
+        int variation;
 
-        public TileType Type
-        {
-            get { return type; }
-        }
+        public int ID { get { return id; } }
+
+        public TileType Type { get { return type; } }
 
         public int Variation
         {
             get { return variation; }
             set { variation = value; }
         }
-
-        readonly int id;
-        TileType type;
-        int variation;
 
         public Tile(int id, TileType type)
         {

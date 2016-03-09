@@ -4,6 +4,14 @@ using System.Drawing;
 
 namespace SokoGrump.Game
 {
+    public enum PlayerDirection
+    {
+        North,
+        West,
+        South,
+        East
+    }
+
     public class GameEngine
     {
         Tile[,] tiles;
@@ -15,20 +23,25 @@ namespace SokoGrump.Game
         int level, moves, gameTime, targetsLeft;
         bool isRunning;
 
-
         public int Width { get { return width; } }
 
         public int Height { get { return height; } }
 
         public int TileSize { get { return tileSize; } }
 
-        public int Level { get { return level; } }
+        public PlayerDirection PlayerDirection { get { return plD; } }
 
-        public int Moves { get { return moves; } }
+        public int Level { get { return level; } }
 
         public int GameTime { get { return gameTime; } }
 
+        public int Moves { get { return moves; } }
+
+        public int TargetsLeft { get { return targetsLeft; } }
+
         public bool IsRunning { get { return isRunning; } }
+
+        public bool Completed { get { return targetsLeft == 0; } }
 
         public Color BackgroundColor
         {
@@ -54,11 +67,6 @@ namespace SokoGrump.Game
             set { plY = value; }
         }
 
-        public PlayerDirection PlayerDirection { get { return plD; } }
-
-        public bool Completed { get { return targetsLeft == 0; } }
-
-        public int TargetsLeft { get { return targetsLeft; } }
 
         public Gdk.Window GdkWindowTable
         {
@@ -117,14 +125,15 @@ namespace SokoGrump.Game
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++)
                 {
-                    DirectoryInfo di = new DirectoryInfo(Path.Combine(SokoGrumpGlobals.DataPath, "Resources", "Tiles", "tile" + tiles[x, y].ID));
+                    DirectoryInfo di = new DirectoryInfo(Path.Combine(
+                                               Globals.DataPath, "Resources", "Tiles", "tile" + tiles[x, y].ID));
                     tiles[x, y].Variation = new Random().Next(0, di.GetFiles().Length);
                 }
         }
 
         void Load(int level)
         {
-            string[] rows = File.ReadAllLines(Path.Combine(SokoGrumpGlobals.DataPath, "Levels", level + ".lvl"));
+            string[] rows = File.ReadAllLines(Path.Combine(Globals.DataPath, "Levels", level + ".lvl"));
             tiles = new Tile[width, height];
             targetsLeft = 0;
 
@@ -248,17 +257,9 @@ namespace SokoGrump.Game
                     }
                 }
             }
-
-            if (dirY < 0)
-                //plD = PlayerDirection.North;
-            {
-            }
-            else if (dirX < 0)
+                
+            if (dirX < 0)
                 plD = PlayerDirection.West;
-            else if (dirY > 0)
-                //plD = PlayerDirection.South;
-            {
-            }
             else if (dirX > 0)
                 plD = PlayerDirection.East;
 
@@ -287,11 +288,10 @@ namespace SokoGrump.Game
                     string resourceName;
 
                     if (tiles[x, y].ID == 1)
-                        resourceName = Path.Combine(SokoGrumpGlobals.DataPath, "Resources", "Tiles", "tile1", GetTileShape(x, y, 1) + ".png");
+                        resourceName = Path.Combine(Globals.DataPath, "Resources", "Tiles", "tile1", GetTileShape(x, y, 1) + ".png");
                     else
-                        resourceName = Path.Combine(SokoGrumpGlobals.DataPath, "Resources", "Tiles", "tile" + tiles[x, y].ID, tiles[x, y].Variation + ".png");
+                        resourceName = Path.Combine(Globals.DataPath, "Resources", "Tiles", "tile" + tiles[x, y].ID, tiles[x, y].Variation + ".png");
 
-                    //if (File.Exists(resourceName))
                     g.DrawImage(
                         new Bitmap(resourceName),
                         new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize));
@@ -299,13 +299,12 @@ namespace SokoGrump.Game
                     if (x == plX && y == plY)
                     {
                         if (plD == PlayerDirection.West)
-                            resourceName = Path.Combine(SokoGrumpGlobals.DataPath, "Resources", "Tiles", "player", "playerW.png");
+                            resourceName = Path.Combine(Globals.DataPath, "Resources", "Tiles", "player", "playerW.png");
                         else if (plD == PlayerDirection.East)
-                            resourceName = Path.Combine(SokoGrumpGlobals.DataPath, "Resources", "Tiles", "player", "playerE.png");
+                            resourceName = Path.Combine(Globals.DataPath, "Resources", "Tiles", "player", "playerE.png");
                         else
-                            resourceName = Path.Combine(SokoGrumpGlobals.DataPath, "Resources", "Tiles", "player", "player.png");
+                            resourceName = Path.Combine(Globals.DataPath, "Resources", "Tiles", "player", "player.png");
 
-                        //if (File.Exists(resourceName))
                         g.DrawImage(
                             new Bitmap(resourceName),
                             new Rectangle(plX * tileSize, plY * tileSize, tileSize, tileSize));
@@ -368,13 +367,5 @@ namespace SokoGrump.Game
                 return 2;
             return 3;
         }
-    }
-
-    public enum PlayerDirection
-    {
-        North,
-        West,
-        South,
-        East
     }
 }
