@@ -117,16 +117,15 @@ namespace SokoGrump.Game
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++)
                 {
-                    DirectoryInfo di = new DirectoryInfo(@"Resources/Tiles/tile" + tiles[x, y].ID);
+                    DirectoryInfo di = new DirectoryInfo(Path.Combine(SokoGrumpGlobals.DataPath, "Resources", "Tiles", "tile" + tiles[x, y].ID));
                     tiles[x, y].Variation = new Random().Next(0, di.GetFiles().Length);
                 }
         }
 
         void Load(int level)
         {
-            Console.WriteLine("Level loaded");
+            string[] rows = File.ReadAllLines(Path.Combine(SokoGrumpGlobals.DataPath, "Levels", level + ".lvl"));
             tiles = new Tile[width, height];
-            string[] rows = File.ReadAllLines(Path.Combine("Levels", level + ".lvl"));
             targetsLeft = 0;
 
             for (int y = 0; y < height; y++)
@@ -154,7 +153,7 @@ namespace SokoGrump.Game
                 }
             GenerateVariations();
 
-            Console.WriteLine("Level loaded");
+            Console.WriteLine("Level " + level + " loaded");
         }
 
         public void Retry()
@@ -288,10 +287,9 @@ namespace SokoGrump.Game
                     string resourceName;
 
                     if (tiles[x, y].ID == 1)
-                        resourceName = @"Resources/Tiles/tile1/" + GetTileShape(x, y, 1) + ".png";
+                        resourceName = Path.Combine(SokoGrumpGlobals.DataPath, "Resources", "Tiles", "tile1", GetTileShape(x, y, 1) + ".png");
                     else
-                        resourceName = 
-                            @"Resources/Tiles/tile" + tiles[x, y].ID + "/" + tiles[x, y].Variation + ".png";
+                        resourceName = Path.Combine(SokoGrumpGlobals.DataPath, "Resources", "Tiles", "tile" + tiles[x, y].ID, tiles[x, y].Variation + ".png");
 
                     //if (File.Exists(resourceName))
                     g.DrawImage(
@@ -301,11 +299,11 @@ namespace SokoGrump.Game
                     if (x == plX && y == plY)
                     {
                         if (plD == PlayerDirection.West)
-                            resourceName = @"Resources/Tiles/player/playerW.png";
+                            resourceName = Path.Combine(SokoGrumpGlobals.DataPath, "Resources", "Tiles", "player", "playerW.png");
                         else if (plD == PlayerDirection.East)
-                            resourceName = @"Resources/Tiles/player/playerE.png";
+                            resourceName = Path.Combine(SokoGrumpGlobals.DataPath, "Resources", "Tiles", "player", "playerE.png");
                         else
-                            resourceName = @"Resources/Tiles/player/player.png";
+                            resourceName = Path.Combine(SokoGrumpGlobals.DataPath, "Resources", "Tiles", "player", "player.png");
 
                         //if (File.Exists(resourceName))
                         g.DrawImage(

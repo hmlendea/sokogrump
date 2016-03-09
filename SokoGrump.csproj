@@ -10,6 +10,8 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <ApplicationIcon>Resources\sokogrump.ico</ApplicationIcon>
     <StartupObject>SokoGrump.MainClass</StartupObject>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,7 +25,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <CustomCommands>
       <CustomCommands>
-        <Command type="BeforeBuild" command="generate-version.sh" workingdir="${ProjectDir}" />
+        <Command type="BeforeBuild" command="../../../../../.resurse/generate-version.sh" workingdir="${ProjectDir}" />
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>

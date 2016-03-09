@@ -93,7 +93,7 @@ namespace SokoGrump.Windows
 
         void Start(int level)
         {
-            string path = System.IO.Path.Combine("Levels", level + ".lvl");
+            string path = System.IO.Path.Combine(SokoGrumpGlobals.DataPath, "Levels", level + ".lvl");
 
             if (File.Exists(path))
             {
@@ -108,7 +108,7 @@ namespace SokoGrump.Windows
         {
             if (game.Completed)
             {
-                if (File.Exists(System.IO.Path.Combine("Levels", (game.Level + 1) + ".lvl")))
+                if (File.Exists(System.IO.Path.Combine(SokoGrumpGlobals.DataPath, "Levels", (game.Level + 1) + ".lvl")))
                 {
                     DateTime target2 = DateTime.Now.AddSeconds(0.25);
                     while (DateTime.Now <= target2)
@@ -130,7 +130,7 @@ namespace SokoGrump.Windows
         void DrawLevelWon()
         {
             Graphics g = Gtk.DotNet.Graphics.FromDrawable(daTable.GdkWindow);
-            g.DrawImage(Image.FromFile(System.IO.Path.Combine("Resources", "Images", "grumpy_cat_good.jpg")), 0, 0);
+            g.DrawImage(Image.FromFile(System.IO.Path.Combine(SokoGrumpGlobals.DataPath, "Resources", "Images", "grumpy_cat_good.jpg")), 0, 0);
             g.Dispose();
         }
 
