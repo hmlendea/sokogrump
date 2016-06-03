@@ -1,7 +1,7 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SokoGrump", "SokoGrump.csproj", "{9ED09BD5-16EA-44C1-AD7D-CC7CC9CAF6EA}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SokoGrump", "SokoGrump\SokoGrump.csproj", "{9ED09BD5-16EA-44C1-AD7D-CC7CC9CAF6EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
