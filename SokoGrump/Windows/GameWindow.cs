@@ -12,7 +12,7 @@ namespace SokoGrump.Windows
         GameEngine game;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SokoGrump.Windows.GameWindow"/> class.
+        /// Initializes a new instance of the <see cref="GameWindow"/> class.
         /// </summary>
         public GameWindow()
             : base(Gtk.WindowType.Toplevel)
@@ -159,4 +159,3 @@ namespace SokoGrump.Windows
         }
     }
 }
-

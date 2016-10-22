@@ -91,7 +91,7 @@ namespace SokoGrump.Game
         public bool IsRunning { get { return isRunning; } }
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="SokoGrump.Game.GameEngine"/> is completed.
+        /// Gets a value indicating whether this <see cref="GameEngine"/> is completed.
         /// </summary>
         /// <value><c>true</c> if completed; otherwise, <c>false</c>.</value>
         public bool Completed { get { return targetsLeft == 0; } }
@@ -158,7 +158,7 @@ namespace SokoGrump.Game
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SokoGrump.Game.GameEngine"/> class.
+        /// Initializes a new instance of the <see cref="GameEngine"/> class.
         /// </summary>
         public GameEngine()
         {
@@ -197,7 +197,7 @@ namespace SokoGrump.Game
         {
             if (!isRunning)
                 return true;
-            
+
             gameTime += 1;
             DrawInfoBar();
 
@@ -223,11 +223,11 @@ namespace SokoGrump.Game
             for (int y = 0; y < tableHeight; y++)
                 for (int x = 0; x < tableWidth; x++)
                 {
-                    int id = (int)Char.GetNumericValue(rows[y][x]);
+                    int id = (int)char.GetNumericValue(rows[y][x]);
 
                     if (id == 3)
                         targetsLeft += 1;
-                    
+
                     if (id == 4)
                     {
                         plX = x;
@@ -347,7 +347,7 @@ namespace SokoGrump.Game
                     }
                 }
             }
-                
+
             if (dirX < 0)
                 plD = PlayerDirection.West;
             else if (dirX > 0)
@@ -371,7 +371,7 @@ namespace SokoGrump.Game
         {
             if (!isRunning)
                 return;
-            
+
             Graphics g = Gtk.DotNet.Graphics.FromDrawable(gdkWindowTable);
             int x, y;
 
@@ -388,7 +388,7 @@ namespace SokoGrump.Game
                     g.DrawImage(
                         new Bitmap(resourceName),
                         new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize));
-                    
+
                     if (x == plX && y == plY)
                     {
                         if (plD == PlayerDirection.West)
@@ -461,6 +461,7 @@ namespace SokoGrump.Game
                 return 1;
             if (e && !w)
                 return 2;
+
             return 3;
         }
     }

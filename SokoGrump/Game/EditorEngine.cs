@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Drawing;
 
 namespace SokoGrump.Game
@@ -81,7 +80,7 @@ namespace SokoGrump.Game
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SokoGrump.Game.EditorEngine"/> class.
+        /// Initializes a new instance of the <see cref="EditorEngine"/> class.
         /// </summary>
         public EditorEngine()
         {
@@ -118,7 +117,7 @@ namespace SokoGrump.Game
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++)
                 {
-                    int id = (int)Char.GetNumericValue(rows[y][x]);
+                    int id = (int)char.GetNumericValue(rows[y][x]);
 
                     if (id == 4)
                     {

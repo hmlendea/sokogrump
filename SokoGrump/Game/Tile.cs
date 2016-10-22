@@ -45,7 +45,7 @@
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SokoGrump.Game.Tile"/> class.
+        /// Initializes a new instance of the <see cref="Tile"/> class.
         /// </summary>
         /// <param name="id">Identifier.</param>
         /// <param name="type">Type.</param>
@@ -69,7 +69,7 @@
             switch (id)
             {
                 default:
-              //case 7: // Nothingness
+                    //case 7: // Nothingness
                     return new Tile(id, TileType.Solid);
 
                 case 0: // Terrain

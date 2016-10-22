@@ -11,7 +11,7 @@ namespace SokoGrump
         int selectedTileID;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SokoGrump.EditorWindow"/> class.
+        /// Initializes a new instance of the <see cref="EditorWindow"/> class.
         /// </summary>
         public EditorWindow()
             : base(WindowType.Toplevel)
@@ -94,7 +94,7 @@ namespace SokoGrump
                     case 1:
                         editor.SetTile(x, y, 7);
                         break;
-                    
+
                     case 2:
                         editor.SetTile(x, y, 0);
                         break;

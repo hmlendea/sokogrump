@@ -49,7 +49,7 @@ namespace SokoGrump.Utils
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="MovieStore.Utils.Log"/> is enabled.
+        /// Gets or sets a value indicating whether this <see cref="Log"/> is enabled.
         /// </summary>
         /// <value><c>true</c> if enabled; otherwise, <c>false</c>.</value>
         public bool Enabled
@@ -100,7 +100,7 @@ namespace SokoGrump.Utils
         #endregion
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MovieStore.Utils.Log"/> class.
+        /// Initializes a new instance of the <see cref="Log"/> class.
         /// </summary>
         /// <param name="fileName">File name.</param>
         public Log(string fileName)

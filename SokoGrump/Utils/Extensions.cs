@@ -14,7 +14,7 @@ public static class MyExtensions
     public static Bitmap ToBitmap(this Pixbuf pix)
     {
         TypeConverter tc = TypeDescriptor.GetConverter(typeof(Bitmap));
-        return (Bitmap)tc.ConvertFrom(pix.SaveToBuffer("png")); 
+        return (Bitmap)tc.ConvertFrom(pix.SaveToBuffer("png"));
     }
 
     /// <summary>
