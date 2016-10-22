@@ -5,89 +5,90 @@ namespace SokoGrump.Windows
 	public partial class GameWindow
 	{
 		private global::Gtk.UIManager UIManager;
-		
+
 		private global::Gtk.Action GameAction;
-		
+
 		private global::Gtk.Action newAction;
-		
+
 		private global::Gtk.Action actRetry;
-		
+
 		private global::Gtk.Action actEditor;
-		
+
 		private global::Gtk.VBox vbox1;
-		
+
 		private global::Gtk.MenuBar menubar1;
-		
+
 		private global::Gtk.DrawingArea daInfoBar;
-		
+
 		private global::Gtk.DrawingArea daTable;
 
-		protected virtual void Build ()
+		protected virtual void Build()
 		{
-			global::Stetic.Gui.Initialize (this);
+			global::Stetic.Gui.Initialize(this);
 			// Widget SokoGrump.Windows.GameWindow
-			this.UIManager = new global::Gtk.UIManager ();
-			global::Gtk.ActionGroup w1 = new global::Gtk.ActionGroup ("Default");
-			this.GameAction = new global::Gtk.Action ("GameAction", global::Mono.Unix.Catalog.GetString ("Game"), null, null);
-			this.GameAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Game");
-			w1.Add (this.GameAction, null);
-			this.newAction = new global::Gtk.Action ("newAction", global::Mono.Unix.Catalog.GetString ("New game"), null, "gtk-new");
-			this.newAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Go to level X");
-			w1.Add (this.newAction, null);
-			this.actRetry = new global::Gtk.Action ("actRetry", global::Mono.Unix.Catalog.GetString ("Retry"), null, "gtk-undo");
-			this.actRetry.ShortLabel = global::Mono.Unix.Catalog.GetString ("Retry");
-			w1.Add (this.actRetry, null);
-			this.actEditor = new global::Gtk.Action ("actEditor", global::Mono.Unix.Catalog.GetString ("Open Editor"), null, "gtk-paste");
-			this.actEditor.ShortLabel = global::Mono.Unix.Catalog.GetString ("Open Editor");
-			w1.Add (this.actEditor, null);
-			this.UIManager.InsertActionGroup (w1, 0);
-			this.AddAccelGroup (this.UIManager.AccelGroup);
+			this.UIManager = new global::Gtk.UIManager();
+			global::Gtk.ActionGroup w1 = new global::Gtk.ActionGroup("Default");
+			this.GameAction = new global::Gtk.Action("GameAction", global::Mono.Unix.Catalog.GetString("Game"), null, null);
+			this.GameAction.ShortLabel = global::Mono.Unix.Catalog.GetString("Game");
+			w1.Add(this.GameAction, null);
+			this.newAction = new global::Gtk.Action("newAction", global::Mono.Unix.Catalog.GetString("New game"), null, "gtk-new");
+			this.newAction.ShortLabel = global::Mono.Unix.Catalog.GetString("Go to level X");
+			w1.Add(this.newAction, null);
+			this.actRetry = new global::Gtk.Action("actRetry", global::Mono.Unix.Catalog.GetString("Retry"), null, "gtk-undo");
+			this.actRetry.ShortLabel = global::Mono.Unix.Catalog.GetString("Retry");
+			w1.Add(this.actRetry, null);
+			this.actEditor = new global::Gtk.Action("actEditor", global::Mono.Unix.Catalog.GetString("Open Editor"), null, "gtk-paste");
+			this.actEditor.ShortLabel = global::Mono.Unix.Catalog.GetString("Open Editor");
+			w1.Add(this.actEditor, null);
+			this.UIManager.InsertActionGroup(w1, 0);
+			this.AddAccelGroup(this.UIManager.AccelGroup);
 			this.Name = "SokoGrump.Windows.GameWindow";
-			this.Title = global::Mono.Unix.Catalog.GetString ("SokoGrump - Game");
-			this.Icon = global::Gdk.Pixbuf.LoadFromResource ("SokoGrump.Resources.sokogrump.ico");
+			this.Title = global::Mono.Unix.Catalog.GetString("SokoGrump - Game");
+			this.Icon = global::Gdk.Pixbuf.LoadFromResource("SokoGrump.Resources.sokogrump.ico");
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 			this.Resizable = false;
 			// Container child SokoGrump.Windows.GameWindow.Gtk.Container+ContainerChild
-			this.vbox1 = new global::Gtk.VBox ();
+			this.vbox1 = new global::Gtk.VBox();
 			this.vbox1.Name = "vbox1";
 			// Container child vbox1.Gtk.Box+BoxChild
-			this.UIManager.AddUiFromString ("<ui><menubar name='menubar1'><menu name='GameAction' action='GameAction'><menuitem name='newAction' action='newAction'/><menuitem name='actRetry' action='actRetry'/><menuitem name='actEditor' action='actEditor'/></menu></menubar></ui>");
-			this.menubar1 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget ("/menubar1")));
+			this.UIManager.AddUiFromString("<ui><menubar name='menubar1'><menu name='GameAction' action='GameAction'><menuitem name='newAction' action='newAction'/><menuitem name='actRetry' action='actRetry'/><menuitem name='actEditor' action='actEditor'/></menu></menubar></ui>");
+			this.menubar1 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget("/menubar1")));
 			this.menubar1.Name = "menubar1";
-			this.vbox1.Add (this.menubar1);
-			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.menubar1]));
+			this.vbox1.Add(this.menubar1);
+			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.menubar1]));
 			w2.Position = 0;
 			w2.Expand = false;
 			w2.Fill = false;
 			// Container child vbox1.Gtk.Box+BoxChild
-			this.daInfoBar = new global::Gtk.DrawingArea ();
+			this.daInfoBar = new global::Gtk.DrawingArea();
 			this.daInfoBar.HeightRequest = 32;
 			this.daInfoBar.Name = "daInfoBar";
-			this.vbox1.Add (this.daInfoBar);
-			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.daInfoBar]));
+			this.vbox1.Add(this.daInfoBar);
+			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.daInfoBar]));
 			w3.Position = 1;
 			w3.Expand = false;
 			// Container child vbox1.Gtk.Box+BoxChild
-			this.daTable = new global::Gtk.DrawingArea ();
+			this.daTable = new global::Gtk.DrawingArea();
 			this.daTable.WidthRequest = 768;
 			this.daTable.HeightRequest = 672;
 			this.daTable.Name = "daTable";
-			this.vbox1.Add (this.daTable);
-			global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.daTable]));
+			this.vbox1.Add(this.daTable);
+			global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.daTable]));
 			w4.Position = 2;
 			w4.Expand = false;
-			this.Add (this.vbox1);
-			if ((this.Child != null)) {
-				this.Child.ShowAll ();
+			this.Add(this.vbox1);
+			if ((this.Child != null))
+			{
+				this.Child.ShowAll();
 			}
 			this.DefaultWidth = 768;
 			this.DefaultHeight = 736;
-			this.Show ();
-			this.KeyPressEvent += new global::Gtk.KeyPressEventHandler (this.OnKeyPressEvent);
-			this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
-			this.newAction.Activated += new global::System.EventHandler (this.OnActGoToActivated);
-			this.actRetry.Activated += new global::System.EventHandler (this.OnActRetryActivated);
-			this.actEditor.Activated += new global::System.EventHandler (this.OnActEditorActivated);
+			this.Show();
+			this.KeyPressEvent += new global::Gtk.KeyPressEventHandler(this.OnKeyPressEvent);
+			this.DeleteEvent += new global::Gtk.DeleteEventHandler(this.OnDeleteEvent);
+			this.newAction.Activated += new global::System.EventHandler(this.OnActGoToActivated);
+			this.actRetry.Activated += new global::System.EventHandler(this.OnActRetryActivated);
+			this.actEditor.Activated += new global::System.EventHandler(this.OnActEditorActivated);
 		}
 	}
 }

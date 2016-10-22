@@ -6,38 +6,39 @@ namespace Stetic
 	{
 		private static bool initialized;
 
-		internal static void Initialize (Gtk.Widget iconRenderer)
+		internal static void Initialize(Gtk.Widget iconRenderer)
 		{
-			if ((Stetic.Gui.initialized == false)) {
+			if ((Stetic.Gui.initialized == false))
+			{
 				Stetic.Gui.initialized = true;
-				global::Gtk.IconFactory w1 = new global::Gtk.IconFactory ();
-				global::Gtk.IconSet w2 = new global::Gtk.IconSet (global::Gdk.Pixbuf.LoadFromResource ("SokoGrump.Resources.Tiles.tile0.0.png"));
-				w1.Add ("Tile0", w2);
-				global::Gtk.IconSet w3 = new global::Gtk.IconSet (global::Gdk.Pixbuf.LoadFromResource ("SokoGrump.Resources.Tiles.tile7.0.png"));
-				w1.Add ("Tile7", w3);
-				global::Gtk.IconSet w4 = new global::Gtk.IconSet (global::Gdk.Pixbuf.LoadFromResource ("SokoGrump.Resources.Tiles.tile5.0.png"));
-				w1.Add ("Tile5", w4);
-				global::Gtk.IconSet w5 = new global::Gtk.IconSet (global::Gdk.Pixbuf.LoadFromResource ("SokoGrump.Resources.Tiles.tile3.0.png"));
-				w1.Add ("Tile3", w5);
-				global::Gtk.IconSet w6 = new global::Gtk.IconSet (global::Gdk.Pixbuf.LoadFromResource ("SokoGrump.Resources.Tiles.tile2.0.png"));
-				w1.Add ("Tile2", w6);
-				global::Gtk.IconSet w7 = new global::Gtk.IconSet (global::Gdk.Pixbuf.LoadFromResource ("SokoGrump.Resources.Tiles.tile1.0.png"));
-				w1.Add ("Tile1", w7);
-				global::Gtk.IconSet w8 = new global::Gtk.IconSet (global::Gdk.Pixbuf.LoadFromResource ("SokoGrump.Resources.Tiles.player.player.png"));
-				w1.Add ("Tile4", w8);
-				w1.AddDefault ();
+				global::Gtk.IconFactory w1 = new global::Gtk.IconFactory();
+				global::Gtk.IconSet w2 = new global::Gtk.IconSet(global::Gdk.Pixbuf.LoadFromResource("SokoGrump.Resources.Tiles.tile0.0.png"));
+				w1.Add("Tile0", w2);
+				global::Gtk.IconSet w3 = new global::Gtk.IconSet(global::Gdk.Pixbuf.LoadFromResource("SokoGrump.Resources.Tiles.tile7.0.png"));
+				w1.Add("Tile7", w3);
+				global::Gtk.IconSet w4 = new global::Gtk.IconSet(global::Gdk.Pixbuf.LoadFromResource("SokoGrump.Resources.Tiles.tile5.0.png"));
+				w1.Add("Tile5", w4);
+				global::Gtk.IconSet w5 = new global::Gtk.IconSet(global::Gdk.Pixbuf.LoadFromResource("SokoGrump.Resources.Tiles.tile3.0.png"));
+				w1.Add("Tile3", w5);
+				global::Gtk.IconSet w6 = new global::Gtk.IconSet(global::Gdk.Pixbuf.LoadFromResource("SokoGrump.Resources.Tiles.tile2.0.png"));
+				w1.Add("Tile2", w6);
+				global::Gtk.IconSet w7 = new global::Gtk.IconSet(global::Gdk.Pixbuf.LoadFromResource("SokoGrump.Resources.Tiles.tile1.0.png"));
+				w1.Add("Tile1", w7);
+				global::Gtk.IconSet w8 = new global::Gtk.IconSet(global::Gdk.Pixbuf.LoadFromResource("SokoGrump.Resources.Tiles.player.player.png"));
+				w1.Add("Tile4", w8);
+				w1.AddDefault();
 			}
 		}
 	}
 
 	internal class ActionGroups
 	{
-		public static Gtk.ActionGroup GetActionGroup (System.Type type)
+		public static Gtk.ActionGroup GetActionGroup(System.Type type)
 		{
-			return Stetic.ActionGroups.GetActionGroup (type.FullName);
+			return Stetic.ActionGroups.GetActionGroup(type.FullName);
 		}
 
-		public static Gtk.ActionGroup GetActionGroup (string name)
+		public static Gtk.ActionGroup GetActionGroup(string name)
 		{
 			return null;
 		}

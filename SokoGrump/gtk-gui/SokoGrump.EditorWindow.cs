@@ -5,133 +5,134 @@ namespace SokoGrump
 	public partial class EditorWindow
 	{
 		private global::Gtk.UIManager UIManager;
-		
+
 		private global::Gtk.Action actTile7;
-		
+
 		private global::Gtk.Action Tile0Action;
-		
+
 		private global::Gtk.Action actTile1;
-		
+
 		private global::Gtk.Action actTile0;
-		
+
 		private global::Gtk.Action actTile3;
-		
+
 		private global::Gtk.Action actTile2;
-		
+
 		private global::Gtk.Action actTile5;
-		
+
 		private global::Gtk.Action actTile4;
-		
+
 		private global::Gtk.Action FileAction;
-		
+
 		private global::Gtk.Action saveAction;
-		
+
 		private global::Gtk.Action saveAsAction;
-		
+
 		private global::Gtk.Action openAction;
-		
+
 		private global::Gtk.Action newAction;
-		
+
 		private global::Gtk.VBox vbox1;
-		
+
 		private global::Gtk.MenuBar menubar1;
-		
+
 		private global::Gtk.Toolbar toolbar1;
-		
+
 		private global::Gtk.DrawingArea daTable;
 
-		protected virtual void Build ()
+		protected virtual void Build()
 		{
-			global::Stetic.Gui.Initialize (this);
+			global::Stetic.Gui.Initialize(this);
 			// Widget SokoGrump.EditorWindow
-			this.UIManager = new global::Gtk.UIManager ();
-			global::Gtk.ActionGroup w1 = new global::Gtk.ActionGroup ("Default");
-			this.actTile7 = new global::Gtk.Action ("actTile7", null, null, "Tile7");
-			w1.Add (this.actTile7, null);
-			this.Tile0Action = new global::Gtk.Action ("Tile0Action", null, null, "Tile0");
-			w1.Add (this.Tile0Action, null);
-			this.actTile1 = new global::Gtk.Action ("actTile1", null, null, "Tile1");
-			w1.Add (this.actTile1, null);
-			this.actTile0 = new global::Gtk.Action ("actTile0", null, null, "Tile0");
-			w1.Add (this.actTile0, null);
-			this.actTile3 = new global::Gtk.Action ("actTile3", null, null, "Tile3");
-			w1.Add (this.actTile3, null);
-			this.actTile2 = new global::Gtk.Action ("actTile2", null, null, "Tile2");
-			w1.Add (this.actTile2, null);
-			this.actTile5 = new global::Gtk.Action ("actTile5", null, null, "Tile5");
-			w1.Add (this.actTile5, null);
-			this.actTile4 = new global::Gtk.Action ("actTile4", null, null, "Tile4");
-			w1.Add (this.actTile4, null);
-			this.FileAction = new global::Gtk.Action ("FileAction", global::Mono.Unix.Catalog.GetString ("File"), null, null);
-			this.FileAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("File");
-			w1.Add (this.FileAction, null);
-			this.saveAction = new global::Gtk.Action ("saveAction", global::Mono.Unix.Catalog.GetString ("Save"), null, "gtk-save");
-			this.saveAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Save");
-			w1.Add (this.saveAction, null);
-			this.saveAsAction = new global::Gtk.Action ("saveAsAction", global::Mono.Unix.Catalog.GetString ("Save As"), null, "gtk-save-as");
-			this.saveAsAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Save As");
-			w1.Add (this.saveAsAction, null);
-			this.openAction = new global::Gtk.Action ("openAction", global::Mono.Unix.Catalog.GetString ("Open"), null, "gtk-open");
-			this.openAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Open");
-			w1.Add (this.openAction, null);
-			this.newAction = new global::Gtk.Action ("newAction", global::Mono.Unix.Catalog.GetString ("New"), null, "gtk-new");
-			this.newAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("New");
-			w1.Add (this.newAction, null);
-			this.UIManager.InsertActionGroup (w1, 0);
-			this.AddAccelGroup (this.UIManager.AccelGroup);
+			this.UIManager = new global::Gtk.UIManager();
+			global::Gtk.ActionGroup w1 = new global::Gtk.ActionGroup("Default");
+			this.actTile7 = new global::Gtk.Action("actTile7", null, null, "Tile7");
+			w1.Add(this.actTile7, null);
+			this.Tile0Action = new global::Gtk.Action("Tile0Action", null, null, "Tile0");
+			w1.Add(this.Tile0Action, null);
+			this.actTile1 = new global::Gtk.Action("actTile1", null, null, "Tile1");
+			w1.Add(this.actTile1, null);
+			this.actTile0 = new global::Gtk.Action("actTile0", null, null, "Tile0");
+			w1.Add(this.actTile0, null);
+			this.actTile3 = new global::Gtk.Action("actTile3", null, null, "Tile3");
+			w1.Add(this.actTile3, null);
+			this.actTile2 = new global::Gtk.Action("actTile2", null, null, "Tile2");
+			w1.Add(this.actTile2, null);
+			this.actTile5 = new global::Gtk.Action("actTile5", null, null, "Tile5");
+			w1.Add(this.actTile5, null);
+			this.actTile4 = new global::Gtk.Action("actTile4", null, null, "Tile4");
+			w1.Add(this.actTile4, null);
+			this.FileAction = new global::Gtk.Action("FileAction", global::Mono.Unix.Catalog.GetString("File"), null, null);
+			this.FileAction.ShortLabel = global::Mono.Unix.Catalog.GetString("File");
+			w1.Add(this.FileAction, null);
+			this.saveAction = new global::Gtk.Action("saveAction", global::Mono.Unix.Catalog.GetString("Save"), null, "gtk-save");
+			this.saveAction.ShortLabel = global::Mono.Unix.Catalog.GetString("Save");
+			w1.Add(this.saveAction, null);
+			this.saveAsAction = new global::Gtk.Action("saveAsAction", global::Mono.Unix.Catalog.GetString("Save As"), null, "gtk-save-as");
+			this.saveAsAction.ShortLabel = global::Mono.Unix.Catalog.GetString("Save As");
+			w1.Add(this.saveAsAction, null);
+			this.openAction = new global::Gtk.Action("openAction", global::Mono.Unix.Catalog.GetString("Open"), null, "gtk-open");
+			this.openAction.ShortLabel = global::Mono.Unix.Catalog.GetString("Open");
+			w1.Add(this.openAction, null);
+			this.newAction = new global::Gtk.Action("newAction", global::Mono.Unix.Catalog.GetString("New"), null, "gtk-new");
+			this.newAction.ShortLabel = global::Mono.Unix.Catalog.GetString("New");
+			w1.Add(this.newAction, null);
+			this.UIManager.InsertActionGroup(w1, 0);
+			this.AddAccelGroup(this.UIManager.AccelGroup);
 			this.Name = "SokoGrump.EditorWindow";
-			this.Title = global::Mono.Unix.Catalog.GetString ("EditorWindow");
+			this.Title = global::Mono.Unix.Catalog.GetString("EditorWindow");
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 			// Container child SokoGrump.EditorWindow.Gtk.Container+ContainerChild
-			this.vbox1 = new global::Gtk.VBox ();
+			this.vbox1 = new global::Gtk.VBox();
 			this.vbox1.Name = "vbox1";
 			this.vbox1.Spacing = 6;
 			// Container child vbox1.Gtk.Box+BoxChild
-			this.UIManager.AddUiFromString ("<ui><menubar name='menubar1'><menu name='FileAction' action='FileAction'><menuitem name='saveAction' action='saveAction'/><menuitem name='saveAsAction' action='saveAsAction'/><menuitem name='openAction' action='openAction'/><menuitem name='newAction' action='newAction'/></menu></menubar></ui>");
-			this.menubar1 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget ("/menubar1")));
+			this.UIManager.AddUiFromString("<ui><menubar name='menubar1'><menu name='FileAction' action='FileAction'><menuitem name='saveAction' action='saveAction'/><menuitem name='saveAsAction' action='saveAsAction'/><menuitem name='openAction' action='openAction'/><menuitem name='newAction' action='newAction'/></menu></menubar></ui>");
+			this.menubar1 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget("/menubar1")));
 			this.menubar1.Name = "menubar1";
-			this.vbox1.Add (this.menubar1);
-			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.menubar1]));
+			this.vbox1.Add(this.menubar1);
+			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.menubar1]));
 			w2.Position = 0;
 			w2.Expand = false;
 			w2.Fill = false;
 			// Container child vbox1.Gtk.Box+BoxChild
-			this.UIManager.AddUiFromString ("<ui><toolbar name='toolbar1'><toolitem name='actTile7' action='actTile7'/><toolitem name='actTile1' action='actTile1'/><toolitem name='actTile0' action='actTile0'/><toolitem name='actTile3' action='actTile3'/><toolitem name='actTile2' action='actTile2'/><toolitem name='actTile5' action='actTile5'/><toolitem name='actTile4' action='actTile4'/></toolbar></ui>");
-			this.toolbar1 = ((global::Gtk.Toolbar)(this.UIManager.GetWidget ("/toolbar1")));
+			this.UIManager.AddUiFromString("<ui><toolbar name='toolbar1'><toolitem name='actTile7' action='actTile7'/><toolitem name='actTile1' action='actTile1'/><toolitem name='actTile0' action='actTile0'/><toolitem name='actTile3' action='actTile3'/><toolitem name='actTile2' action='actTile2'/><toolitem name='actTile5' action='actTile5'/><toolitem name='actTile4' action='actTile4'/></toolbar></ui>");
+			this.toolbar1 = ((global::Gtk.Toolbar)(this.UIManager.GetWidget("/toolbar1")));
 			this.toolbar1.Name = "toolbar1";
 			this.toolbar1.ShowArrow = false;
-			this.vbox1.Add (this.toolbar1);
-			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.toolbar1]));
+			this.vbox1.Add(this.toolbar1);
+			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.toolbar1]));
 			w3.Position = 1;
 			w3.Expand = false;
 			w3.Fill = false;
 			// Container child vbox1.Gtk.Box+BoxChild
-			this.daTable = new global::Gtk.DrawingArea ();
+			this.daTable = new global::Gtk.DrawingArea();
 			this.daTable.WidthRequest = 768;
 			this.daTable.HeightRequest = 672;
 			this.daTable.Name = "daTable";
-			this.vbox1.Add (this.daTable);
-			global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.daTable]));
+			this.vbox1.Add(this.daTable);
+			global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.daTable]));
 			w4.Position = 2;
-			this.Add (this.vbox1);
-			if ((this.Child != null)) {
-				this.Child.ShowAll ();
+			this.Add(this.vbox1);
+			if ((this.Child != null))
+			{
+				this.Child.ShowAll();
 			}
 			this.DefaultWidth = 768;
 			this.DefaultHeight = 758;
-			this.Show ();
-			this.actTile7.Activated += new global::System.EventHandler (this.OnActTile7Activated);
-			this.actTile1.Activated += new global::System.EventHandler (this.OnActTile1Activated);
-			this.actTile0.Activated += new global::System.EventHandler (this.OnActTile0Activated);
-			this.actTile3.Activated += new global::System.EventHandler (this.OnActTile3Activated);
-			this.actTile2.Activated += new global::System.EventHandler (this.OnActTile2Activated);
-			this.actTile5.Activated += new global::System.EventHandler (this.OnActTile5Activated);
-			this.actTile4.Activated += new global::System.EventHandler (this.OnActTile4Activated);
-			this.saveAction.Activated += new global::System.EventHandler (this.OnSaveActionActivated);
-			this.saveAsAction.Activated += new global::System.EventHandler (this.OnSaveAsActionActivated);
-			this.openAction.Activated += new global::System.EventHandler (this.OnOpenActionActivated);
-			this.newAction.Activated += new global::System.EventHandler (this.OnNewActionActivated);
-			this.daTable.ButtonPressEvent += new global::Gtk.ButtonPressEventHandler (this.OnDaTableButtonPressEvent);
+			this.Show();
+			this.actTile7.Activated += new global::System.EventHandler(this.OnActTile7Activated);
+			this.actTile1.Activated += new global::System.EventHandler(this.OnActTile1Activated);
+			this.actTile0.Activated += new global::System.EventHandler(this.OnActTile0Activated);
+			this.actTile3.Activated += new global::System.EventHandler(this.OnActTile3Activated);
+			this.actTile2.Activated += new global::System.EventHandler(this.OnActTile2Activated);
+			this.actTile5.Activated += new global::System.EventHandler(this.OnActTile5Activated);
+			this.actTile4.Activated += new global::System.EventHandler(this.OnActTile4Activated);
+			this.saveAction.Activated += new global::System.EventHandler(this.OnSaveActionActivated);
+			this.saveAsAction.Activated += new global::System.EventHandler(this.OnSaveAsActionActivated);
+			this.openAction.Activated += new global::System.EventHandler(this.OnOpenActionActivated);
+			this.newAction.Activated += new global::System.EventHandler(this.OnNewActionActivated);
+			this.daTable.ButtonPressEvent += new global::Gtk.ButtonPressEventHandler(this.OnDaTableButtonPressEvent);
 		}
 	}
 }
