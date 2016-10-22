@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ItemType>PackagingProject</ItemType>
+    <ProjectGuid>{0BF812AD-BDC1-4651-9E0D-C47A96055880}</ProjectGuid>
+    <Packages>
+      <Packages>
+        <Package>
+          <Builder>
+            <RootEntry>
+              <path>SokoGrump\SokoGrump.csproj</path>
+            </RootEntry>
+            <targetFile>SokoGrump\SokoGrump_Linux_x86.tar.gz</targetFile>
+            <platform>Linux</platform>
+            <configuration>Release|x86</configuration>
+            <ctype>BinariesZipPackageBuilder</ctype>
+          </Builder>
+          <name>Linux Binaries</name>
+        </Package>
+        <Package>
+          <Builder>
+            <RootEntry>
+              <path>SokoGrump\SokoGrump.csproj</path>
+            </RootEntry>
+            <targetFile>SokoGrump\SokoGrump-Windows-x86.zip</targetFile>
+            <platform>Windows</platform>
+            <configuration>Release|x86</configuration>
+            <ctype>BinariesZipPackageBuilder</ctype>
+          </Builder>
+          <name>Microsoft Windows Binaries</name>
+        </Package>
+      </Packages>
+    </Packages>
+  </PropertyGroup>
+</Project>

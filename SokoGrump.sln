@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SokoGrump", "SokoGrump\SokoGrump.csproj", "{9ED09BD5-16EA-44C1-AD7D-CC7CC9CAF6EA}"
 EndProject
+Project("{9344BDBB-3E7F-41FC-A0DD-8665D75EE146}") = "Packages", "Packages.mdproj", "{0BF812AD-BDC1-4651-9E0D-C47A96055880}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -13,5 +15,7 @@ Global
 		{9ED09BD5-16EA-44C1-AD7D-CC7CC9CAF6EA}.Debug|x86.Build.0 = Debug|x86
 		{9ED09BD5-16EA-44C1-AD7D-CC7CC9CAF6EA}.Release|x86.ActiveCfg = Release|x86
 		{9ED09BD5-16EA-44C1-AD7D-CC7CC9CAF6EA}.Release|x86.Build.0 = Release|x86
+		{0BF812AD-BDC1-4651-9E0D-C47A96055880}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0BF812AD-BDC1-4651-9E0D-C47A96055880}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 EndGlobal
