@@ -7,7 +7,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>SokoGrump</RootNamespace>
     <AssemblyName>SokoGrump</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <ApplicationIcon>Resources\sokogrump.ico</ApplicationIcon>
     <StartupObject>SokoGrump.MainClass</StartupObject>
     <Description>Sokoban puzzle game featuring the Grumpy Cat</Description>
