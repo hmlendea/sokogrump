@@ -54,6 +54,7 @@
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="icon.png" />
@@ -74,6 +75,8 @@
     <Compile Include="Settings\GraphicsSettings.cs" />
     <Compile Include="Settings\SettingsManager.cs" />
     <Compile Include="GameLogic\EditorEngine.cs" />
+    <Compile Include="Gui\Screens\GameplayScreen.cs" />
+    <Compile Include="Gui\GuiElements\GuiGameBoard.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup />
@@ -84,5 +87,8 @@
     <Content Include="MonoGame.Framework.dll.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Gui\GuiElements\" />
   </ItemGroup>
 </Project>

@@ -29,7 +29,7 @@ namespace SokoGrump.GameLogic
 
     public class GameEngine
     {
-        Tile[,] tiles;
+        public Tile[,] tiles;
         PlayerDirection plD;
         int tableWidth, tableHeight, tileSize;
         int plX, plY;
@@ -95,7 +95,7 @@ namespace SokoGrump.GameLogic
         /// </summary>
         /// <value><c>true</c> if completed; otherwise, <c>false</c>.</value>
         public bool Completed { get { return targetsLeft == 0; } }
-        
+
         /// <summary>
         /// Gets or sets the player position x.
         /// </summary>
@@ -116,7 +116,7 @@ namespace SokoGrump.GameLogic
             set { plY = value; }
         }
 
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="GameEngine"/> class.
         /// </summary>
@@ -160,8 +160,9 @@ namespace SokoGrump.GameLogic
             for (int y = 0; y < tableHeight; y++)
                 for (int x = 0; x < tableWidth; x++)
                 {
-                    DirectoryInfo di = new DirectoryInfo(Path.Combine("Resources", "Tiles", "tile" + tiles[x, y].ID));
-                    tiles[x, y].Variation = new Random().Next(0, di.GetFiles().Length);
+                    // TODO: Generate variations
+                    //DirectoryInfo di = new DirectoryInfo(Path.Combine("Resources", "Tiles", "tile" + tiles[x, y].ID));
+                    //tiles[x, y].Variation = new Random().Next(0, di.GetFiles().Length);
                 }
         }
 
@@ -318,7 +319,7 @@ namespace SokoGrump.GameLogic
                 moves += 1;
             }
         }
-        
+
         int GetTileShape(int x, int y, int id)
         {
             bool w, e;

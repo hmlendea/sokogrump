@@ -73,7 +73,7 @@ namespace SokoGrump.Gui.Screens
         {
             base.OnMouseButtonPressed(sender, e);
 
-            ScreenManager.Instance.ChangeScreens(typeof(SplashScreen));
+            ScreenManager.Instance.ChangeScreens(typeof(GameplayScreen));
         }
     }
 }
