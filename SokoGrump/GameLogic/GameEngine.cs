@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Drawing;
-using SokoGrump.Utils;
 
-namespace SokoGrump.Game
+using NuciLog;
+using NuciLog.Enumerations;
+
+namespace SokoGrump.GameLogic
 {
     public enum PlayerDirection
     {
@@ -29,8 +31,6 @@ namespace SokoGrump.Game
     {
         Tile[,] tiles;
         PlayerDirection plD;
-        Gdk.Window gdkWindowTable, gdkWindowInfoBar;
-        Color bgColor, fgColor;
         int tableWidth, tableHeight, tileSize;
         int plX, plY;
         int level, moves, gameTime, targetsLeft;
@@ -95,27 +95,7 @@ namespace SokoGrump.Game
         /// </summary>
         /// <value><c>true</c> if completed; otherwise, <c>false</c>.</value>
         public bool Completed { get { return targetsLeft == 0; } }
-
-        /// <summary>
-        /// Gets or sets the color of the background.
-        /// </summary>
-        /// <value>The color of the background.</value>
-        public Color BackgroundColor
-        {
-            get { return bgColor; }
-            set { bgColor = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the color of the foreground.
-        /// </summary>
-        /// <value>The color of the foreground.</value>
-        public Color ForegroundColor
-        {
-            get { return fgColor; }
-            set { fgColor = value; }
-        }
-
+        
         /// <summary>
         /// Gets or sets the player position x.
         /// </summary>
@@ -136,27 +116,7 @@ namespace SokoGrump.Game
             set { plY = value; }
         }
 
-
-        /// <summary>
-        /// Gets or sets the gdk window table.
-        /// </summary>
-        /// <value>The gdk window table.</value>
-        public Gdk.Window GdkWindowTable
-        {
-            get { return gdkWindowTable; }
-            set { gdkWindowTable = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the gdk window info bar.
-        /// </summary>
-        /// <value>The gdk window info bar.</value>
-        public Gdk.Window GdkWindowInfoBar
-        {
-            get { return gdkWindowInfoBar; }
-            set { gdkWindowInfoBar = value; }
-        }
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="GameEngine"/> class.
         /// </summary>
@@ -169,11 +129,6 @@ namespace SokoGrump.Game
             plD = PlayerDirection.North;
             plX = 0;
             plY = 0;
-
-            bgColor = Color.Black;
-            fgColor = Color.White;
-
-            GLib.Timeout.Add(1000, new GLib.TimeoutHandler(TimerTick));
         }
 
         /// <summary>
@@ -188,9 +143,6 @@ namespace SokoGrump.Game
             moves = 0;
             gameTime = 0;
             isRunning = true;
-
-            DrawTable();
-            DrawInfoBar();
         }
 
         bool TimerTick()
@@ -199,7 +151,6 @@ namespace SokoGrump.Game
                 return true;
 
             gameTime += 1;
-            DrawInfoBar();
 
             return true;
         }
@@ -216,7 +167,8 @@ namespace SokoGrump.Game
 
         void Load(int level)
         {
-            string[] rows = File.ReadAllLines(Path.Combine("Levels", level + ".lvl"));
+            string levelFile = Path.Combine("Levels", level + ".lvl");
+            string[] rows = File.ReadAllLines(levelFile);
             tiles = new Tile[tableWidth, tableHeight];
             targetsLeft = 0;
 
@@ -245,7 +197,13 @@ namespace SokoGrump.Game
                 }
             GenerateVariations();
 
-            Logger.MainLog.WriteLine("Level " + level + " loaded");
+            LogManager.Instance.Info(
+                Operation.WorldLoading,
+                OperationStatus.Success,
+                new Dictionary<LogInfoKey, string>()
+                {
+                    { LogInfoKey.FileName, levelFile }
+                });
         }
 
         /// <summary>
@@ -359,88 +317,8 @@ namespace SokoGrump.Game
                 plY += dirY;
                 moves += 1;
             }
-
-            DrawTable();
-            DrawInfoBar();
         }
-
-        /// <summary>
-        /// Draws the table.
-        /// </summary>
-        public void DrawTable()
-        {
-            if (!isRunning)
-                return;
-
-            Graphics g = Gtk.DotNet.Graphics.FromDrawable(gdkWindowTable);
-            int x, y;
-
-            for (y = 0; y < tableHeight; y++)
-                for (x = 0; x < tableWidth; x++)
-                {
-                    string resourceName;
-
-                    if (tiles[x, y].ID == 1)
-                        resourceName = Path.Combine("Resources", "Tiles", "tile1", GetTileShape(x, y, 1) + ".png");
-                    else
-                        resourceName = Path.Combine("Resources", "Tiles", "tile" + tiles[x, y].ID, tiles[x, y].Variation + ".png");
-
-                    g.DrawImage(
-                        new Bitmap(resourceName),
-                        new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize));
-
-                    if (x == plX && y == plY)
-                    {
-                        if (plD == PlayerDirection.West)
-                            resourceName = Path.Combine("Resources", "Tiles", "player", "playerW.png");
-                        else if (plD == PlayerDirection.East)
-                            resourceName = Path.Combine("Resources", "Tiles", "player", "playerE.png");
-                        else
-                            resourceName = Path.Combine("Resources", "Tiles", "player", "player.png");
-
-                        g.DrawImage(
-                            new Bitmap(resourceName),
-                            new Rectangle(plX * tileSize, plY * tileSize, tileSize, tileSize));
-                    }
-                }
-            g.Dispose();
-        }
-
-        /// <summary>
-        /// Draws the info bar.
-        /// </summary>
-        public void DrawInfoBar()
-        {
-            if (!isRunning)
-                return;
-
-            Graphics gfx = Gtk.DotNet.Graphics.FromDrawable(gdkWindowInfoBar);
-            Brush brBg = new SolidBrush(bgColor);
-            Brush brFg = new SolidBrush(fgColor);
-
-            int w, h, w3;
-            gdkWindowInfoBar.GetSize(out w, out h);
-            w3 = w / 3;
-
-            Rectangle recWhole = new Rectangle(0, 0, w, h);
-            Rectangle recLeft = new Rectangle(0, 0, w3, h);
-            Rectangle recMiddle = new Rectangle(w3, 0, w3, h);
-            Rectangle recRight = new Rectangle(w3 * 2, 0, w3, h);
-
-            Font f = new Font("Sans", (int)(Math.Min(w, h) * 0.5), FontStyle.Regular);
-            StringFormat strFormat = new StringFormat();
-            strFormat.Alignment = StringAlignment.Center;
-            strFormat.LineAlignment = StringAlignment.Center;
-
-            gfx.FillRectangle(brBg, recWhole);
-
-            gfx.DrawString("Moves: " + moves, f, brFg, recLeft, strFormat);
-            gfx.DrawString("Level " + level, f, brFg, recMiddle, strFormat);
-            gfx.DrawString(string.Format("{0:00}:{1:00}", (gameTime / 60) % 60, gameTime % 60), f, brFg, recRight, strFormat);
-
-            gfx.Dispose();
-        }
-
+        
         int GetTileShape(int x, int y, int id)
         {
             bool w, e;

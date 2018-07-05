@@ -1,4 +1,4 @@
-﻿namespace SokoGrump.Game
+﻿namespace SokoGrump.GameLogic
 {
     public enum TileType
     {

@@ -1,14 +1,11 @@
 ﻿using System.IO;
-using System.Drawing;
 
-namespace SokoGrump.Game
+namespace SokoGrump.GameLogic
 {
     public class EditorEngine
     {
         Tile[,] tiles;
-        Gdk.Window gdkWindowTable;
-        Color bgColor, fgColor;
-        int width, height, tileSize;
+        int width, height;
         int plX, plY;
 
         /// <summary>
@@ -22,12 +19,6 @@ namespace SokoGrump.Game
         /// </summary>
         /// <value>The height.</value>
         public int Height { get { return height; } }
-
-        /// <summary>
-        /// Gets the size of the tile.
-        /// </summary>
-        /// <value>The size of the tile.</value>
-        public int TileSize { get { return tileSize; } }
 
         /// <summary>
         /// Gets or sets the player position x.
@@ -48,37 +39,7 @@ namespace SokoGrump.Game
             get { return plY; }
             set { plY = value; }
         }
-
-        /// <summary>
-        /// Gets or sets the color of the background.
-        /// </summary>
-        /// <value>The color of the background.</value>
-        public Color BackgroundColor
-        {
-            get { return bgColor; }
-            set { bgColor = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the color of the foreground.
-        /// </summary>
-        /// <value>The color of the foreground.</value>
-        public Color ForegroundColor
-        {
-            get { return fgColor; }
-            set { fgColor = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the gdk window table.
-        /// </summary>
-        /// <value>The gdk window table.</value>
-        public Gdk.Window GdkWindowTable
-        {
-            get { return gdkWindowTable; }
-            set { gdkWindowTable = value; }
-        }
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="EditorEngine"/> class.
         /// </summary>
@@ -86,10 +47,6 @@ namespace SokoGrump.Game
         {
             width = 16;
             height = 14;
-            tileSize = 48;
-
-            bgColor = Color.Black;
-            fgColor = Color.White;
         }
 
         /// <summary>
@@ -102,8 +59,6 @@ namespace SokoGrump.Game
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++)
                     tiles[x, y] = Tiles.ByID(7);
-
-            DrawTable();
         }
 
         /// <summary>
@@ -134,8 +89,6 @@ namespace SokoGrump.Game
                     else
                         tiles[x, y] = Tiles.ByID(id);
                 }
-
-            DrawTable();
         }
 
         /// <summary>
@@ -160,29 +113,6 @@ namespace SokoGrump.Game
         }
 
         /// <summary>
-        /// Draws the table.
-        /// </summary>
-        public void DrawTable()
-        {
-            Graphics g = Gtk.DotNet.Graphics.FromDrawable(gdkWindowTable);
-            int x, y;
-
-            for (y = 0; y < height; y++)
-                for (x = 0; x < width; x++)
-                {
-                    g.DrawImage(
-                        new Bitmap(Path.Combine("Tiles", "tile" + tiles[x, y].ID, "0.png")),
-                        new Rectangle(x * tileSize, y * tileSize, tileSize, tileSize));
-
-                    if (x == plX && y == plY)
-                        g.DrawImage(
-                            new Bitmap(Path.Combine("Tiles", "player", "player.png")),
-                            new Rectangle(plX * tileSize, plY * tileSize, tileSize, tileSize));
-                }
-            g.Dispose();
-        }
-
-        /// <summary>
         /// Sets the tile.
         /// </summary>
         /// <param name="x">The x coordinate.</param>
@@ -191,7 +121,6 @@ namespace SokoGrump.Game
         public void SetTile(int x, int y, int id)
         {
             tiles[x, y] = Tiles.ByID(id);
-            DrawTable();
         }
 
         /// <summary>

@@ -1,38 +1,98 @@
-﻿using System.IO;
-using System.Reflection;
+﻿#region Using Statements
+using System;
+using System.IO;
 
-using Gtk;
+using SokoGrump.Settings;
 
-using SokoGrump.Windows;
-using SokoGrump.Utils;
+#if MONOMAC
+using MonoMac.AppKit;
+using MonoMac.Foundation;
+
+#elif __IOS__ || __TVOS__
+using Foundation;
+using UIKit;
+#endif
+#endregion
 
 namespace SokoGrump
 {
-    class MainClass
+#if __IOS__ || __TVOS__
+    [Register("AppDelegate")]
+    class Program : UIApplicationDelegate
+    
+#else
+    static class Program
+#endif
     {
-        /// <summary>
-        /// The entry point of the program, where the program control starts and ends.
-        /// </summary>
-        public static void Main()
+        public static GameWindow Game { get; private set; }
+
+        internal static void RunGame()
         {
-            Assembly thisAssembly = Assembly.GetExecutingAssembly();
-            string binPath;
-
-            binPath = Path.GetDirectoryName(thisAssembly.Location);
-
-            Logger.MainLog.WriteLine(
-                "Starting " + thisAssembly.GetName().Name +
-                " v" + thisAssembly.GetName().Version);
-
-            Directory.SetCurrentDirectory(binPath);
-
-
-            Application.Init();
-
-            GameWindow win = new GameWindow();
-            win.Show();
-
-            Application.Run();
+            Game = new GameWindow();
+            Game.Run();
+#if !__IOS__ && !__TVOS__
+            Game.Dispose();
+#endif
         }
+
+        internal static void PrepareFiles()
+        {
+            if (!Directory.Exists(ApplicationPaths.UserDataDirectory))
+            {
+                Directory.CreateDirectory(ApplicationPaths.UserDataDirectory);
+            }
+        }
+
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+#if !MONOMAC && !__IOS__ && !__TVOS__
+        [STAThread]
+#endif
+        static void Main()
+        {
+            PrepareFiles();
+
+#if MONOMAC
+            NSApplication.Init ();
+
+            using (var p = new NSAutoreleasePool ()) {
+                NSApplication.SharedApplication.Delegate = new AppDelegate();
+                NSApplication.Main(args);
+            }
+#elif __IOS__ || __TVOS__
+            UIApplication.Main(args, null, "AppDelegate");
+#else
+            RunGame();
+#endif
+        }
+
+#if __IOS__ || __TVOS__
+        public override void FinishedLaunching(UIApplication app)
+        {
+            RunGame();
+        }
+#endif
     }
+
+#if MONOMAC
+    class AppDelegate : NSApplicationDelegate
+    {
+        public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
+        {
+            AppDomain.CurrentDomain.AssemblyResolve += (object sender, ResolveEventArgs a) =>  {
+                if (a.Name.StartsWith("MonoMac")) {
+                    return typeof(MonoMac.AppKit.AppKitFramework).Assembly;
+                }
+                return null;
+            };
+            Program.RunGame();
+        }
+
+        public override bool ApplicationShouldTerminateAfterLastWindowClosed (NSApplication sender)
+        {
+            return true;
+        }
+    }  
+#endif
 }
