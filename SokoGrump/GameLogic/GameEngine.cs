@@ -145,6 +145,22 @@ namespace SokoGrump.GameLogic
             isRunning = true;
         }
 
+        public void CheckCompletion()
+        {
+            if (Completed)
+            {
+                if (File.Exists(Path.Combine("Levels", (Level + 1) + ".lvl")))
+                {
+                    DateTime target2 = DateTime.Now.AddSeconds(0.25);
+                    while (DateTime.Now <= target2)
+                    {
+                    }
+
+                    NewGame(Level + 1);
+                }
+            }
+        }
+
         bool TimerTick()
         {
             if (!isRunning)

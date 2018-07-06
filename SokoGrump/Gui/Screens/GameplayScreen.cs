@@ -30,9 +30,6 @@ namespace SokoGrump.Gui.Screens
         /// </summary>
         public override void LoadContent()
         {
-            string initialWorldId = "narivia";
-            string initialFactionId = "f_caravenna";
-
             game = new GameEngine();
             game.NewGame(0);
 
@@ -40,12 +37,6 @@ namespace SokoGrump.Gui.Screens
             {
                 Size = ScreenManager.Instance.Size
             };
-
-            if (ScreenArgs != null && ScreenArgs.Length >= 2)
-            {
-                initialWorldId = ScreenArgs[0];
-                initialFactionId = ScreenArgs[1];
-            }
 
             GuiManager.Instance.GuiElements.Add(gameBoard);
 
@@ -94,7 +85,8 @@ namespace SokoGrump.Gui.Screens
                     game.Retry();
                     break;
             }
+
+            game.CheckCompletion();
         }
     }
 }
-
