@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -27,6 +28,7 @@ namespace SokoGrump.Gui.GuiElements
         GameEngine game;
 
         Dictionary<int, TextureSprite> terrainSprites;
+        TextureSprite playerSprite;
 
         public GuiGameBoard(GameEngine game)
         {
@@ -39,6 +41,11 @@ namespace SokoGrump.Gui.GuiElements
         public override void LoadContent()
         {
             terrainSprites = new Dictionary<int, TextureSprite>();
+            playerSprite = new TextureSprite
+            {
+                ContentFile = "Tiles/player/player",
+                SourceRectangle = new Rectangle2D(0, 0, GameDefines.MapTileSize, GameDefines.MapTileSize)
+            };
 
             for (int i = 0; i <= 7; i++)
             {
@@ -51,15 +58,14 @@ namespace SokoGrump.Gui.GuiElements
                 TextureSprite tileSprite = new TextureSprite
                 {
                     ContentFile = $"Tiles/tile{i}/0",
-                    SourceRectangle = new Rectangle2D(
-                        GameDefines.MapTileSize, GameDefines.MapTileSize * 3,
-                        GameDefines.MapTileSize, GameDefines.MapTileSize)
+                    SourceRectangle = new Rectangle2D(0, 0, GameDefines.MapTileSize, GameDefines.MapTileSize)
                 };
 
                 tileSprite.LoadContent();
                 terrainSprites.Add(i, tileSprite);
             }
 
+            playerSprite.LoadContent();
             base.LoadContent();
         }
 
@@ -68,6 +74,9 @@ namespace SokoGrump.Gui.GuiElements
         /// </summary>
         public override void UnloadContent()
         {
+            terrainSprites.Values.ToList().ForEach(x => x.UnloadContent());
+            playerSprite.UnloadContent();
+
             terrainSprites.Clear();
 
             base.UnloadContent();
@@ -87,10 +96,14 @@ namespace SokoGrump.Gui.GuiElements
 
                     TextureSprite terrainSprite = terrainSprites[tile.ID];
                     terrainSprite.Location = new Point2D(x * GameDefines.MapTileSize, y * GameDefines.MapTileSize);
-                    terrainSprite.SourceRectangle = new Rectangle2D(0, 0, GameDefines.MapTileSize, GameDefines.MapTileSize);
                     terrainSprite.Draw(spriteBatch);
                 }
             }
+
+            playerSprite.Location = new Point2D(
+                game.PlayerPosX * GameDefines.MapTileSize,
+                game.PlayerPosY * GameDefines.MapTileSize);
+            playerSprite.Draw(spriteBatch);
 
             base.Draw(spriteBatch);
         }

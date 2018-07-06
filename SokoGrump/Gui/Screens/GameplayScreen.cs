@@ -4,8 +4,10 @@ using System.Linq;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using NuciXNA.Gui;
 using NuciXNA.Gui.Screens;
+using NuciXNA.Input;
 using NuciXNA.Input.Events;
 using NuciXNA.Primitives;
 
@@ -48,6 +50,50 @@ namespace SokoGrump.Gui.Screens
             GuiManager.Instance.GuiElements.Add(gameBoard);
 
             base.LoadContent();
+        }
+
+        protected override void RegisterEvents()
+        {
+            base.RegisterEvents();
+
+            InputManager.Instance.KeyboardKeyPressed += InputManager_KeyboardKeyPressed;
+        }
+
+        protected override void UnregisterEvents()
+        {
+            base.UnregisterEvents();
+
+            InputManager.Instance.KeyboardKeyPressed -= InputManager_KeyboardKeyPressed;
+        }
+
+        private void InputManager_KeyboardKeyPressed(object sender, KeyboardKeyEventArgs e)
+        {
+            switch(e.Key)
+            {
+                case Keys.W:
+                case Keys.Up:
+                    game.MovePlayer(PlayerDirection.North);
+                    break;
+
+                case Keys.A:
+                case Keys.Left:
+                    game.MovePlayer(PlayerDirection.West);
+                    break;
+
+                case Keys.S:
+                case Keys.Down:
+                    game.MovePlayer(PlayerDirection.South);
+                    break;
+
+                case Keys.D:
+                case Keys.Right:
+                    game.MovePlayer(PlayerDirection.East);
+                    break;
+
+                case Keys.R:
+                    game.Retry();
+                    break;
+            }
         }
     }
 }
