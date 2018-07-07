@@ -87,7 +87,7 @@ namespace SokoGrump.Gui.GuiElements
             {
                 for (int x = 0; x < game.TableWidth; x++)
                 {
-                    Tile tile = game.tiles[x, y];
+                    Tile tile = game.GetTile(x, y);
 
                     TextureSprite terrainSprite = terrainSprites[tile.Id];
                     terrainSprite.Location = new Point2D(x * GameDefines.MapTileSize, y * GameDefines.MapTileSize);

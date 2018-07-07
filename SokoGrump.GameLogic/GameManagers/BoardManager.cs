@@ -1,17 +1,53 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
+using SokoGrump.DataAccess.Repositories;
+using SokoGrump.GameLogic.Mapping;
 using SokoGrump.Models;
+using SokoGrump.Settings;
 
 namespace SokoGrump.GameLogic.GameManagers
 {
-    public class WorldManager
+    public class BoardManager
     {
+        Dictionary<string, Board> boards;
         Dictionary<int, Tile> tiles;
 
         public void LoadContent()
         {
-            tiles = new Dictionary<int, Tile>();
+            LoadBoards();
+            LoadTiles();
+        }
 
+        public void UnloadContent()
+        {
+            tiles.Clear();
+        }
+
+        public Board GetBoard(int id)
+        {
+            return boards[id.ToString()];
+        }
+
+        public Tile GetTile(int id)
+        {
+            return tiles[id];
+        }
+
+        public IEnumerable<Tile> GetTiles()
+        {
+            return tiles.Values;
+        }
+
+        void LoadBoards()
+        {
+            BoardRepository repository = new BoardRepository(ApplicationPaths.LevelsDirectory);
+
+            boards = repository.GetAll().ToDictionary(x => x.Id, x => x.ToDomainModel());
+        }
+
+        void LoadTiles()
+        {
             Tile terrainTile = new Tile
             {
                 Id = 0,
@@ -49,27 +85,15 @@ namespace SokoGrump.GameLogic.GameManagers
                 TileType = TileType.Solid
             };
 
-            tiles.Add(terrainTile.Id, terrainTile);
-            tiles.Add(wallTile.Id, wallTile);
-            tiles.Add(boxTile.Id, boxTile);
-            tiles.Add(targetTile.Id, targetTile);
-            tiles.Add(completedTargetTile.Id, completedTargetTile);
-            tiles.Add(voidTile.Id, voidTile);
-        }
-
-        public void UnloadContent()
-        {
-            tiles.Clear();
-        }
-
-        public Tile GetTile(int id)
-        {
-            return tiles[id];
-        }
-
-        public IEnumerable<Tile> GetTiles()
-        {
-            return tiles.Values;
+            tiles = new Dictionary<int, Tile>
+            {
+                { terrainTile.Id, terrainTile },
+                { wallTile.Id, wallTile },
+                { boxTile.Id, boxTile },
+                { targetTile.Id, targetTile },
+                { completedTargetTile.Id, completedTargetTile },
+                { voidTile.Id, voidTile }
+            };
         }
     }
 }

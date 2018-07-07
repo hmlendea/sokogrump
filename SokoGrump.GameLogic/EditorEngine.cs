@@ -7,7 +7,7 @@ namespace SokoGrump.GameLogic
 {
     public class EditorEngine
     {
-        readonly WorldManager worldManager;
+        readonly BoardManager worldManager;
 
         Tile[,] tiles;
         int width, height;
@@ -53,7 +53,7 @@ namespace SokoGrump.GameLogic
             width = 16;
             height = 14;
 
-            worldManager = new WorldManager();
+            worldManager = new BoardManager();
         }
 
         public void LoadContent()

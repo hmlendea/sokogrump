@@ -3,10 +3,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9893E1EE-CB27-4B3F-9A44-3616F26AE225}</ProjectGuid>
+    <ProjectGuid>{6C01BBE3-CD3F-49FB-89D2-531A58A737E5}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>SokoGrump.GameLogic</RootNamespace>
-    <AssemblyName>SokoGrump.GameLogic</AssemblyName>
+    <RootNamespace>SokoGrump.DataAccess</RootNamespace>
+    <AssemblyName>SokoGrump.DataAccess</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -28,44 +28,35 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="NuciLog.Core">
-      <HintPath>..\packages\NuciLog.Core.1.0.6744.25348\lib\net45\NuciLog.Core.dll</HintPath>
+    <Reference Include="NuciXNA.Primitives">
+      <HintPath>..\packages\NuciXNA.Primitives.1.0.3\lib\net45\NuciXNA.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="NuciXNA.DataAccess">
       <HintPath>..\packages\NuciXNA.DataAccess.1.0.4.1\lib\net45\NuciXNA.DataAccess.dll</HintPath>
     </Reference>
-    <Reference Include="NuciXNA.Primitives">
-      <HintPath>..\packages\NuciXNA.Primitives.1.1.6754.26060\lib\net45\NuciXNA.Primitives.dll</HintPath>
+    <Reference Include="System.Xml" />
+    <Reference Include="NuciLog.Core">
+      <HintPath>..\packages\NuciLog.Core.1.0.6744.25348\lib\net45\NuciLog.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GameManagers\BoardManager.cs" />
-    <Compile Include="EditorEngine.cs" />
-    <Compile Include="GameEngine.cs" />
-    <Compile Include="Mapping\BoardMappingExtensions.cs" />
-    <Compile Include="Mapping\TileMappingExtensions.cs" />
+    <Compile Include="Repositories\BoardRepository.cs" />
+    <Compile Include="DataObjects\BoardEntity.cs" />
+    <Compile Include="DataObjects\TileEntity.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="GameManagers\" />
-    <Folder Include="Mapping\" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SokoGrump.Models\SokoGrump.Models.csproj">
-      <Project>{59B4B0B9-0D60-4615-893B-71C3095A6572}</Project>
-      <Name>SokoGrump.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SokoGrump.DataAccess\SokoGrump.DataAccess.csproj">
-      <Project>{6C01BBE3-CD3F-49FB-89D2-531A58A737E5}</Project>
-      <Name>SokoGrump.DataAccess</Name>
-    </ProjectReference>
+    <Folder Include="Repositories\" />
+    <Folder Include="DataObjects\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\SokoGrump.Settings\SokoGrump.Settings.csproj">
       <Project>{51892F44-E2FF-4CD2-B3ED-50DA6CE6168F}</Project>
       <Name>SokoGrump.Settings</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
