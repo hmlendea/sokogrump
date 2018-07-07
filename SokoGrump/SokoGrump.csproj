@@ -68,7 +68,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameLogic\GameEngine.cs" />
-    <Compile Include="GameLogic\Tile.cs" />
     <Compile Include="Settings\ApplicationPaths.cs" />
     <Compile Include="Settings\AudioSettings.cs" />
     <Compile Include="Settings\GameDefines.cs" />
@@ -77,6 +76,9 @@
     <Compile Include="GameLogic\EditorEngine.cs" />
     <Compile Include="Gui\Screens\GameplayScreen.cs" />
     <Compile Include="Gui\GuiElements\GuiGameBoard.cs" />
+    <Compile Include="GameLogic\GameManagers\WorldManager.cs" />
+    <Compile Include="Models\Tile.cs" />
+    <Compile Include="Models\TileType.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup />
@@ -90,5 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Gui\GuiElements\" />
+    <Folder Include="GameLogic\GameManagers\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 </Project>

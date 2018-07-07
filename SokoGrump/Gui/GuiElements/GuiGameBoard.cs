@@ -10,6 +10,7 @@ using NuciXNA.Primitives;
 using NuciXNA.Primitives.Mapping;
 
 using SokoGrump.GameLogic;
+using SokoGrump.Models;
 using SokoGrump.Settings;
 
 namespace SokoGrump.Gui.GuiElements
@@ -47,22 +48,16 @@ namespace SokoGrump.Gui.GuiElements
                 SourceRectangle = new Rectangle2D(0, 0, GameDefines.MapTileSize, GameDefines.MapTileSize)
             };
 
-            for (int i = 0; i <= 7; i++)
+            foreach (Tile tile in game.GetTiles())
             {
-                // TODO: This is just temporary so that it can fit the old system
-                if (i == 4 || i == 6)
-                {
-                    continue;
-                }
-
                 TextureSprite tileSprite = new TextureSprite
                 {
-                    ContentFile = $"Tiles/tile{i}/0",
+                    ContentFile = tile.SpriteSheet,
                     SourceRectangle = new Rectangle2D(0, 0, GameDefines.MapTileSize, GameDefines.MapTileSize)
                 };
 
                 tileSprite.LoadContent();
-                terrainSprites.Add(i, tileSprite);
+                terrainSprites.Add(tile.Id, tileSprite);
             }
 
             playerSprite.LoadContent();
@@ -94,7 +89,7 @@ namespace SokoGrump.Gui.GuiElements
                 {
                     Tile tile = game.tiles[x, y];
 
-                    TextureSprite terrainSprite = terrainSprites[tile.ID];
+                    TextureSprite terrainSprite = terrainSprites[tile.Id];
                     terrainSprite.Location = new Point2D(x * GameDefines.MapTileSize, y * GameDefines.MapTileSize);
                     terrainSprite.Draw(spriteBatch);
                 }

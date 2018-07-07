@@ -5,6 +5,9 @@ using System.IO;
 using NuciLog;
 using NuciLog.Enumerations;
 
+using SokoGrump.GameLogic.GameManagers;
+using SokoGrump.Models;
+
 namespace SokoGrump.GameLogic
 {
     public enum PlayerDirection
@@ -29,6 +32,8 @@ namespace SokoGrump.GameLogic
 
     public class GameEngine
     {
+        readonly WorldManager worldManager;
+
         public Tile[,] tiles;
         PlayerDirection plD;
         int tableWidth, tableHeight, tileSize;
@@ -129,6 +134,22 @@ namespace SokoGrump.GameLogic
             plD = PlayerDirection.North;
             plX = 0;
             plY = 0;
+
+            worldManager = new WorldManager();
+        }
+
+        public void LoadContent()
+        {
+            tiles = new Tile[tableWidth, tableHeight];
+
+            worldManager.LoadContent();
+        }
+
+        public void UnloadContent()
+        {
+            tiles = null;
+
+            worldManager.UnloadContent();
         }
 
         /// <summary>
@@ -201,16 +222,16 @@ namespace SokoGrump.GameLogic
                     {
                         plX = x;
                         plY = y;
-                        tiles[x, y] = Tiles.ByID(0);
+                        tiles[x, y] = worldManager.GetTile(0);
                     }
                     else if (id == 6)
                     {
                         plX = x;
                         plY = y;
-                        tiles[x, y] = Tiles.ByID(3);
+                        tiles[x, y] = worldManager.GetTile(3);
                     }
                     else
-                        tiles[x, y] = Tiles.ByID(id);
+                        tiles[x, y] = worldManager.GetTile(id);
                 }
             GenerateVariations();
 
@@ -278,42 +299,42 @@ namespace SokoGrump.GameLogic
             if (destX < 0 || destX >= tableWidth || destY < 0 || destY >= tableHeight)
                 return;
 
-            if (tiles[destX, destY].Type == TileType.Transparent)
+            if (tiles[destX, destY].TileType == TileType.Walkable)
                 moved = true;
-            else if (tiles[destX, destY].Type == TileType.Moveable)
+            else if (tiles[destX, destY].TileType == TileType.Moveable)
             {
                 if ((dirX < 0 && plX >= 2) || (dirX > 0 && plX < tableWidth - 2) ||
                     (dirY < 0 && plY >= 2) || (dirY > 0 && plY < tableHeight - 2))
                 {
-                    if (tiles[destX, destY].ID == 2 || tiles[destX, destY].ID == 5)
+                    if (tiles[destX, destY].Id == 2 || tiles[destX, destY].Id == 5)
                     {
-                        if (tiles[dest2X, dest2Y].ID == 0)
+                        if (tiles[dest2X, dest2Y].Id == 0)
                         {
-                            tiles[dest2X, dest2Y] = Tiles.ByID(2);
+                            tiles[dest2X, dest2Y] = worldManager.GetTile(2);
                             tiles[dest2X, dest2Y].Variation = tiles[destX, destY].Variation;
 
-                            if (tiles[destX, destY].ID == 2)
-                                tiles[destX, destY] = Tiles.ByID(0);
+                            if (tiles[destX, destY].Id == 2)
+                                tiles[destX, destY] = worldManager.GetTile(0);
                             else
                             {
-                                tiles[destX, destY] = Tiles.ByID(3);
+                                tiles[destX, destY] = worldManager.GetTile(3);
                                 targetsLeft += 1;
                             }
 
                             moved = true;
                         }
-                        else if (tiles[dest2X, dest2Y].ID == 3)
+                        else if (tiles[dest2X, dest2Y].Id == 3)
                         {
-                            tiles[dest2X, dest2Y] = Tiles.ByID(5);
+                            tiles[dest2X, dest2Y] = worldManager.GetTile(5);
                             tiles[dest2X, dest2Y].Variation = tiles[destX, destY].Variation;
 
                             targetsLeft -= 1;
 
-                            if (tiles[destX, destY].ID == 2)
-                                tiles[destX, destY] = Tiles.ByID(0);
+                            if (tiles[destX, destY].Id == 2)
+                                tiles[destX, destY] = worldManager.GetTile(0);
                             else
                             {
-                                tiles[destX, destY] = Tiles.ByID(3);
+                                tiles[destX, destY] = worldManager.GetTile(3);
                                 targetsLeft += 1;
                             }
 
@@ -336,17 +357,22 @@ namespace SokoGrump.GameLogic
             }
         }
 
+        public IEnumerable<Tile> GetTiles()
+        {
+            return worldManager.GetTiles();
+        }
+
         int GetTileShape(int x, int y, int id)
         {
             bool w, e;
 
             if (x > 0)
-                w = (tiles[x - 1, y].ID == id);
+                w = (tiles[x - 1, y].Id == id);
             else
                 w = false;
 
             if (x < tableWidth - 1)
-                e = (tiles[x + 1, y].ID == id);
+                e = (tiles[x + 1, y].Id == id);
             else
                 e = false;
 

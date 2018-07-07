@@ -31,6 +31,8 @@ namespace SokoGrump.Gui.Screens
         public override void LoadContent()
         {
             game = new GameEngine();
+            game.LoadContent();
+
             game.NewGame(0);
 
             gameBoard = new GuiGameBoard(game)
@@ -41,6 +43,16 @@ namespace SokoGrump.Gui.Screens
             GuiManager.Instance.GuiElements.Add(gameBoard);
 
             base.LoadContent();
+        }
+
+        /// <summary>
+        /// Unloads the content.
+        /// </summary>
+        public override void UnloadContent()
+        {
+            game.UnloadContent();
+
+            base.UnloadContent();
         }
 
         protected override void RegisterEvents()
@@ -59,7 +71,7 @@ namespace SokoGrump.Gui.Screens
 
         private void InputManager_KeyboardKeyPressed(object sender, KeyboardKeyEventArgs e)
         {
-            switch(e.Key)
+            switch (e.Key)
             {
                 case Keys.W:
                 case Keys.Up:

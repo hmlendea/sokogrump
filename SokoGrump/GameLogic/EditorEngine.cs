@@ -1,9 +1,14 @@
 ﻿using System.IO;
 
+using SokoGrump.GameLogic.GameManagers;
+using SokoGrump.Models;
+
 namespace SokoGrump.GameLogic
 {
     public class EditorEngine
     {
+        readonly WorldManager worldManager;
+
         Tile[,] tiles;
         int width, height;
         int plX, plY;
@@ -39,7 +44,7 @@ namespace SokoGrump.GameLogic
             get { return plY; }
             set { plY = value; }
         }
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EditorEngine"/> class.
         /// </summary>
@@ -47,6 +52,22 @@ namespace SokoGrump.GameLogic
         {
             width = 16;
             height = 14;
+
+            worldManager = new WorldManager();
+        }
+
+        public void LoadContent()
+        {
+            tiles = new Tile[width, height];
+
+            worldManager.LoadContent();
+        }
+
+        public void UnloadContent()
+        {
+            tiles = null;
+
+            worldManager.UnloadContent();
         }
 
         /// <summary>
@@ -58,7 +79,7 @@ namespace SokoGrump.GameLogic
 
             for (int y = 0; y < height; y++)
                 for (int x = 0; x < width; x++)
-                    tiles[x, y] = Tiles.ByID(7);
+                    tiles[x, y] = worldManager.GetTile(7);
         }
 
         /// <summary>
@@ -78,16 +99,16 @@ namespace SokoGrump.GameLogic
                     {
                         plX = x;
                         plY = y;
-                        tiles[x, y] = Tiles.ByID(0);
+                        tiles[x, y] = worldManager.GetTile(0);
                     }
                     else if (id == 6)
                     {
                         plX = x;
                         plY = y;
-                        tiles[x, y] = Tiles.ByID(3);
+                        tiles[x, y] = worldManager.GetTile(3);
                     }
                     else
-                        tiles[x, y] = Tiles.ByID(id);
+                        tiles[x, y] = worldManager.GetTile(id);
                 }
         }
 
@@ -105,7 +126,7 @@ namespace SokoGrump.GameLogic
                     if (PlayerPosX == x && PlayerPosY == y)
                         sw.Write('4');
                     else
-                        sw.Write(tiles[x, y].ID);
+                        sw.Write(tiles[x, y].SpriteSheet);
                 sw.WriteLine();
             }
 
@@ -120,7 +141,7 @@ namespace SokoGrump.GameLogic
         /// <param name="id">Identifier.</param>
         public void SetTile(int x, int y, int id)
         {
-            tiles[x, y] = Tiles.ByID(id);
+            tiles[x, y] = worldManager.GetTile(id);
         }
 
         /// <summary>
@@ -131,7 +152,7 @@ namespace SokoGrump.GameLogic
         /// <param name="y">The y coordinate.</param>
         public int GetTileID(int x, int y)
         {
-            return tiles[x, y].ID;
+            return tiles[x, y].Id;
         }
     }
 }
