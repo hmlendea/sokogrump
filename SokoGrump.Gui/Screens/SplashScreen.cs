@@ -2,7 +2,7 @@
 using NuciXNA.Gui;
 using NuciXNA.Gui.GuiElements;
 using NuciXNA.Gui.Screens;
-using NuciXNA.Input.Events;
+using NuciXNA.Input;
 using NuciXNA.Primitives;
 
 namespace SokoGrump.Gui.Screens
@@ -62,17 +62,29 @@ namespace SokoGrump.Gui.Screens
                                              (ScreenManager.Instance.Size.Height - LogoImage.Size.Height) / 2);
         }
 
-        protected override void OnKeyPressed(object sender, KeyboardKeyEventArgs e)
+        protected override void RegisterEvents()
         {
-            base.OnKeyPressed(sender, e);
+            base.RegisterEvents();
 
+            InputManager.Instance.KeyboardKeyPressed += InputManager_KeyboardKeyPressed;
+            InputManager.Instance.MouseButtonPressed += InputManager_MouseButtonPressed;
+        }
+
+        protected override void UnregisterEvents()
+        {
+            base.UnregisterEvents();
+
+            InputManager.Instance.KeyboardKeyPressed -= InputManager_KeyboardKeyPressed;
+            InputManager.Instance.MouseButtonPressed -= InputManager_MouseButtonPressed;
+        }
+
+        void InputManager_KeyboardKeyPressed(object sender, KeyboardKeyEventArgs e)
+        {
             ScreenManager.Instance.ChangeScreens(typeof(SplashScreen));
         }
 
-        protected override void OnMouseButtonPressed(object sender, MouseButtonEventArgs e)
+        private void InputManager_MouseButtonPressed(object sender, MouseButtonEventArgs e)
         {
-            base.OnMouseButtonPressed(sender, e);
-
             ScreenManager.Instance.ChangeScreens(typeof(GameplayScreen));
         }
     }

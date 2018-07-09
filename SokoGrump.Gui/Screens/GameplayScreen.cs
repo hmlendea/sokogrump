@@ -3,7 +3,6 @@
 using NuciXNA.Gui;
 using NuciXNA.Gui.Screens;
 using NuciXNA.Input;
-using NuciXNA.Input.Events;
 
 using SokoGrump.GameLogic;
 using SokoGrump.Gui.GuiElements;
