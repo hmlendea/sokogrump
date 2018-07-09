@@ -5,9 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NuciXNA.Graphics.Drawing;
 using NuciXNA.Gui.GuiElements;
-using NuciXNA.Input.Events;
 using NuciXNA.Primitives;
-using NuciXNA.Primitives.Mapping;
 
 using SokoGrump.GameLogic;
 using SokoGrump.Models;
@@ -77,6 +75,17 @@ namespace SokoGrump.Gui.GuiElements
             base.UnloadContent();
         }
 
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+
+            Player player = game.GetPlayer();
+
+            playerSprite.Location = new Point2D(
+                player.Location.X * GameDefines.MapTileSize,
+                player.Location.Y * GameDefines.MapTileSize);
+        }
+
         /// <summary>
         /// Draw the content on the specified spriteBatch.
         /// </summary>
@@ -94,10 +103,6 @@ namespace SokoGrump.Gui.GuiElements
                     terrainSprite.Draw(spriteBatch);
                 }
             }
-
-            playerSprite.Location = new Point2D(
-                game.PlayerPosX * GameDefines.MapTileSize,
-                game.PlayerPosY * GameDefines.MapTileSize);
             playerSprite.Draw(spriteBatch);
 
             base.Draw(spriteBatch);

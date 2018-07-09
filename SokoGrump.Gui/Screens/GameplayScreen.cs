@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.Xna.Framework.Input;
 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using NuciXNA.Gui;
 using NuciXNA.Gui.Screens;
 using NuciXNA.Input;
 using NuciXNA.Input.Events;
-using NuciXNA.Primitives;
 
 using SokoGrump.GameLogic;
 using SokoGrump.Gui.GuiElements;
+using SokoGrump.Models;
 
 namespace SokoGrump.Gui.Screens
 {
@@ -75,22 +70,22 @@ namespace SokoGrump.Gui.Screens
             {
                 case Keys.W:
                 case Keys.Up:
-                    game.MovePlayer(PlayerDirection.North);
+                    game.MovePlayer(MovementDirection.North);
                     break;
 
                 case Keys.A:
                 case Keys.Left:
-                    game.MovePlayer(PlayerDirection.West);
+                    game.MovePlayer(MovementDirection.West);
                     break;
 
                 case Keys.S:
                 case Keys.Down:
-                    game.MovePlayer(PlayerDirection.South);
+                    game.MovePlayer(MovementDirection.South);
                     break;
 
                 case Keys.D:
                 case Keys.Right:
-                    game.MovePlayer(PlayerDirection.East);
+                    game.MovePlayer(MovementDirection.East);
                     break;
 
                 case Keys.R:

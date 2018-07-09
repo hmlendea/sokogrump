@@ -2,41 +2,22 @@
 using System.Collections.Generic;
 using System.IO;
 
+using NuciXNA.Primitives;
+
 using SokoGrump.GameLogic.GameManagers;
 using SokoGrump.Models;
 using SokoGrump.Settings;
 
 namespace SokoGrump.GameLogic
 {
-    public enum PlayerDirection
-    {
-        /// <summary>
-        /// The north.
-        /// </summary>
-        North,
-        /// <summary>
-        /// The west.
-        /// </summary>
-        West,
-        /// <summary>
-        /// The south.
-        /// </summary>
-        South,
-        /// <summary>
-        /// The east.
-        /// </summary>
-        East
-    }
-
     public class GameEngine
     {
         readonly BoardManager boardManager;
 
         Board board;
-        PlayerDirection plD;
+        Player player;
         int tableWidth, tableHeight, tileSize;
-        int plX, plY;
-        int level, moves, gameTime;
+        int level, gameTime;
         bool isRunning;
 
         /// <summary>
@@ -58,12 +39,6 @@ namespace SokoGrump.GameLogic
         public int TileSize { get { return tileSize; } }
 
         /// <summary>
-        /// Gets the player direction.
-        /// </summary>
-        /// <value>The player direction.</value>
-        public PlayerDirection PlayerDirection { get { return plD; } }
-
-        /// <summary>
         /// Gets the level.
         /// </summary>
         /// <value>The level.</value>
@@ -76,12 +51,6 @@ namespace SokoGrump.GameLogic
         public int GameTime { get { return gameTime; } }
 
         /// <summary>
-        /// Gets the moves.
-        /// </summary>
-        /// <value>The moves.</value>
-        public int Moves { get { return moves; } }
-
-        /// <summary>
         /// Gets a value indicating whether this instance is running.
         /// </summary>
         /// <value><c>true</c> if this instance is running; otherwise, <c>false</c>.</value>
@@ -92,28 +61,7 @@ namespace SokoGrump.GameLogic
         /// </summary>
         /// <value><c>true</c> if completed; otherwise, <c>false</c>.</value>
         public bool Completed { get { return board.TargetsLeft == 0; } }
-
-        /// <summary>
-        /// Gets or sets the player position x.
-        /// </summary>
-        /// <value>The player position x.</value>
-        public int PlayerPosX
-        {
-            get { return plX; }
-            set { plX = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the player position y.
-        /// </summary>
-        /// <value>The player position y.</value>
-        public int PlayerPosY
-        {
-            get { return plY; }
-            set { plY = value; }
-        }
-
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="GameEngine"/> class.
         /// </summary>
@@ -122,11 +70,7 @@ namespace SokoGrump.GameLogic
             tableWidth = 16;
             tableHeight = 14;
             tileSize = 48;
-
-            plD = PlayerDirection.North;
-            plX = 0;
-            plY = 0;
-
+            
             boardManager = new BoardManager();
         }
 
@@ -149,7 +93,7 @@ namespace SokoGrump.GameLogic
             this.level = level;
             board = boardManager.GetBoard(level);
 
-            moves = 0;
+            player = new Player();
             gameTime = 0;
             isRunning = true;
 
@@ -166,8 +110,9 @@ namespace SokoGrump.GameLogic
                 }
             }
 
-            plX = board.PlayerStartLocation.X;
-            plY = board.PlayerStartLocation.Y;
+            player.Location = new Point2D(
+                board.PlayerStartLocation.X,
+                board.PlayerStartLocation.Y);
         }
 
         public void CheckCompletion()
@@ -205,34 +150,34 @@ namespace SokoGrump.GameLogic
         }
 
         /// <summary>
-        /// Moves the player.
+        /// Moves the player in a certain direction.
         /// </summary>
-        /// <param name="playerDirection">Player direction.</param>
-        public void MovePlayer(PlayerDirection playerDirection)
+        /// <param name="direction">Movement direction.</param>
+        public void MovePlayer(MovementDirection direction)
         {
             int dirX, dirY;
             int destX, destY;
             int dest2X, dest2Y;
             bool moved;
 
-            switch (playerDirection)
+            switch (direction)
             {
-                case PlayerDirection.North:
+                case MovementDirection.North:
                     dirX = 0;
                     dirY = -1;
                     break;
 
-                case PlayerDirection.West:
+                case MovementDirection.West:
                     dirX = -1;
                     dirY = 0;
                     break;
 
-                case PlayerDirection.South:
+                case MovementDirection.South:
                     dirX = 0;
                     dirY = 1;
                     break;
 
-                case PlayerDirection.East:
+                case MovementDirection.East:
                     dirX = 1;
                     dirY = 0;
                     break;
@@ -241,10 +186,10 @@ namespace SokoGrump.GameLogic
                     return;
             }
 
-            destX = plX + dirX;
-            destY = plY + dirY;
-            dest2X = plX + dirX * 2;
-            dest2Y = plY + dirY * 2;
+            destX = player.Location.X + dirX;
+            destY = player.Location.Y + dirY;
+            dest2X = player.Location.X + dirX * 2;
+            dest2Y = player.Location.Y + dirY * 2;
 
             moved = false;
 
@@ -255,8 +200,8 @@ namespace SokoGrump.GameLogic
                 moved = true;
             else if (board.Tiles[destX, destY].TileType == TileType.Moveable)
             {
-                if ((dirX < 0 && plX >= 2) || (dirX > 0 && plX < tableWidth - 2) ||
-                    (dirY < 0 && plY >= 2) || (dirY > 0 && plY < tableHeight - 2))
+                if ((dirX < 0 && player.Location.X >= 2) || (dirX > 0 && player.Location.X < tableWidth - 2) ||
+                    (dirY < 0 && player.Location.Y >= 2) || (dirY > 0 && player.Location.Y < tableHeight - 2))
                 {
                     if (board.Tiles[destX, destY].Id == 2 || board.Tiles[destX, destY].Id == 5)
                     {
@@ -297,16 +242,26 @@ namespace SokoGrump.GameLogic
             }
 
             if (dirX < 0)
-                plD = PlayerDirection.West;
+            {
+                player.Direction = MovementDirection.West;
+            }
             else if (dirX > 0)
-                plD = PlayerDirection.East;
+            {
+                player.Direction = MovementDirection.East;
+            }
 
             if (moved)
             {
-                plX += dirX;
-                plY += dirY;
-                moves += 1;
+                player.MovesCount += 1;
+                player.Location = new Point2D(
+                    player.Location.X + dirX,
+                    player.Location.Y + dirY);
             }
+        }
+
+        public Player GetPlayer()
+        {
+            return player;
         }
 
         public Tile GetTile(int x, int y)
