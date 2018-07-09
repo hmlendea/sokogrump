@@ -55,6 +55,7 @@
     <Compile Include="Screens\GameplayScreen.cs" />
     <Compile Include="Screens\SplashScreen.cs" />
     <Compile Include="FpsIndicator.cs" />
+    <Compile Include="Screens\VictoryScreen.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

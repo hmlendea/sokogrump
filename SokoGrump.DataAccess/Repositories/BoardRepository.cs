@@ -208,6 +208,7 @@ namespace SokoGrump.DataAccess.Repositories
                     // TODO: Generate variations
                     //DirectoryInfo di = new DirectoryInfo(Path.Combine("Resources", "Tiles", "tile" + tiles[x, y].ID));
                     //tiles[x, y].Variation = new Random().Next(0, di.GetFiles().Length);
+
                 }
             }
         }

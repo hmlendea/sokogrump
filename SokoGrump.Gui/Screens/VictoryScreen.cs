@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+
+using NuciXNA.Graphics.Drawing;
 using NuciXNA.Gui;
 using NuciXNA.Gui.GuiElements;
 using NuciXNA.Gui.Screens;
@@ -8,9 +10,9 @@ using NuciXNA.Primitives;
 namespace SokoGrump.Gui.Screens
 {
     /// <summary>
-    /// Splash screen.
+    /// Victory screen.
     /// </summary>
-    public class SplashScreen : Screen
+    public class VictoryScreen : Screen
     {
         /// <summary>
         /// Gets or sets the delay.
@@ -25,11 +27,11 @@ namespace SokoGrump.Gui.Screens
         public GuiImage LogoImage { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SplashScreen"/> class.
+        /// Initializes a new instance of the <see cref="VictoryScreen"/> class.
         /// </summary>
-        public SplashScreen()
+        public VictoryScreen()
         {
-            Delay = 2;
+            Delay = 1;
             BackgroundColour = Colour.Black;
         }
 
@@ -38,7 +40,11 @@ namespace SokoGrump.Gui.Screens
         /// </summary>
         public override void LoadContent()
         {
-            LogoImage = new GuiImage { ContentFile = "SplashScreen/Logo" };
+            LogoImage = new GuiImage
+            {
+                ContentFile = "Images/grumpy_cat_good",
+                TextureLayout = TextureLayout.Stretch
+            };
 
             GuiManager.Instance.GuiElements.Add(LogoImage);
 
@@ -63,8 +69,7 @@ namespace SokoGrump.Gui.Screens
 
         protected override void SetChildrenProperties()
         {
-            LogoImage.Location = new Point2D((ScreenManager.Instance.Size.Width - LogoImage.Size.Width) / 2,
-                                             (ScreenManager.Instance.Size.Height - LogoImage.Size.Height) / 2);
+            LogoImage.Size = ScreenManager.Instance.Size;
         }
 
         protected override void RegisterEvents()
@@ -95,7 +100,7 @@ namespace SokoGrump.Gui.Screens
 
         void ChangeScreen()
         {
-            ScreenManager.Instance.ChangeScreens(typeof(GameplayScreen));
+            ScreenManager.Instance.ChangeScreens(typeof(GameplayScreen), ScreenArgs);
         }
     }
 }

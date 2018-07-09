@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using System;
+using System.IO;
+using Microsoft.Xna.Framework.Input;
 
 using NuciXNA.Gui;
 using NuciXNA.Gui.Screens;
@@ -27,7 +29,14 @@ namespace SokoGrump.Gui.Screens
             game = new GameEngine();
             game.LoadContent();
 
-            game.NewGame(0);
+            int level = 0;
+
+            if (ScreenArgs != null && ScreenArgs.Length > 0)
+            {
+                level = int.Parse(ScreenArgs[0]);
+            }
+
+            game.NewGame(level);
 
             gameBoard = new GuiGameBoard(game)
             {
@@ -49,6 +58,20 @@ namespace SokoGrump.Gui.Screens
             base.UnloadContent();
         }
 
+        public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
+        {
+            base.Update(gameTime);
+
+            if (game.Completed)
+            {
+
+                if (File.Exists(Path.Combine("Levels", (game.Level + 1) + ".lvl")))
+                {
+                    ScreenManager.Instance.ChangeScreens(typeof(VictoryScreen), new string[] { $"{game.Level + 1}" });
+                }
+            }
+        }
+
         protected override void RegisterEvents()
         {
             base.RegisterEvents();
@@ -63,7 +86,7 @@ namespace SokoGrump.Gui.Screens
             InputManager.Instance.KeyboardKeyPressed -= InputManager_KeyboardKeyPressed;
         }
 
-        private void InputManager_KeyboardKeyPressed(object sender, KeyboardKeyEventArgs e)
+        void InputManager_KeyboardKeyPressed(object sender, KeyboardKeyEventArgs e)
         {
             switch (e.Key)
             {
@@ -91,8 +114,6 @@ namespace SokoGrump.Gui.Screens
                     game.Retry();
                     break;
             }
-
-            game.CheckCompletion();
         }
     }
 }

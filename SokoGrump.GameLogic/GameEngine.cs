@@ -23,13 +23,13 @@ namespace SokoGrump.GameLogic
         /// </summary>
         /// <value>The level.</value>
         public int Level { get { return level; } }
-        
+
         /// <summary>
         /// Gets a value indicating whether this <see cref="GameEngine"/> is completed.
         /// </summary>
         /// <value><c>true</c> if completed; otherwise, <c>false</c>.</value>
         public bool Completed { get { return board.TargetsLeft == 0; } }
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="GameEngine"/> class.
         /// </summary>
@@ -75,22 +75,6 @@ namespace SokoGrump.GameLogic
             player.Location = new Point2D(
                 board.PlayerStartLocation.X,
                 board.PlayerStartLocation.Y);
-        }
-
-        public void CheckCompletion()
-        {
-            if (Completed)
-            {
-                if (File.Exists(Path.Combine("Levels", (Level + 1) + ".lvl")))
-                {
-                    DateTime target2 = DateTime.Now.AddSeconds(0.25);
-                    while (DateTime.Now <= target2)
-                    {
-                    }
-
-                    NewGame(Level + 1);
-                }
-            }
         }
 
         /// <summary>
