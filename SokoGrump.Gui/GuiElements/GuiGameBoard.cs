@@ -92,9 +92,9 @@ namespace SokoGrump.Gui.GuiElements
         /// <param name="spriteBatch">Sprite batch.</param>
         public override void Draw(SpriteBatch spriteBatch)
         {
-            for (int y = 0; y < game.TableHeight; y++)
+            for (int y = 0; y < GameDefines.BoardHeight; y++)
             {
-                for (int x = 0; x < game.TableWidth; x++)
+                for (int x = 0; x < GameDefines.BoardWidth; x++)
                 {
                     Tile tile = game.GetTile(x, y);
 

@@ -16,46 +16,14 @@ namespace SokoGrump.GameLogic
 
         Board board;
         Player player;
-        int tableWidth, tableHeight, tileSize;
-        int level, gameTime;
-        bool isRunning;
-
-        /// <summary>
-        /// Gets the width of the table.
-        /// </summary>
-        /// <value>The width of the table.</value>
-        public int TableWidth { get { return tableWidth; } }
-
-        /// <summary>
-        /// Gets the height of the table.
-        /// </summary>
-        /// <value>The height of the table.</value>
-        public int TableHeight { get { return tableHeight; } }
-
-        /// <summary>
-        /// Gets the size of the tile.
-        /// </summary>
-        /// <value>The size of the tile.</value>
-        public int TileSize { get { return tileSize; } }
+        int level;
 
         /// <summary>
         /// Gets the level.
         /// </summary>
         /// <value>The level.</value>
         public int Level { get { return level; } }
-
-        /// <summary>
-        /// Gets the game time.
-        /// </summary>
-        /// <value>The game time.</value>
-        public int GameTime { get { return gameTime; } }
-
-        /// <summary>
-        /// Gets a value indicating whether this instance is running.
-        /// </summary>
-        /// <value><c>true</c> if this instance is running; otherwise, <c>false</c>.</value>
-        public bool IsRunning { get { return isRunning; } }
-
+        
         /// <summary>
         /// Gets a value indicating whether this <see cref="GameEngine"/> is completed.
         /// </summary>
@@ -67,10 +35,6 @@ namespace SokoGrump.GameLogic
         /// </summary>
         public GameEngine()
         {
-            tableWidth = 16;
-            tableHeight = 14;
-            tileSize = 48;
-            
             boardManager = new BoardManager();
         }
 
@@ -94,8 +58,6 @@ namespace SokoGrump.GameLogic
             board = boardManager.GetBoard(level);
 
             player = new Player();
-            gameTime = 0;
-            isRunning = true;
 
             board.TargetsLeft = 0;
 
@@ -129,16 +91,6 @@ namespace SokoGrump.GameLogic
                     NewGame(Level + 1);
                 }
             }
-        }
-
-        bool TimerTick()
-        {
-            if (!isRunning)
-                return true;
-
-            gameTime += 1;
-
-            return true;
         }
 
         /// <summary>
@@ -193,15 +145,20 @@ namespace SokoGrump.GameLogic
 
             moved = false;
 
-            if (destX < 0 || destX >= tableWidth || destY < 0 || destY >= tableHeight)
+            if (destX < 0 || destX >= GameDefines.BoardWidth ||
+                destY < 0 || destY >= GameDefines.BoardHeight)
+            {
                 return;
+            }
 
             if (board.Tiles[destX, destY].TileType == TileType.Walkable)
+            {
                 moved = true;
+            }
             else if (board.Tiles[destX, destY].TileType == TileType.Moveable)
             {
-                if ((dirX < 0 && player.Location.X >= 2) || (dirX > 0 && player.Location.X < tableWidth - 2) ||
-                    (dirY < 0 && player.Location.Y >= 2) || (dirY > 0 && player.Location.Y < tableHeight - 2))
+                if ((dirX < 0 && player.Location.X >= 2) || (dirX > 0 && player.Location.X < GameDefines.BoardWidth - 2) ||
+                    (dirY < 0 && player.Location.Y >= 2) || (dirY > 0 && player.Location.Y < GameDefines.BoardHeight - 2))
                 {
                     if (board.Tiles[destX, destY].Id == 2 || board.Tiles[destX, destY].Id == 5)
                     {
@@ -211,7 +168,9 @@ namespace SokoGrump.GameLogic
                             board.Tiles[dest2X, dest2Y].Variation = board.Tiles[destX, destY].Variation;
 
                             if (board.Tiles[destX, destY].Id == 2)
+                            {
                                 board.Tiles[destX, destY] = boardManager.GetTile(0);
+                            }
                             else
                             {
                                 board.Tiles[destX, destY] = boardManager.GetTile(3);
@@ -228,7 +187,9 @@ namespace SokoGrump.GameLogic
                             board.TargetsLeft -= 1;
 
                             if (board.Tiles[destX, destY].Id == 2)
+                            {
                                 board.Tiles[destX, destY] = boardManager.GetTile(0);
+                            }
                             else
                             {
                                 board.Tiles[destX, destY] = boardManager.GetTile(3);
@@ -279,21 +240,35 @@ namespace SokoGrump.GameLogic
             bool w, e;
 
             if (x > 0)
+            {
                 w = (board.Tiles[x - 1, y].Id == id);
+            }
             else
+            {
                 w = false;
+            }
 
-            if (x < tableWidth - 1)
+            if (x < GameDefines.BoardWidth - 1)
+            {
                 e = (board.Tiles[x + 1, y].Id == id);
+            }
             else
+            {
                 e = false;
+            }
 
             if (e && w)
+            {
                 return 0;
+            }
             if (!e && w)
+            {
                 return 1;
+            }
             if (e && !w)
+            {
                 return 2;
+            }
 
             return 3;
         }
