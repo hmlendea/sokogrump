@@ -51,7 +51,7 @@ namespace SokoGrump.GameLogic.GameManagers
             Tile terrainTile = new Tile
             {
                 Id = 0,
-                SpriteSheet = "Tiles/tile0/0",
+                SpriteSheet = "SpriteSheets/brick",
                 TileType = TileType.Walkable
             };
             Tile wallTile = new Tile
