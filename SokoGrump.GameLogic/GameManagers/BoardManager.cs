@@ -63,7 +63,7 @@ namespace SokoGrump.GameLogic.GameManagers
             Tile boxTile = new Tile
             {
                 Id = 2,
-                SpriteSheet = "Tiles/tile2/0",
+                SpriteSheet = "SpriteSheets/crate",
                 TileType = TileType.Moveable
             };
             Tile targetTile = new Tile

@@ -14,6 +14,8 @@ namespace SokoGrump.GameLogic
     {
         readonly BoardManager boardManager;
 
+        Random random;
+
         Board board;
         Player player;
         int level;
@@ -41,6 +43,8 @@ namespace SokoGrump.GameLogic
         public void LoadContent()
         {
             boardManager.LoadContent();
+
+            random = new Random();
         }
 
         public void UnloadContent()
@@ -78,6 +82,8 @@ namespace SokoGrump.GameLogic
                     }
                 }
             }
+
+            GenerateVariations();
         }
 
         /// <summary>
@@ -200,42 +206,18 @@ namespace SokoGrump.GameLogic
             return boardManager.GetTiles();
         }
 
-        int GetTileShape(int x, int y, int id)
+        void GenerateVariations()
         {
-            bool w, e;
-
-            if (x > 0)
+            for (int y = 0; y < GameDefines.BoardHeight; y++)
             {
-                w = (board.Tiles[x - 1, y].Id == id);
+                for (int x = 0; x < GameDefines.BoardWidth; x++)
+                {
+                    if (board.Tiles[x, y].Id == 2)
+                    {
+                        board.Tiles[x, y].Variation = random.Next(0, 11);
+                    }
+                }
             }
-            else
-            {
-                w = false;
-            }
-
-            if (x < GameDefines.BoardWidth - 1)
-            {
-                e = (board.Tiles[x + 1, y].Id == id);
-            }
-            else
-            {
-                e = false;
-            }
-
-            if (e && w)
-            {
-                return 0;
-            }
-            if (!e && w)
-            {
-                return 1;
-            }
-            if (e && !w)
-            {
-                return 2;
-            }
-
-            return 3;
         }
     }
 }

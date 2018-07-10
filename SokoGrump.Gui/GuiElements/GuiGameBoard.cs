@@ -28,6 +28,7 @@ namespace SokoGrump.Gui.GuiElements
         GameEngine game;
 
         TileSpriteSheetEffect tileEffect;
+        CrateSpriteSheetEffect crateEffect;
         Dictionary<int, TextureSprite> terrainSprites;
         TextureSprite targetSprite;
         TextureSprite playerSprite;
@@ -58,6 +59,7 @@ namespace SokoGrump.Gui.GuiElements
             playerSprite.SpriteSheetEffect.Activate();
 
             tileEffect = new TileSpriteSheetEffect(game);
+            crateEffect = new CrateSpriteSheetEffect(game);
 
             foreach (Tile tile in game.GetTiles())
             {
@@ -65,15 +67,25 @@ namespace SokoGrump.Gui.GuiElements
                 {
                     ContentFile = tile.SpriteSheet,
                     SourceRectangle = new Rectangle2D(0, 0, GameDefines.MapTileSize, GameDefines.MapTileSize),
-                    SpriteSheetEffect = tileEffect,
                     Active = true
                 };
 
+                if (tile.Id == 2)
+                {
+                    tileSprite.SpriteSheetEffect = crateEffect;
+                }
+                else
+                {
+                    tileSprite.SpriteSheetEffect = tileEffect;
+                }
+
                 tileSprite.LoadContent();
-                tileSprite.SpriteSheetEffect.Activate();
 
                 terrainSprites.Add(tile.Id, tileSprite);
             }
+
+            tileEffect.Activate();
+            crateEffect.Activate();
 
             targetSprite.LoadContent();
             playerSprite.LoadContent();
@@ -143,12 +155,22 @@ namespace SokoGrump.Gui.GuiElements
                             tileEffect.TilesWith = new List<int> { 1 };
                         }
 
-
                         tileEffect.UpdateFrame(null);
 
                         terrainSprite.SourceRectangle = new Rectangle2D(
-                            tileEffect.CurrentFrame.X * GameDefines.MapTileSize,
-                            tileEffect.CurrentFrame.Y * GameDefines.MapTileSize,
+                            terrainSprite.SpriteSheetEffect.CurrentFrame.X * GameDefines.MapTileSize,
+                            terrainSprite.SpriteSheetEffect.CurrentFrame.Y * GameDefines.MapTileSize,
+                            GameDefines.MapTileSize,
+                            GameDefines.MapTileSize);
+                    }
+                    else if (tile.Id == 2)
+                    {
+                        crateEffect.TileLocation = new Point2D(x, y);
+                        crateEffect.UpdateFrame(null);
+
+                        terrainSprite.SourceRectangle = new Rectangle2D(
+                            terrainSprite.SpriteSheetEffect.CurrentFrame.X * GameDefines.MapTileSize,
+                            terrainSprite.SpriteSheetEffect.CurrentFrame.Y * GameDefines.MapTileSize,
                             GameDefines.MapTileSize,
                             GameDefines.MapTileSize);
                     }

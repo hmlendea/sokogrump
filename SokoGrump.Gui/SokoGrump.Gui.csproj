@@ -58,6 +58,7 @@
     <Compile Include="Screens\VictoryScreen.cs" />
     <Compile Include="SpriteEffects\TileSpritesheetEffect.cs" />
     <Compile Include="SpriteEffects\PlayerSpriteSheetEffect.cs" />
+    <Compile Include="SpriteEffects\CrateSpriteSheetEffect.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

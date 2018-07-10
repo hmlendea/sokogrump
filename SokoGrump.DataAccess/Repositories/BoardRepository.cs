@@ -80,12 +80,10 @@ namespace SokoGrump.DataAccess.Repositories
                 }
             }
 
-            GenerateVariations();
-
             LogManager.Instance.Info(
                 Operation.WorldLoading,
                 OperationStatus.Success,
-                new Dictionary<LogInfoKey, string>()
+                new Dictionary<LogInfoKey, string>
                 {
                     { LogInfoKey.FileName, levelFile }
                 });
@@ -167,7 +165,7 @@ namespace SokoGrump.DataAccess.Repositories
             TileEntity boxTile = new TileEntity
             {
                 Id = 2,
-                SpriteSheet = "Tiles/tile2/0",
+                SpriteSheet = "SpriteSheets/crate",
                 TileType = "Moveable"
             };
             TileEntity targetTile = new TileEntity
@@ -197,20 +195,6 @@ namespace SokoGrump.DataAccess.Repositories
             tiles.Add(voidTile.Id, voidTile);
 
             return tiles;
-        }
-
-        void GenerateVariations()
-        {
-            for (int y = 0; y < GameDefines.BoardHeight; y++)
-            {
-                for (int x = 0; x < GameDefines.BoardWidth; x++)
-                {
-                    // TODO: Generate variations
-                    //DirectoryInfo di = new DirectoryInfo(Path.Combine("Resources", "Tiles", "tile" + tiles[x, y].ID));
-                    //tiles[x, y].Variation = new Random().Next(0, di.GetFiles().Length);
-
-                }
-            }
         }
     }
 }
