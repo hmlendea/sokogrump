@@ -57,7 +57,7 @@ namespace SokoGrump.GameLogic.GameManagers
             Tile wallTile = new Tile
             {
                 Id = 1,
-                SpriteSheet = "Tiles/tile1/0",
+                SpriteSheet = "SpriteSheets/wall",
                 TileType = TileType.Solid
             };
             Tile boxTile = new Tile

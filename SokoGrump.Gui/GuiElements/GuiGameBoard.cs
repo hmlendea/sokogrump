@@ -110,10 +110,19 @@ namespace SokoGrump.Gui.GuiElements
                     terrainSprite.Location = new Point2D(x * GameDefines.MapTileSize, y * GameDefines.MapTileSize);
 
                     // TODO: This is temporary
-                    if (tile.Id == 0)
+                    if (tile.Id == 0 || tile.Id == 1)
                     {
                         tileEffect.TileLocation = new Point2D(x, y);
-                        tileEffect.TilesWith = new List<int> { 0, 2, 3, 5 };
+
+                        if (tile.Id == 0)
+                        {
+                            tileEffect.TilesWith = new List<int> { 0, 2, 3, 5 };
+                        }
+                        else if (tile.Id == 1)
+                        {
+                            tileEffect.TilesWith = new List<int> { 1 };
+                        }
+
                         tileEffect.UpdateFrame(null);
 
                         terrainSprite.SourceRectangle = new Rectangle2D(

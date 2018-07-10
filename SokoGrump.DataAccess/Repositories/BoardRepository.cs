@@ -161,7 +161,7 @@ namespace SokoGrump.DataAccess.Repositories
             TileEntity wallTile = new TileEntity
             {
                 Id = 1,
-                SpriteSheet = "Tiles/tile1/0",
+                SpriteSheet = "SpriteSheets/wall",
                 TileType = "Solid"
             };
             TileEntity boxTile = new TileEntity
