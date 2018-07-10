@@ -29,6 +29,21 @@ namespace SokoGrump.GameLogic.Mapping
                 Tiles = boardEntity.Tiles.ToDomainModels()
             };
 
+            for (int y = 0; y < boardEntity.Tiles.GetLength(1); y++)
+            {
+                for (int x = 0; x < boardEntity.Tiles.GetLength(0); x++)
+                {
+                    if (boardEntity.Tiles[x, y].Id == 3)
+                    {
+                        board.Targets.Add(new Point2D(x, y));
+                    }
+                    else if (boardEntity.Tiles[x, y].Id == 5)
+                    {
+                        board.Targets.Add(new Point2D(x, y));
+                    }
+                }
+            }
+
             return board;
         }
 
