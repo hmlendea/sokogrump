@@ -113,12 +113,7 @@ namespace SokoGrump.Gui.GuiElements
             playerSprite.Update(gameTime);
 
             Player player = game.GetPlayer();
-
-            playerSprite.SourceRectangle = new Rectangle2D(
-                playerSprite.SpriteSheetEffect.CurrentFrame.X * GameDefines.MapTileSize,
-                playerSprite.SpriteSheetEffect.CurrentFrame.Y * GameDefines.MapTileSize,
-                GameDefines.MapTileSize,
-                GameDefines.MapTileSize);
+            
             playerSprite.Location = new Point2D(
                 player.Location.X * GameDefines.MapTileSize,
                 player.Location.Y * GameDefines.MapTileSize);
@@ -156,23 +151,11 @@ namespace SokoGrump.Gui.GuiElements
                         }
 
                         tileEffect.UpdateFrame(null);
-
-                        terrainSprite.SourceRectangle = new Rectangle2D(
-                            terrainSprite.SpriteSheetEffect.CurrentFrame.X * GameDefines.MapTileSize,
-                            terrainSprite.SpriteSheetEffect.CurrentFrame.Y * GameDefines.MapTileSize,
-                            GameDefines.MapTileSize,
-                            GameDefines.MapTileSize);
                     }
                     else if (tile.Id == 2)
                     {
                         crateEffect.TileLocation = new Point2D(x, y);
                         crateEffect.UpdateFrame(null);
-
-                        terrainSprite.SourceRectangle = new Rectangle2D(
-                            terrainSprite.SpriteSheetEffect.CurrentFrame.X * GameDefines.MapTileSize,
-                            terrainSprite.SpriteSheetEffect.CurrentFrame.Y * GameDefines.MapTileSize,
-                            GameDefines.MapTileSize,
-                            GameDefines.MapTileSize);
                     }
 
                     if (tile.Id == 2 && targets.Any(target => target.X == x && target.Y == y))
