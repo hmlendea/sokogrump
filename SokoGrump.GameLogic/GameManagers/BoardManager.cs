@@ -8,7 +8,7 @@ using SokoGrump.Settings;
 
 namespace SokoGrump.GameLogic.GameManagers
 {
-    public class BoardManager
+    public class BoardManager : IBoardManager
     {
         Dictionary<string, Board> boards;
         Dictionary<int, Tile> tiles;
@@ -21,7 +21,13 @@ namespace SokoGrump.GameLogic.GameManagers
 
         public void UnloadContent()
         {
+            boards.Clear();
             tiles.Clear();
+        }
+
+        public void Update(double elapsedMiliseconds)
+        {
+
         }
 
         public Board GetBoard(int id)

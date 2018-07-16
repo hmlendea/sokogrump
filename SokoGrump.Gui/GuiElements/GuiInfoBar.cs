@@ -1,18 +1,18 @@
 ﻿using NuciXNA.Gui.GuiElements;
 using NuciXNA.Primitives;
 
-using SokoGrump.GameLogic;
+using SokoGrump.GameLogic.GameManagers;
 
 namespace SokoGrump.Gui.GuiElements
 {
     public sealed class GuiInfoBar : GuiElement
     {
-        readonly GameEngine game;
+        readonly IGameManager game;
 
         GuiImage background;
         GuiText movesText;
 
-        public GuiInfoBar(GameEngine game)
+        public GuiInfoBar(IGameManager game)
         {
             this.game = game;
 

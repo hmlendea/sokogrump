@@ -1,21 +1,17 @@
-﻿using System.Collections.Generic;
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using NuciXNA.Graphics.SpriteEffects;
 using NuciXNA.Primitives;
 
-using SokoGrump.GameLogic;
 using SokoGrump.GameLogic.GameManagers;
 using SokoGrump.Models;
-using SokoGrump.Settings;
 
 namespace SokoGrump.Gui.SpriteEffects
 {
     public class PlayerSpriteSheetEffect : SpriteSheetEffect
     {
-        readonly GameEngine game;
+        readonly IGameManager game;
 
-        public PlayerSpriteSheetEffect(GameEngine game)
+        public PlayerSpriteSheetEffect(IGameManager game)
             : base()
         {
             FrameAmount = new Size2D(3, 6);

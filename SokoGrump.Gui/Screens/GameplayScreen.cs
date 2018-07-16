@@ -1,12 +1,13 @@
 ﻿using System.IO;
 
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using NuciXNA.Gui;
 using NuciXNA.Gui.Screens;
 using NuciXNA.Input;
 using NuciXNA.Primitives;
 
-using SokoGrump.GameLogic;
+using SokoGrump.GameLogic.GameManagers;
 using SokoGrump.Gui.GuiElements;
 using SokoGrump.Models;
 
@@ -17,7 +18,7 @@ namespace SokoGrump.Gui.Screens
     /// </summary>
     public class GameplayScreen : Screen
     {
-        GameEngine game;
+        IGameManager game;
 
         GuiInfoBar infoBar;
         GuiGameBoard gameBoard;
@@ -27,7 +28,7 @@ namespace SokoGrump.Gui.Screens
         /// </summary>
         public override void LoadContent()
         {
-            game = new GameEngine();
+            game = new GameManager();
             game.LoadContent();
 
             int level = 0;
@@ -68,9 +69,11 @@ namespace SokoGrump.Gui.Screens
             base.UnloadContent();
         }
 
-        public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            game.Update(gameTime.ElapsedGameTime.TotalMilliseconds);
 
             if (game.Completed)
             {

@@ -7,7 +7,7 @@ using NuciXNA.Graphics.Drawing;
 using NuciXNA.Gui.GuiElements;
 using NuciXNA.Primitives;
 
-using SokoGrump.GameLogic;
+using SokoGrump.GameLogic.GameManagers;
 using SokoGrump.Gui.SpriteEffects;
 using SokoGrump.Models;
 using SokoGrump.Settings;
@@ -25,7 +25,7 @@ namespace SokoGrump.Gui.GuiElements
         /// <value>The selected province identifier.</value>
         public string SelectedProvinceId { get; private set; }
 
-        GameEngine game;
+        IGameManager game;
 
         TileSpriteSheetEffect tileEffect;
         CrateSpriteSheetEffect crateEffect;
@@ -33,7 +33,7 @@ namespace SokoGrump.Gui.GuiElements
         TextureSprite targetSprite;
         TextureSprite playerSprite;
 
-        public GuiGameBoard(GameEngine game)
+        public GuiGameBoard(IGameManager game)
         {
             this.game = game;
         }

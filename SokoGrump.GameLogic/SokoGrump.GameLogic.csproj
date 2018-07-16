@@ -39,10 +39,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameManagers\IBoardManager.cs" />
+    <Compile Include="GameManagers\IGameLogicManager.cs" />
+    <Compile Include="GameManagers\IGameManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameManagers\BoardManager.cs" />
-    <Compile Include="EditorEngine.cs" />
-    <Compile Include="GameEngine.cs" />
+    <Compile Include="GameManagers\GameManager.cs" />
     <Compile Include="Mapping\BoardMappingExtensions.cs" />
     <Compile Include="Mapping\TileMappingExtensions.cs" />
   </ItemGroup>

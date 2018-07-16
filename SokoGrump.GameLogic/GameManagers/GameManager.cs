@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 
 using NuciXNA.Primitives;
 
-using SokoGrump.GameLogic.GameManagers;
 using SokoGrump.Models;
 using SokoGrump.Settings;
 
-namespace SokoGrump.GameLogic
+namespace SokoGrump.GameLogic.GameManagers
 {
-    public class GameEngine
+    public class GameManager : IGameManager
     {
         readonly BoardManager boardManager;
 
@@ -35,7 +33,7 @@ namespace SokoGrump.GameLogic
         /// <summary>
         /// Initializes a new instance of the <see cref="GameEngine"/> class.
         /// </summary>
-        public GameEngine()
+        public GameManager()
         {
             boardManager = new BoardManager();
         }
@@ -50,6 +48,11 @@ namespace SokoGrump.GameLogic
         public void UnloadContent()
         {
             boardManager.UnloadContent();
+        }
+
+        public void Update(double elapsedMiliseconds)
+        {
+
         }
 
         /// <summary>

@@ -2,18 +2,18 @@
 using NuciXNA.Graphics.SpriteEffects;
 using NuciXNA.Primitives;
 
-using SokoGrump.GameLogic;
+using SokoGrump.GameLogic.GameManagers;
 using SokoGrump.Models;
 
 namespace SokoGrump.Gui.SpriteEffects
 {
     public class CrateSpriteSheetEffect : SpriteSheetEffect
     {
-        readonly GameEngine game;
+        readonly IGameManager game;
 
         public Point2D TileLocation { get; set; }
 
-        public CrateSpriteSheetEffect(GameEngine game)
+        public CrateSpriteSheetEffect(IGameManager game)
         {
             FrameAmount = new Size2D(11, 1);
 
