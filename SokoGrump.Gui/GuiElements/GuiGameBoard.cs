@@ -113,10 +113,8 @@ namespace SokoGrump.Gui.GuiElements
             playerSprite.Update(gameTime);
 
             Player player = game.GetPlayer();
-            
-            playerSprite.Location = new Point2D(
-                player.Location.X * GameDefines.MapTileSize,
-                player.Location.Y * GameDefines.MapTileSize);
+
+            playerSprite.Location = Location + player.Location * GameDefines.MapTileSize;
         }
 
         /// <summary>
@@ -134,7 +132,9 @@ namespace SokoGrump.Gui.GuiElements
                     Tile tile = game.GetTile(x, y);
 
                     TextureSprite terrainSprite = terrainSprites[tile.Id];
-                    terrainSprite.Location = new Point2D(x * GameDefines.MapTileSize, y * GameDefines.MapTileSize);
+                    terrainSprite.Location = Location + new Point2D(
+                        x * GameDefines.MapTileSize,
+                        y * GameDefines.MapTileSize);
 
                     // TODO: This is temporary
                     if (tile.Id == 0 || tile.Id == 1)
@@ -181,8 +181,8 @@ namespace SokoGrump.Gui.GuiElements
                 }
 
                 targetSprite.Location = new Point2D(
-                    targetLocation.X * GameDefines.MapTileSize,
-                    targetLocation.Y * GameDefines.MapTileSize);
+                    Location.X + targetLocation.X * GameDefines.MapTileSize,
+                    Location.Y + targetLocation.Y * GameDefines.MapTileSize);
 
                 targetSprite.Draw(spriteBatch);
             }
