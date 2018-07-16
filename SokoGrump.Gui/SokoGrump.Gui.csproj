@@ -49,6 +49,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GuiElements\GuiInfoBar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GuiElements\GuiGameBoard.cs" />
     <Compile Include="Helpers\FramerateCounter.cs" />

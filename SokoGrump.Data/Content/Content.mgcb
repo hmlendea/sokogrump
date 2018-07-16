@@ -38,13 +38,6 @@
 /processorParam:Quality=Best
 /build:Audio/Interface/select.wav
 
-#begin Fonts/MenuFont.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Fonts/MenuFont.spritefont
-
 #begin Audio/Interface/click.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -87,26 +80,12 @@
 /processorParam:TextureFormat=Color
 /build:ScreenManager/FillImage.png
 
-#begin Fonts/ButtonFont.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Fonts/ButtonFont.spritefont
-
 #begin Fonts/InfoBarFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/InfoBarFont.spritefont
-
-#begin Fonts/ToolTipFont.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Fonts/ToolTipFont.spritefont
 
 #begin ScreenManager/missing-texture.png
 /importer:TextureImporter
@@ -119,34 +98,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:ScreenManager/missing-texture.png
-
-#begin Fonts/ProvincePanelTitleFont.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Fonts/ProvincePanelTitleFont.spritefont
-
-#begin Fonts/ProvincePanelInfoFont.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Fonts/ProvincePanelInfoFont.spritefont
-
-#begin Fonts/NotificationFont.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Fonts/NotificationFont.spritefont
-
-#begin Fonts/NotificationTitleFont.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Fonts/NotificationTitleFont.spritefont
 
 #begin Fonts/DefaultFont.spritefont
 /importer:FontDescriptionImporter

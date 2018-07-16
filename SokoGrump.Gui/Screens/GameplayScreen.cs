@@ -1,10 +1,10 @@
-﻿using System;
-using System.IO;
-using Microsoft.Xna.Framework.Input;
+﻿using System.IO;
 
+using Microsoft.Xna.Framework.Input;
 using NuciXNA.Gui;
 using NuciXNA.Gui.Screens;
 using NuciXNA.Input;
+using NuciXNA.Primitives;
 
 using SokoGrump.GameLogic;
 using SokoGrump.Gui.GuiElements;
@@ -19,6 +19,7 @@ namespace SokoGrump.Gui.Screens
     {
         GameEngine game;
 
+        GuiInfoBar infoBar;
         GuiGameBoard gameBoard;
 
         /// <summary>
@@ -38,12 +39,21 @@ namespace SokoGrump.Gui.Screens
 
             game.NewGame(level);
 
+            infoBar = new GuiInfoBar(game)
+            {
+                Location = Point2D.Empty,
+                Size = new Size2D(ScreenManager.Instance.Size.Width, 24)
+            };
             gameBoard = new GuiGameBoard(game)
             {
-                Size = ScreenManager.Instance.Size
+                Size = new Size2D(
+                    ScreenManager.Instance.Size.Width,
+                    ScreenManager.Instance.Size.Height - 24),
+                Location = new Point2D(0, 24)
             };
 
             GuiManager.Instance.GuiElements.Add(gameBoard);
+            GuiManager.Instance.GuiElements.Add(infoBar);
 
             base.LoadContent();
         }
@@ -84,6 +94,13 @@ namespace SokoGrump.Gui.Screens
             base.UnregisterEvents();
 
             InputManager.Instance.KeyboardKeyPressed -= InputManager_KeyboardKeyPressed;
+        }
+
+        protected override void SetChildrenProperties()
+        {
+            infoBar.Size = new Size2D(ScreenManager.Instance.Size.Width, 24);
+
+            base.SetChildrenProperties();
         }
 
         void InputManager_KeyboardKeyPressed(object sender, KeyboardKeyEventArgs e)
