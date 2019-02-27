@@ -1,5 +1,5 @@
 language: csharp
-solution: Narivia.sln
+solution: SokoGrump.sln
 install:
   - wget https://raw.githubusercontent.com/hmlendea/deployment-scripts/master/monogame/install-monogame-3.6.sh -O monogame-install.sh
   - bash monogame-install.sh
