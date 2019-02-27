@@ -1,5 +1,8 @@
+[![Build Status](https://travis-ci.com/hmlendea/sokogrump.svg?branch=master)](https://travis-ci.com/hmlendea/sokogrump)
+
 # About
-SokoGrump is a puzzle game similar to the classic Sokoban. It the features the Grumpy Cat trying to push all the crates in a werehouse to their storge locations, without getting stuck.
+SokoGrump is a puzzle game similar to the classic Sokoban.
+It the features the Grumpy Cat trying to push all the crates in a werehouse to their storge locations, without getting stuck.
 
 The game currently contains 25+ levels of progressive difficulty, and the goal is to complete all of them in as less moves as possible.
 
