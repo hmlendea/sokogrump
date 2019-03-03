@@ -1,9 +1,7 @@
 language: csharp
 solution: SokoGrump.sln
 install:
-  - wget https://raw.githubusercontent.com/hmlendea/deployment-scripts/master/monogame/install-monogame-3.6.sh -O monogame-install.sh
-  - bash monogame-install.sh
-  - nuget restore
+  - wget https://raw.githubusercontent.com/hmlendea/deployment-scripts/master/monogame/install-monogame.sh -O monogame-install.sh
+  - bash monogame-install.sh 3.6
 script:
   - msbuild
-
