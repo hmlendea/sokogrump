@@ -26,11 +26,15 @@ namespace SokoGrump.Gui.Screens
         /// <value>The logo.</value>
         public GuiImage LogoImage { get; set; }
 
+        int level;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="VictoryScreen"/> class.
         /// </summary>
-        public VictoryScreen()
+        public VictoryScreen(int level)
         {
+            this.level = level;
+
             Delay = 1;
             BackgroundColour = Colour.Black;
         }
@@ -100,7 +104,7 @@ namespace SokoGrump.Gui.Screens
 
         void ChangeScreen()
         {
-            ScreenManager.Instance.ChangeScreens(typeof(GameplayScreen), ScreenArgs);
+            ScreenManager.Instance.ChangeScreens(typeof(GameplayScreen), level);
         }
     }
 }

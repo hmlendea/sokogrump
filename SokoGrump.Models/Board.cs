@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 using NuciXNA.Primitives;
 
@@ -14,14 +13,7 @@ namespace SokoGrump.Models
         public Point2D PlayerStartLocation { get; set; }
 
         public List<Point2D> Targets { get; set; }
-
-        /// <summary>
-        /// Gets or sets the number of remaining targets.
-        /// </summary>
-        /// <value>The remaining targets.</value>
-        public int TargetsLeft
-            => Targets.Count(target => Tiles[target.X, target.Y].Id == 0);
-
+        
         /// <summary>
         /// Gets or sets the tiles.
         /// </summary>

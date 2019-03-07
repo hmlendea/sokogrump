@@ -23,6 +23,13 @@ namespace SokoGrump.Gui.Screens
         GuiInfoBar infoBar;
         GuiGameBoard gameBoard;
 
+        int level;
+
+        public GameplayScreen(int level)
+        {
+            this.level = level;
+        }
+
         /// <summary>
         /// Loads the content.
         /// </summary>
@@ -30,14 +37,6 @@ namespace SokoGrump.Gui.Screens
         {
             game = new GameManager();
             game.LoadContent();
-
-            int level = 0;
-
-            if (ScreenArgs != null && ScreenArgs.Length > 0)
-            {
-                level = int.Parse(ScreenArgs[0]);
-            }
-
             game.NewGame(level);
 
             infoBar = new GuiInfoBar(game)
@@ -80,7 +79,7 @@ namespace SokoGrump.Gui.Screens
 
                 if (File.Exists(Path.Combine("Levels", (game.Level + 1) + ".lvl")))
                 {
-                    ScreenManager.Instance.ChangeScreens(typeof(VictoryScreen), new string[] { $"{game.Level + 1}" });
+                    ScreenManager.Instance.ChangeScreens(typeof(VictoryScreen), game.Level + 1);
                 }
             }
         }

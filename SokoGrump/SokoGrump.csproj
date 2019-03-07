@@ -1,99 +1,31 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{9ED09BD5-16EA-44C1-AD7D-CC7CC9CAF6EA}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <RootNamespace>SokoGrump</RootNamespace>
-    <AssemblyName>SokoGrump</AssemblyName>
-    <MonoGamePlatform>DesktopGL</MonoGamePlatform>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <Description>Sokoban puzzle game featuring the Grumpy Cat</Description>
+    <Authors>Horațiu Mlendea</Authors>
+    <Copyright>Copyright 2019 © Horațiu Mlendea</Copyright>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="NuciLog.Core, Version=1.0.6744.25348, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NuciLog.Core.1.0.6744.25348\lib\net45\NuciLog.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="NuciXNA.DataAccess, Version=1.1.6764.23276, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NuciXNA.DataAccess.1.1.6764.23276\lib\net45\NuciXNA.DataAccess.dll</HintPath>
-    </Reference>
-    <Reference Include="NuciXNA.Graphics, Version=1.4.6766.31710, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NuciXNA.Graphics.1.4.6766.31710\lib\net45\NuciXNA.Graphics.dll</HintPath>
-    </Reference>
-    <Reference Include="NuciXNA.Gui, Version=1.8.6766.32319, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NuciXNA.Gui.1.8.6766.32319\lib\net45\NuciXNA.Gui.dll</HintPath>
-    </Reference>
-    <Reference Include="NuciXNA.Input, Version=1.1.6764.23188, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NuciXNA.Input.1.1.6764.23188\lib\net45\NuciXNA.Input.dll</HintPath>
-    </Reference>
-    <Reference Include="NuciXNA.Primitives, Version=1.2.6764.30556, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NuciXNA.Primitives.1.2.6764.30556\lib\net45\NuciXNA.Primitives.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="MonoGame.Framework">
-      <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Drawing" />
+    <MonoGameContentReference Include="**\*.mgcb" />
   </ItemGroup>
+
   <ItemGroup>
-    <EmbeddedResource Include="icon.png" />
-    <EmbeddedResource Include="sokogrump.ico" />
+    <ProjectReference Include="..\SokoGrump.Data\SokoGrump.Data.csproj" />
+    <ProjectReference Include="..\SokoGrump.DataAccess\SokoGrump.DataAccess.csproj" />
+    <ProjectReference Include="..\SokoGrump.Gui\SokoGrump.Gui.csproj" />
+    <ProjectReference Include="..\SokoGrump.Settings\SokoGrump.Settings.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="GameWindow.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL.Core" Version="3.7.0.7" />
+    <PackageReference Include="NuciXNA.DataAccess" Version="1.3.0" />
+    <PackageReference Include="NuciXNA.Graphics" Version="1.5.0" />
+    <PackageReference Include="NuciXNA.Gui" Version="1.9.2" />
+    <PackageReference Include="NuciXNA.Input" Version="1.4.0" />
+    <PackageReference Include="NuciXNA.Primitives" Version="1.3.1" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="Settings\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="MonoGame.Framework.dll.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <ProjectReference Include="..\SokoGrump.GameLogic\SokoGrump.GameLogic.csproj">
-      <Project>{9893E1EE-CB27-4B3F-9A44-3616F26AE225}</Project>
-      <Name>SokoGrump.GameLogic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SokoGrump.Models\SokoGrump.Models.csproj">
-      <Project>{59B4B0B9-0D60-4615-893B-71C3095A6572}</Project>
-      <Name>SokoGrump.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SokoGrump.Settings\SokoGrump.Settings.csproj">
-      <Project>{51892F44-E2FF-4CD2-B3ED-50DA6CE6168F}</Project>
-      <Name>SokoGrump.Settings</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SokoGrump.Gui\SokoGrump.Gui.csproj">
-      <Project>{A2A6488E-8098-4650-A245-219C351496A9}</Project>
-      <Name>SokoGrump.Gui</Name>
-    </ProjectReference>
-  </ItemGroup>
+  
 </Project>

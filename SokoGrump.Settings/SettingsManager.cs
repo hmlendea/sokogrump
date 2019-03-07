@@ -1,8 +1,6 @@
 ﻿using System.IO;
 using System.Collections.Generic;
 
-using NuciLog;
-using NuciLog.Enumerations;
 using NuciXNA.DataAccess.IO;
 using NuciXNA.Graphics;
 
@@ -65,13 +63,14 @@ namespace SokoGrump.Settings
         {
             if (!File.Exists(ApplicationPaths.SettingsFile))
             {
-                string logMessage = "Settings file is missing. Using default settings.";
-                Dictionary<LogInfoKey, string> logDetails = new Dictionary<LogInfoKey, string>
-                {
-                    { LogInfoKey.FileName, ApplicationPaths.SettingsFile }
-                };
+                //tring logMessage = "Settings file is missing. Using default settings.";
+                //Dictionary<LogInfoKey, string> logDetails = new Dictionary<LogInfoKey, string>
+                //{
+                //    { LogInfoKey.FileName, ApplicationPaths.SettingsFile }
+                //};
 
-                LogManager.Instance.Warn(Operation.SettingsLoading, OperationStatus.Failure, logMessage, logDetails);
+                // TODO: Logging
+                //LogManager.Instance.Warn(Operation.SettingsLoading, OperationStatus.Failure, logMessage, logDetails);
 
                 SaveContent();
                 return;

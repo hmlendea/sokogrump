@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 
-using NuciLog;
-using NuciLog.Enumerations;
 using NuciXNA.DataAccess.Repositories;
 
 using SokoGrump.DataAccess.DataObjects;
@@ -80,13 +78,14 @@ namespace SokoGrump.DataAccess.Repositories
                 }
             }
 
-            LogManager.Instance.Info(
-                Operation.WorldLoading,
-                OperationStatus.Success,
-                new Dictionary<LogInfoKey, string>
-                {
-                    { LogInfoKey.FileName, levelFile }
-                });
+            // TODO: Logging
+            //LogManager.Instance.Info(
+            //    Operation.WorldLoading,
+            //    OperationStatus.Success,
+            //    new Dictionary<LogInfoKey, string>
+            //    {
+            //        { LogInfoKey.FileName, levelFile }
+            //    });
 
             return boardEntity;
         }

@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-using NuciLog;
-using NuciLog.Enumerations;
 using NuciXNA.DataAccess.Resources;
 using NuciXNA.Graphics;
 using NuciXNA.Gui;
@@ -60,10 +58,11 @@ namespace SokoGrump
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            LogManager.Instance.LogsDirectory = ApplicationPaths.LogsDirectory;
-            LogManager.Instance.LoadContent();
+            // TODO: Logging
+            //LogManager.Instance.LogsDirectory = ApplicationPaths.LogsDirectory;
+            //LogManager.Instance.LoadContent();
 
-            LogManager.Instance.Info(Operation.GameStart, OperationStatus.Started);
+            //LogManager.Instance.Info(Operation.GameStart, OperationStatus.Started);
 
             GraphicsManager.Instance.SpriteBatch = spriteBatch;
             GraphicsManager.Instance.Graphics = graphics;
@@ -78,7 +77,8 @@ namespace SokoGrump
             fpsIndicator.LoadContent();
             cursor.LoadContent();
 
-            LogManager.Instance.Info(Operation.GameStart, OperationStatus.Success);
+            // TODO: Logging
+            //LogManager.Instance.Info(Operation.GameStart, OperationStatus.Success);
         }
 
         /// <summary>
@@ -86,15 +86,17 @@ namespace SokoGrump
         /// </summary>
         protected override void UnloadContent()
         {
-            LogManager.Instance.Info(Operation.GameStop, OperationStatus.Started);
+            // TODO: Logging
+            //LogManager.Instance.Info(Operation.GameStop, OperationStatus.Started);
 
             ScreenManager.Instance.UnloadContent();
 
             fpsIndicator.UnloadContent();
             cursor.UnloadContent();
 
-            LogManager.Instance.Info(Operation.GameStop, OperationStatus.Success);
-            LogManager.Instance.UnloadContent();
+            // TODO: Logging
+            //LogManager.Instance.Info(Operation.GameStop, OperationStatus.Success);
+            //LogManager.Instance.UnloadContent();
         }
 
         /// <summary>

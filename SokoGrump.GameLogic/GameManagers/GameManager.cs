@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using NuciXNA.Primitives;
 
@@ -16,19 +17,18 @@ namespace SokoGrump.GameLogic.GameManagers
 
         Board board;
         Player player;
-        int level;
 
         /// <summary>
         /// Gets the level.
         /// </summary>
         /// <value>The level.</value>
-        public int Level { get { return level; } }
+        public int Level { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="GameEngine"/> is completed.
         /// </summary>
         /// <value><c>true</c> if completed; otherwise, <c>false</c>.</value>
-        public bool Completed { get { return board.TargetsLeft == 0; } }
+        public bool Completed { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameEngine"/> class.
@@ -40,9 +40,9 @@ namespace SokoGrump.GameLogic.GameManagers
 
         public void LoadContent()
         {
-            boardManager.LoadContent();
-
             random = new Random();
+
+            boardManager.LoadContent();
         }
 
         public void UnloadContent()
@@ -52,7 +52,9 @@ namespace SokoGrump.GameLogic.GameManagers
 
         public void Update(double elapsedMiliseconds)
         {
+            Completed = board.Targets.All(targetLocation => board.Tiles[targetLocation.X, targetLocation.Y].Id == 2);
 
+            boardManager.Update(elapsedMiliseconds);
         }
 
         /// <summary>
@@ -61,11 +63,10 @@ namespace SokoGrump.GameLogic.GameManagers
         /// <param name="level">Level.</param>
         public void NewGame(int level)
         {
-            this.level = level;
+            Level = level;
             board = boardManager.GetBoard(level);
 
             player = new Player();
-
             player.Location = new Point2D(
                 board.PlayerStartLocation.X,
                 board.PlayerStartLocation.Y);
@@ -94,7 +95,7 @@ namespace SokoGrump.GameLogic.GameManagers
         /// </summary>
         public void Retry()
         {
-            NewGame(level);
+            NewGame(Level);
         }
 
         /// <summary>

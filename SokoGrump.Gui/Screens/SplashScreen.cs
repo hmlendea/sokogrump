@@ -95,7 +95,7 @@ namespace SokoGrump.Gui.Screens
 
         void ChangeScreen()
         {
-            ScreenManager.Instance.ChangeScreens(typeof(GameplayScreen));
+            ScreenManager.Instance.ChangeScreens(typeof(GameplayScreen), default(int));
         }
     }
 }
