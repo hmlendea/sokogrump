@@ -1,7 +1,10 @@
 language: csharp
-solution: SokoGrump.sln
+mono: none
+dotnet: 2.2
+dist: xenial
+
 install:
   - wget https://raw.githubusercontent.com/hmlendea/deployment-scripts/master/monogame/install-monogame.sh -O monogame-install.sh
-  - bash monogame-install.sh 3.6
+  - bash monogame-install.sh 3.7.1
 script:
-  - msbuild
+  - dotnet build
