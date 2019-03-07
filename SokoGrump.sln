@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SokoGrump", "SokoGrump\SokoGrump.csproj", "{33E40A85-F9B9-4DF8-99B3-C32B42E86A19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SokoGrump.Data", "SokoGrump.Data\SokoGrump.Data.csproj", "{7529B56C-D658-4D84-A856-193176B2F194}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SokoGrump.DataAccess", "SokoGrump.DataAccess\SokoGrump.DataAccess.csproj", "{935DA204-7CC8-4757-A763-CD77899D9EAD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SokoGrump.GameLogic", "SokoGrump.GameLogic\SokoGrump.GameLogic.csproj", "{7336591D-6968-4C57-8F2C-C723A1218704}"
@@ -42,18 +40,6 @@ Global
 		{33E40A85-F9B9-4DF8-99B3-C32B42E86A19}.Release|x64.Build.0 = Release|Any CPU
 		{33E40A85-F9B9-4DF8-99B3-C32B42E86A19}.Release|x86.ActiveCfg = Release|Any CPU
 		{33E40A85-F9B9-4DF8-99B3-C32B42E86A19}.Release|x86.Build.0 = Release|Any CPU
-		{7529B56C-D658-4D84-A856-193176B2F194}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7529B56C-D658-4D84-A856-193176B2F194}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7529B56C-D658-4D84-A856-193176B2F194}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{7529B56C-D658-4D84-A856-193176B2F194}.Debug|x64.Build.0 = Debug|Any CPU
-		{7529B56C-D658-4D84-A856-193176B2F194}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7529B56C-D658-4D84-A856-193176B2F194}.Debug|x86.Build.0 = Debug|Any CPU
-		{7529B56C-D658-4D84-A856-193176B2F194}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7529B56C-D658-4D84-A856-193176B2F194}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7529B56C-D658-4D84-A856-193176B2F194}.Release|x64.ActiveCfg = Release|Any CPU
-		{7529B56C-D658-4D84-A856-193176B2F194}.Release|x64.Build.0 = Release|Any CPU
-		{7529B56C-D658-4D84-A856-193176B2F194}.Release|x86.ActiveCfg = Release|Any CPU
-		{7529B56C-D658-4D84-A856-193176B2F194}.Release|x86.Build.0 = Release|Any CPU
 		{935DA204-7CC8-4757-A763-CD77899D9EAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{935DA204-7CC8-4757-A763-CD77899D9EAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{935DA204-7CC8-4757-A763-CD77899D9EAD}.Debug|x64.ActiveCfg = Debug|Any CPU
