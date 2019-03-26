@@ -9,8 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SokoGrump.Audio\SokoGrump.Audio.csproj" />
-    <ProjectReference Include="..\SokoGrump.Common\SokoGrump.Common.csproj" />
     <ProjectReference Include="..\SokoGrump.DataAccess\SokoGrump.DataAccess.csproj" />
     <ProjectReference Include="..\SokoGrump.GameLogic\SokoGrump.GameLogic.csproj" />
     <ProjectReference Include="..\SokoGrump.Models\SokoGrump.Models.csproj" />
