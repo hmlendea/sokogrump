@@ -2,7 +2,8 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using NuciXNA.DataAccess.Resources;
+
+using NuciXNA.DataAccess.Content;
 
 using SokoGrump.Gui.Helpers;
 using SokoGrump.Settings;
@@ -38,7 +39,7 @@ namespace SokoGrump.Gui
         /// </summary>
         public void LoadContent()
         {
-            fpsFont = ResourceManager.Instance.LoadSpriteFont("Fonts/FrameCounterFont");
+            fpsFont = NuciContentManager.Instance.LoadSpriteFont("Fonts/FrameCounterFont");
         }
 
         /// <summary>

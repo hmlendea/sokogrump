@@ -1,14 +1,16 @@
 ﻿using System.IO;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+
 using NuciXNA.Gui;
 using NuciXNA.Gui.Screens;
 using NuciXNA.Input;
 using NuciXNA.Primitives;
 
 using SokoGrump.GameLogic.GameManagers;
-using SokoGrump.Gui.GuiElements;
+using SokoGrump.Gui.Controls;
 using SokoGrump.Models;
 
 namespace SokoGrump.Gui.Screens
@@ -33,7 +35,7 @@ namespace SokoGrump.Gui.Screens
         /// <summary>
         /// Loads the content.
         /// </summary>
-        public override void LoadContent()
+        protected override void DoLoadContent()
         {
             game = new GameManager();
             game.LoadContent();
@@ -52,26 +54,26 @@ namespace SokoGrump.Gui.Screens
                 Location = new Point2D(0, 24)
             };
 
-            GuiManager.Instance.GuiElements.Add(gameBoard);
-            GuiManager.Instance.GuiElements.Add(infoBar);
-
-            base.LoadContent();
+            GuiManager.Instance.RegisterControls(gameBoard, infoBar);
+            RegisterEvents();
+            SetChildrenProperties();
         }
 
         /// <summary>
         /// Unloads the content.
         /// </summary>
-        public override void UnloadContent()
+        protected override void DoUnloadContent()
         {
             game.UnloadContent();
-
-            base.UnloadContent();
+            UnregisterEvents();
         }
 
-        public override void Update(GameTime gameTime)
+        /// <summary>
+        /// Updates the content.
+        /// </summary>
+        /// <param name="gameTime">The game time.</param>
+        protected override void DoUpdate(GameTime gameTime)
         {
-            base.Update(gameTime);
-
             game.Update(gameTime.ElapsedGameTime.TotalMilliseconds);
 
             if (game.Completed)
@@ -82,30 +84,44 @@ namespace SokoGrump.Gui.Screens
                     ScreenManager.Instance.ChangeScreens(typeof(VictoryScreen), game.Level + 1);
                 }
             }
+
+            SetChildrenProperties();
         }
 
-        protected override void RegisterEvents()
+        /// <summary>
+        /// Draw the content on the specified spriteBatch.
+        /// </summary>
+        /// <param name="spriteBatch">Sprite batch.</param>
+        protected override void DoDraw(SpriteBatch spriteBatch)
         {
-            base.RegisterEvents();
 
-            InputManager.Instance.KeyboardKeyPressed += InputManager_KeyboardKeyPressed;
         }
 
-        protected override void UnregisterEvents()
+        /// <summary>
+        /// Registers the events.
+        /// </summary>
+        void RegisterEvents()
         {
-            base.UnregisterEvents();
-
-            InputManager.Instance.KeyboardKeyPressed -= InputManager_KeyboardKeyPressed;
+            InputManager.Instance.KeyboardKeyPressed += OnInputManagerKeyboardKeyPressed;
         }
 
-        protected override void SetChildrenProperties()
+        /// <summary>
+        /// Unregisters the events.
+        /// </summary>
+        void UnregisterEvents()
+        {
+            InputManager.Instance.KeyboardKeyPressed -= OnInputManagerKeyboardKeyPressed;
+        }
+
+        /// <summary>
+        /// Sets the properties of the child controls.
+        /// </summary>
+        void SetChildrenProperties()
         {
             infoBar.Size = new Size2D(ScreenManager.Instance.Size.Width, 24);
-
-            base.SetChildrenProperties();
         }
 
-        void InputManager_KeyboardKeyPressed(object sender, KeyboardKeyEventArgs e)
+        void OnInputManagerKeyboardKeyPressed(object sender, KeyboardKeyEventArgs e)
         {
             switch (e.Key)
             {

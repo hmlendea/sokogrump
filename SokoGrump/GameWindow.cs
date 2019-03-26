@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-using NuciXNA.DataAccess.Resources;
+using NuciXNA.DataAccess.Content;
 using NuciXNA.Graphics;
 using NuciXNA.Gui;
 using NuciXNA.Gui.Screens;
@@ -67,7 +67,7 @@ namespace SokoGrump
             GraphicsManager.Instance.SpriteBatch = spriteBatch;
             GraphicsManager.Instance.Graphics = graphics;
 
-            ResourceManager.Instance.LoadContent(Content, GraphicsDevice);
+            NuciContentManager.Instance.LoadContent(Content, GraphicsDevice);
             SettingsManager.Instance.LoadContent();
 
             ScreenManager.Instance.SpriteBatch = spriteBatch;

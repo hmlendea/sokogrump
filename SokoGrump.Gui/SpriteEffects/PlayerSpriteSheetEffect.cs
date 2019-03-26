@@ -19,7 +19,11 @@ namespace SokoGrump.Gui.SpriteEffects
             this.game = game;
         }
 
-        public override void UpdateFrame(GameTime gameTime)
+        /// <summary>
+        /// Updates the content.
+        /// </summary>
+        /// <param name="gameTime">Game time.</param>
+        protected override void DoUpdate(GameTime gameTime)
         {
             Player player = game.GetPlayer();
 

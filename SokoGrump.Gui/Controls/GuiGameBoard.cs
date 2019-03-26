@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
 using NuciXNA.Graphics.Drawing;
-using NuciXNA.Gui.GuiElements;
+using NuciXNA.Gui.Controls;
 using NuciXNA.Primitives;
 
 using SokoGrump.GameLogic.GameManagers;
@@ -12,24 +14,16 @@ using SokoGrump.Gui.SpriteEffects;
 using SokoGrump.Models;
 using SokoGrump.Settings;
 
-namespace SokoGrump.Gui.GuiElements
+namespace SokoGrump.Gui.Controls
 {
     /// <summary>
     /// World map GUI element.
     /// </summary>
-    public class GuiGameBoard : GuiElement
+    public class GuiGameBoard : GuiControl
     {
-        /// <summary>
-        /// Gets the selected province identifier.
-        /// </summary>
-        /// <value>The selected province identifier.</value>
-        public string SelectedProvinceId { get; private set; }
-
         IGameManager game;
 
-        TileSpriteSheetEffect tileEffect;
-        CrateSpriteSheetEffect crateEffect;
-        Dictionary<int, TextureSprite> terrainSprites;
+        Dictionary<int, TextureSprite> tileSprites;
         TextureSprite targetSprite;
         TextureSprite playerSprite;
 
@@ -41,9 +35,9 @@ namespace SokoGrump.Gui.GuiElements
         /// <summary>
         /// Loads the content.
         /// </summary>
-        public override void LoadContent()
+        protected override void DoLoadContent()
         {
-            terrainSprites = new Dictionary<int, TextureSprite>();
+            tileSprites = new Dictionary<int, TextureSprite>();
             targetSprite = new TextureSprite
             {
                 ContentFile = "SpriteSheets/target"
@@ -53,13 +47,8 @@ namespace SokoGrump.Gui.GuiElements
                 ContentFile = "SpriteSheets/player",
                 SourceRectangle = new Rectangle2D(0, 0, GameDefines.MapTileSize, GameDefines.MapTileSize),
                 SpriteSheetEffect = new PlayerSpriteSheetEffect(game),
-                Active = true
+                IsActive = true
             };
-
-            playerSprite.SpriteSheetEffect.Activate();
-
-            tileEffect = new TileSpriteSheetEffect(game);
-            crateEffect = new CrateSpriteSheetEffect(game);
 
             foreach (Tile tile in game.GetTiles())
             {
@@ -67,48 +56,47 @@ namespace SokoGrump.Gui.GuiElements
                 {
                     ContentFile = tile.SpriteSheet,
                     SourceRectangle = new Rectangle2D(0, 0, GameDefines.MapTileSize, GameDefines.MapTileSize),
-                    Active = true
+                    IsActive = true
                 };
 
                 if (tile.Id == 2)
                 {
-                    tileSprite.SpriteSheetEffect = crateEffect;
+                    tileSprite.SpriteSheetEffect = new CrateSpriteSheetEffect(game);
                 }
                 else
                 {
-                    tileSprite.SpriteSheetEffect = tileEffect;
+                    tileSprite.SpriteSheetEffect = new TileSpriteSheetEffect(game);
                 }
 
                 tileSprite.LoadContent();
+                tileSprite.SpriteSheetEffect.Activate();
 
-                terrainSprites.Add(tile.Id, tileSprite);
+                tileSprites.Add(tile.Id, tileSprite);
             }
-
-            tileEffect.Activate();
-            crateEffect.Activate();
 
             targetSprite.LoadContent();
             playerSprite.LoadContent();
-            base.LoadContent();
+            playerSprite.SpriteSheetEffect.Activate();
         }
 
         /// <summary>
         /// Unloads the content.
         /// </summary>
-        public override void UnloadContent()
+        protected override void DoUnloadContent()
         {
-            terrainSprites.Values.ToList().ForEach(x => x.UnloadContent());
+            tileSprites.Values.ToList().ForEach(x => x.UnloadContent());
             targetSprite.UnloadContent();
             playerSprite.UnloadContent();
-            base.UnloadContent();
 
-            terrainSprites.Clear();
+            tileSprites.Clear();
         }
 
-        public override void Update(GameTime gameTime)
+        /// <summary>
+        /// Updates the content.
+        /// </summary>
+        /// <param name="gameTime">The game time.</param>
+        protected override void DoUpdate(GameTime gameTime)
         {
-            base.Update(gameTime);
-
             targetSprite.Update(gameTime);
             playerSprite.Update(gameTime);
 
@@ -121,7 +109,7 @@ namespace SokoGrump.Gui.GuiElements
         /// Draw the content on the specified spriteBatch.
         /// </summary>
         /// <param name="spriteBatch">Sprite batch.</param>
-        public override void Draw(SpriteBatch spriteBatch)
+        protected override void DoDraw(SpriteBatch spriteBatch)
         {
             List<Point2D> targets = game.GetTargets();
 
@@ -131,14 +119,16 @@ namespace SokoGrump.Gui.GuiElements
                 {
                     Tile tile = game.GetTile(x, y);
 
-                    TextureSprite terrainSprite = terrainSprites[tile.Id];
-                    terrainSprite.Location = Location + new Point2D(
+                    TextureSprite tileSprite = tileSprites[tile.Id];
+                    tileSprite.Location = Location + new Point2D(
                         x * GameDefines.MapTileSize,
                         y * GameDefines.MapTileSize);
 
                     // TODO: This is temporary
                     if (tile.Id == 0 || tile.Id == 1)
                     {
+                        TileSpriteSheetEffect tileEffect = (TileSpriteSheetEffect)tileSprite.SpriteSheetEffect;
+
                         tileEffect.TileLocation = new Point2D(x, y);
 
                         if (tile.Id == 0)
@@ -150,24 +140,26 @@ namespace SokoGrump.Gui.GuiElements
                             tileEffect.TilesWith = new List<int> { 1 };
                         }
 
-                        tileEffect.UpdateFrame(null);
+                        tileEffect.Update(null);
                     }
                     else if (tile.Id == 2)
                     {
+                        CrateSpriteSheetEffect crateEffect = (CrateSpriteSheetEffect)tileSprite.SpriteSheetEffect;
+
                         crateEffect.TileLocation = new Point2D(x, y);
-                        crateEffect.UpdateFrame(null);
+                        crateEffect.Update(null);
                     }
 
                     if (tile.Id == 2 && targets.Any(target => target.X == x && target.Y == y))
                     {
-                        terrainSprite.Tint = Colour.Red;
+                        tileSprite.Tint = Colour.Red;
                     }
                     else
                     {
-                        terrainSprite.Tint = Colour.White;
+                        tileSprite.Tint = Colour.White;
                     }
 
-                    terrainSprite.Draw(spriteBatch);
+                    tileSprite.Draw(spriteBatch);
                 }
             }
 
@@ -188,8 +180,6 @@ namespace SokoGrump.Gui.GuiElements
             }
 
             playerSprite.Draw(spriteBatch);
-
-            base.Draw(spriteBatch);
         }
     }
 }

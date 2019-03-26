@@ -26,7 +26,11 @@ namespace SokoGrump.Gui.SpriteEffects
             this.game = game;
         }
 
-        public override void UpdateFrame(GameTime gameTime)
+        /// <summary>
+        /// Updates the content.
+        /// </summary>
+        /// <param name="gameTime">Game time.</param>
+        protected override void DoUpdate(GameTime gameTime)
         {
             // TODO: Dirty fix
             if (TileLocation.X == 0 || TileLocation.X == GameDefines.BoardWidth - 1 ||

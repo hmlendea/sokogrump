@@ -1,8 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 using NuciXNA.Graphics.Drawing;
 using NuciXNA.Gui;
-using NuciXNA.Gui.GuiElements;
+using NuciXNA.Gui.Controls;
 using NuciXNA.Gui.Screens;
 using NuciXNA.Input;
 using NuciXNA.Primitives;
@@ -24,7 +25,7 @@ namespace SokoGrump.Gui.Screens
         /// Gets or sets the logo.
         /// </summary>
         /// <value>The logo.</value>
-        public GuiImage LogoImage { get; set; }
+        public GuiImage Image { get; set; }
 
         int level;
 
@@ -42,69 +43,90 @@ namespace SokoGrump.Gui.Screens
         /// <summary>
         /// Loads the content.
         /// </summary>
-        public override void LoadContent()
+        protected override void DoLoadContent()
         {
-            LogoImage = new GuiImage
+            Image = new GuiImage
             {
                 ContentFile = "Images/grumpy_cat_good",
                 TextureLayout = TextureLayout.Stretch
             };
 
-            GuiManager.Instance.GuiElements.Add(LogoImage);
+            GuiManager.Instance.RegisterControls(Image);
+            RegisterEvents();
+            SetChildrenProperties();
+        }
 
-            base.LoadContent();
+        /// <summary>
+        /// Unloads the content.
+        /// </summary>
+        protected override void DoUnloadContent()
+        {
+            UnregisterEvents();
         }
 
         /// <summary>
         /// Updates the content.
         /// </summary>
         /// <param name="gameTime">Game time.</param>
-        public override void Update(GameTime gameTime)
+        protected override void DoUpdate(GameTime gameTime)
         {
-            base.Update(gameTime);
-
             if (Delay <= 0)
             {
                 ChangeScreen();
             }
 
             Delay -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            SetChildrenProperties();
         }
 
-        protected override void SetChildrenProperties()
+        /// <summary>
+        /// Draw the content on the specified spriteBatch.
+        /// </summary>
+        /// <param name="spriteBatch">Sprite batch.</param>
+        protected override void DoDraw(SpriteBatch spriteBatch)
         {
-            LogoImage.Size = ScreenManager.Instance.Size;
+
         }
 
-        protected override void RegisterEvents()
+        /// <summary>
+        /// Registers the 
+        void RegisterEvents()
         {
-            base.RegisterEvents();
-
-            InputManager.Instance.KeyboardKeyPressed += InputManager_KeyboardKeyPressed;
-            InputManager.Instance.MouseButtonPressed += InputManager_MouseButtonPressed;
+            InputManager.Instance.KeyboardKeyPressed += OnInputManagerKeyboardKeyPressed;
+            InputManager.Instance.MouseButtonPressed += OnInputManagerMouseButtonPressed;
         }
 
-        protected override void UnregisterEvents()
+        /// <summary>
+        /// Unregisters the events.
+        /// </summary>
+        void UnregisterEvents()
         {
-            base.UnregisterEvents();
-
-            InputManager.Instance.KeyboardKeyPressed -= InputManager_KeyboardKeyPressed;
-            InputManager.Instance.MouseButtonPressed -= InputManager_MouseButtonPressed;
+            InputManager.Instance.KeyboardKeyPressed -= OnInputManagerKeyboardKeyPressed;
+            InputManager.Instance.MouseButtonPressed -= OnInputManagerMouseButtonPressed;
         }
 
-        void InputManager_KeyboardKeyPressed(object sender, KeyboardKeyEventArgs e)
+        /// <summary>
+        /// Sets the properties of the child controls.
+        /// </summary>
+        void SetChildrenProperties()
+        {
+            Image.Size = ScreenManager.Instance.Size;
+        }
+
+        void OnInputManagerKeyboardKeyPressed(object sender, KeyboardKeyEventArgs e)
         {
             ChangeScreen();
         }
 
-        void InputManager_MouseButtonPressed(object sender, MouseButtonEventArgs e)
+        void OnInputManagerMouseButtonPressed(object sender, MouseButtonEventArgs e)
         {
             ChangeScreen();
         }
 
         void ChangeScreen()
         {
-            ScreenManager.Instance.ChangeScreens(typeof(GameplayScreen), level);
+            ScreenManager.Instance.ChangeScreens<GameplayScreen>(level);
         }
     }
 }
