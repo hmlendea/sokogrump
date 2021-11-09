@@ -21,11 +21,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
-    - name: Setup MGCB Editor
-      run: |
-        dotnet tool install --global dotnet-mgcb-editor
-        mgcb-editor --register
-    - name: Setup Fonts
+    - name: Setup fonts
       run: |
         echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | sudo debconf-set-selections
         sudo apt install ttf-mscorefonts-installer
