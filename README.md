@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/hmlendea/sokogrump.svg?branch=master)](https://travis-ci.com/hmlendea/sokogrump)
+[![Build Status](https://github.com/hmlendea/sokogrump/actions/workflows/dotnet.yml/badge.svg)](https://github.com/hmlendea/sokogrump/actions/workflows/dotnet.yml)
 
 # About
 SokoGrump is a puzzle game similar to the classic Sokoban.
