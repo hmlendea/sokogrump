@@ -1,3 +1,5 @@
+[![Build Status](https://github.com/hmlendea/sokogrump/actions/workflows/dotnet.yml/badge.svg)](https://github.com/hmlendea/sokogrump/actions/workflows/dotnet.yml)
+
 # About
 SokoGrump is a puzzle game similar to the classic Sokoban.
 It the features the Grumpy Cat trying to push all the crates in a werehouse to their storge locations, without getting stuck.
