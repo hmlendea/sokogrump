@@ -22,7 +22,13 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Setup MGCB Editor
-      run: dotnet tool install --global dotnet-mgcb-editor && mgcb-editor --register
+      run: |
+        dotnet tool install --global dotnet-mgcb-editor
+        mgcb-editor --register
+    - name: Setup Fonts
+      run: |
+        sudo apt install ttf-mscorefonts-installer
+        sudo fc-cache -f
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
