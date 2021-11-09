@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.com/hmlendea/sokogrump.svg?branch=master)](https://travis-ci.com/hmlendea/sokogrump)
-
 # About
 SokoGrump is a puzzle game similar to the classic Sokoban.
 It the features the Grumpy Cat trying to push all the crates in a werehouse to their storge locations, without getting stuck.
