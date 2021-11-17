@@ -50,10 +50,20 @@ jobs:
         # Prefix the list here with "+" to use these queries and those in the config file.
         # queries: ./path/to/local/query, your-org/your-repo/queries@main
 
-    # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
-    # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v1
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core 3.1	
+      uses: actions/setup-dotnet@v1	
+      with:	
+        dotnet-version: 3.1.x
+    - name: Setup .NET 5.0
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Setup fonts
+      run: |
+        echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | sudo debconf-set-selections
+        sudo apt install ttf-mscorefonts-installer
+        sudo fc-cache -f
 
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 https://git.io/JvXDl
