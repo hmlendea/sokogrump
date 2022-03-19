@@ -1,8 +1,8 @@
 ﻿using System.IO;
-using System.Collections.Generic;
 
 using NuciXNA.DataAccess.IO;
 using NuciXNA.Graphics;
+using NuciXNA.Primitives;
 
 namespace SokoGrump.Settings
 {

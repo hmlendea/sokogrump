@@ -1,8 +1,6 @@
 ﻿
 using System;
 
-using Microsoft.Xna.Framework;
-
 using NuciXNA.Gui.Controls;
 using NuciXNA.Gui.Screens;
 
@@ -53,17 +51,6 @@ namespace SokoGrump.Gui.Screens
             SettingsManager.Instance.SaveContent();
 
             UnregisterEvents();
-
-            base.DoUnloadContent();
-        }
-
-        /// <summary>
-        /// Updates the content.
-        /// </summary>
-        /// <param name="gameTime">Game time.</param>
-        protected override void DoUpdate(GameTime gameTime)
-        {
-            SettingsManager.Instance.GraphicsSettings.Fullscreen = fullScreenToggle.IsOn;
 
             base.DoUnloadContent();
         }
