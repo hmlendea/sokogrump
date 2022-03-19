@@ -9,6 +9,7 @@ namespace SokoGrump.Gui.Screens
     public class TitleScreen : MenuScreen
     {
         GuiMenuLink newGameLink;
+        GuiMenuLink settingsLink;
         GuiMenuItem extiAction;
 
         /// <summary>
@@ -22,6 +23,12 @@ namespace SokoGrump.Gui.Screens
                 Text = "New Game",
                 TargetScreen = typeof(GameplayScreen)
             };
+            settingsLink = new GuiMenuLink
+            {
+                Id = nameof(settingsLink),
+                Text = "Settings",
+                TargetScreen = typeof(SettingsScreen)
+            };
             extiAction = new GuiMenuItem
             {
                 Id = nameof(extiAction),
@@ -29,6 +36,7 @@ namespace SokoGrump.Gui.Screens
             };
 
             Items.Add(newGameLink);
+            Items.Add(settingsLink);
             Items.Add(extiAction);
 
             base.DoLoadContent();
