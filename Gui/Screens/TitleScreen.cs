@@ -10,7 +10,6 @@ namespace SokoGrump.Gui.Screens
     {
         GuiMenuLink newGameLink;
         GuiMenuLink settingsLink;
-        GuiMenuItem extiAction;
 
         /// <summary>
         /// Loads the content.
@@ -30,15 +29,9 @@ namespace SokoGrump.Gui.Screens
                 Text = "Settings",
                 TargetScreen = typeof(SettingsScreen)
             };
-            extiAction = new GuiMenuItem
-            {
-                Id = nameof(extiAction),
-                Text = "Exit"
-            };
 
             Items.Add(newGameLink);
             Items.Add(settingsLink);
-            Items.Add(extiAction);
 
             base.DoLoadContent();
         }
