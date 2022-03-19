@@ -21,7 +21,8 @@ namespace SokoGrump.Gui.Screens
             {
                 Id = nameof(newGameLink),
                 Text = "New Game",
-                TargetScreen = typeof(GameplayScreen)
+                TargetScreen = typeof(GameplayScreen),
+                Parameters = new object[] { default(int) }
             };
             settingsLink = new GuiMenuLink
             {
