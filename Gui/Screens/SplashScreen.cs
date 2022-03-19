@@ -119,7 +119,7 @@ namespace SokoGrump.Gui.Screens
 
         void ChangeScreen()
         {
-            ScreenManager.Instance.ChangeScreens<GameplayScreen>(default(int));
+            ScreenManager.Instance.ChangeScreens<TitleScreen>();
         }
     }
 }
