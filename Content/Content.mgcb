@@ -87,6 +87,13 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/InfoBarFont.spritefont
 
+#begin Fonts/MenuFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/MenuFont.spritefont
+
 #begin ScreenManager/missing-texture.png
 /importer:TextureImporter
 /processor:TextureProcessor
