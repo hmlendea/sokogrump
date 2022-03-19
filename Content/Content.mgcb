@@ -106,7 +106,7 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/DefaultFont.spritefont
 
-#begin Images/grumpy_cat_good.jpg
+#begin Images/grumpy_cat_good.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -116,7 +116,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Images/grumpy_cat_good.jpg
+/build:Images/grumpy_cat_good.png
 
 #begin Tiles/player/player.png
 /importer:TextureImporter
