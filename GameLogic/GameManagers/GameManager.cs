@@ -162,9 +162,10 @@ namespace SokoGrump.GameLogic.GameManagers
                     {
                         if (board.Tiles[dest2X, dest2Y].Id == 0)
                         {
+                            int variation = board.Tiles[destX, destY].Variation;
                             board.Tiles[destX, destY] = boardManager.GetTile(0);
                             board.Tiles[dest2X, dest2Y] = boardManager.GetTile(2);
-                            board.Tiles[dest2X, dest2Y].Variation = board.Tiles[destX, destY].Variation;
+                            board.Tiles[dest2X, dest2Y].Variation = variation;
 
                             moved = true;
                         }
