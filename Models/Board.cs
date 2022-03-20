@@ -2,6 +2,8 @@
 
 using NuciXNA.Primitives;
 
+using SokoGrump.Settings;
+
 namespace SokoGrump.Models
 {
     public class Board : ModelBase
@@ -23,6 +25,21 @@ namespace SokoGrump.Models
         public Board()
         {
             Targets = new List<Point2D>();
+        }
+
+        public Board(Board board)
+        {
+            PlayerStartLocation = board.PlayerStartLocation;
+            Targets = new List<Point2D>(board.Targets);
+            Tiles = new Tile[GameDefines.BoardWidth, GameDefines.BoardHeight];
+
+            for (int y = 0; y < GameDefines.BoardHeight; y++)
+            {
+                for (int x = 0; x < GameDefines.BoardWidth; x++)
+                {
+                    Tiles[x, y] = new Tile(board.Tiles[x, y]);
+                }
+            }
         }
     }
 }

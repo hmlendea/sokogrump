@@ -25,5 +25,17 @@
         /// </summary>
         /// <value>The variation.</value>
         public int Variation { get; set; }
+
+        public Tile()
+        {
+        }
+
+        public Tile(Tile tile)
+        {
+            Id = tile.Id;
+            SpriteSheet = tile.SpriteSheet;
+            TileType = tile.TileType;
+            Variation = tile.Variation;
+        }
     }
 }

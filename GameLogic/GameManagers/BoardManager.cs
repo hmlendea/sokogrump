@@ -32,7 +32,8 @@ namespace SokoGrump.GameLogic.GameManagers
 
         public Board GetBoard(int id)
         {
-            return boards[id.ToString()];
+            Board loadedBoard = boards[id.ToString()];
+            return new Board(loadedBoard);
         }
 
         public Tile GetTile(int id)
