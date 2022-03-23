@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Xna.Framework;
@@ -19,17 +18,17 @@ namespace SokoGrump.Gui.Controls
     /// <summary>
     /// World map GUI element.
     /// </summary>
-    public class GuiGameBoard : GuiControl
+    public class GuiEditorBoard : GuiControl
     {
-        IGameManager game;
+        IEditorManager editor;
 
         Dictionary<int, TextureSprite> tileSprites;
         TextureSprite targetSprite;
         TextureSprite playerSprite;
 
-        public GuiGameBoard(IGameManager game)
+        public GuiEditorBoard(IEditorManager editor)
         {
-            this.game = game;
+            this.editor = editor;
         }
 
         /// <summary>
@@ -46,11 +45,11 @@ namespace SokoGrump.Gui.Controls
             {
                 ContentFile = "SpriteSheets/player",
                 SourceRectangle = new Rectangle2D(0, 0, GameDefines.MapTileSize, GameDefines.MapTileSize),
-                SpriteSheetEffect = new PlayerSpriteSheetEffect(game),
+                SpriteSheetEffect = new PlayerSpriteSheetEffect(),
                 IsActive = true
             };
 
-            foreach (Tile tile in game.GetTiles())
+            foreach (Tile tile in editor.GetTiles())
             {
                 TextureSprite tileSprite = new TextureSprite
                 {
@@ -59,14 +58,7 @@ namespace SokoGrump.Gui.Controls
                     IsActive = true
                 };
 
-                if (tile.Id == 2)
-                {
-                    tileSprite.SpriteSheetEffect = new CrateSpriteSheetEffect(game);
-                }
-                else
-                {
-                    tileSprite.SpriteSheetEffect = new ConnectedTileSpriteSheetEffect(game);
-                }
+                tileSprite.SpriteSheetEffect = new BasicTileSpriteSheetEffect();
 
                 tileSprite.LoadContent();
                 tileSprite.SpriteSheetEffect.Activate();
@@ -100,9 +92,9 @@ namespace SokoGrump.Gui.Controls
             targetSprite.Update(gameTime);
             playerSprite.Update(gameTime);
 
-            Player player = game.GetPlayer();
+            //Player player = board.GetPlayer();
 
-            playerSprite.Location = Location + player.Location * GameDefines.MapTileSize;
+            //playerSprite.Location = Location + player.Location * GameDefines.MapTileSize;
         }
 
         /// <summary>
@@ -111,46 +103,18 @@ namespace SokoGrump.Gui.Controls
         /// <param name="spriteBatch">Sprite batch.</param>
         protected override void DoDraw(SpriteBatch spriteBatch)
         {
-            List<Point2D> targets = game.GetTargets();
-
             for (int y = 0; y < GameDefines.BoardHeight; y++)
             {
                 for (int x = 0; x < GameDefines.BoardWidth; x++)
                 {
-                    Tile tile = game.GetTile(x, y);
+                    Tile tile = editor.GetTile(x, y);
 
                     TextureSprite tileSprite = tileSprites[tile.Id];
                     tileSprite.Location = Location + new Point2D(
                         x * GameDefines.MapTileSize,
                         y * GameDefines.MapTileSize);
 
-                    // TODO: This is temporary
-                    if (tile.Id == 0 || tile.Id == 1)
-                    {
-                        ConnectedTileSpriteSheetEffect tileEffect = (ConnectedTileSpriteSheetEffect)tileSprite.SpriteSheetEffect;
-
-                        tileEffect.TileLocation = new Point2D(x, y);
-
-                        if (tile.Id == 0)
-                        {
-                            tileEffect.TilesWith = new List<int> { 0, 2, 3, 5 };
-                        }
-                        else if (tile.Id == 1)
-                        {
-                            tileEffect.TilesWith = new List<int> { 1 };
-                        }
-
-                        tileEffect.Update(null);
-                    }
-                    else if (tile.Id == 2)
-                    {
-                        CrateSpriteSheetEffect crateEffect = (CrateSpriteSheetEffect)tileSprite.SpriteSheetEffect;
-
-                        crateEffect.TileLocation = new Point2D(x, y);
-                        crateEffect.Update(null);
-                    }
-
-                    if (tile.Id == 2 && targets.Any(target => target.X == x && target.Y == y))
+                    if (tile.Id == 2 && editor.GetTargets().Any(target => target.X == x && target.Y == y))
                     {
                         tileSprite.Tint = Colour.Red;
                     }
@@ -163,9 +127,9 @@ namespace SokoGrump.Gui.Controls
                 }
             }
 
-            foreach (Point2D targetLocation in targets)
+            foreach (Point2D targetLocation in editor.GetTargets())
             {
-                Tile tile = game.GetTile(targetLocation.X, targetLocation.Y);
+                Tile tile = editor.GetTile(targetLocation.X, targetLocation.Y);
 
                 if (tile.Id == 2)
                 {

@@ -9,7 +9,7 @@ using SokoGrump.Settings;
 
 namespace SokoGrump.Gui.SpriteEffects
 {
-    public class TileSpriteSheetEffect : SpriteSheetEffect
+    public class ConnectedTileSpriteSheetEffect : SpriteSheetEffect
     {
         readonly IGameManager game;
 
@@ -17,7 +17,7 @@ namespace SokoGrump.Gui.SpriteEffects
 
         public List<int> TilesWith { get; set; }
 
-        public TileSpriteSheetEffect(IGameManager game)
+        public ConnectedTileSpriteSheetEffect(IGameManager game)
             : base()
         {
             FrameAmount = new Size2D(3, 6);

@@ -10,12 +10,17 @@ namespace SokoGrump.Gui.SpriteEffects
     public class PlayerSpriteSheetEffect : SpriteSheetEffect
     {
         readonly IGameManager game;
+        readonly IEditorManager editor;
 
-        public PlayerSpriteSheetEffect(IGameManager game)
+        public PlayerSpriteSheetEffect()
             : base()
         {
             FrameAmount = new Size2D(3, 6);
+        }
 
+        public PlayerSpriteSheetEffect(IGameManager game)
+            : this()
+        {
             this.game = game;
         }
 
@@ -25,9 +30,14 @@ namespace SokoGrump.Gui.SpriteEffects
         /// <param name="gameTime">Game time.</param>
         protected override void DoUpdate(GameTime gameTime)
         {
-            Player player = game.GetPlayer();
+            MovementDirection direction = MovementDirection.West;
 
-            if (player.Direction == MovementDirection.West)
+            if (game is not null)
+            {
+                direction = game.GetPlayer().Direction;
+            }
+
+            if (direction == MovementDirection.West)
             {
                 CurrentFrame = new Point2D(0, 0);
             }
