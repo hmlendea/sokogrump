@@ -29,6 +29,7 @@ namespace SokoGrump.GameLogic.GameManagers
         {
             boardManager.LoadContent();
             board = boardManager.GetBoard(10);
+
             player = new Player();
         }
 
@@ -45,7 +46,15 @@ namespace SokoGrump.GameLogic.GameManagers
             {
                 for (int x = 0; x < GameDefines.BoardWidth; x++)
                 {
-                    fileContents += GetTile(x, y).Id;
+                    if (board.PlayerStartLocation.X == x &&
+                        board.PlayerStartLocation.Y == y)
+                    {
+                        fileContents += 4;
+                    }
+                    else
+                    {
+                        fileContents += GetTile(x, y).Id;
+                    }
                 }
 
                 fileContents += Environment.NewLine;
@@ -53,13 +62,17 @@ namespace SokoGrump.GameLogic.GameManagers
 
             // TODO: Save to a user-inputted path
             string path = Path.Combine(ApplicationPaths.UserDataDirectory, "editor.lvl");
-            
+
             File.WriteAllText(path, fileContents);
         }
 
         public void Update(double elapsedMiliseconds)
         {
             boardManager.Update(elapsedMiliseconds);
+
+            player.Location = new Point2D(
+                board.PlayerStartLocation.X,
+                board.PlayerStartLocation.Y);
         }
 
         public List<Point2D> GetTargets()
@@ -86,6 +99,16 @@ namespace SokoGrump.GameLogic.GameManagers
                 if (board.Targets.All(target => target.X != x || target.Y != y))
                 {
                     board.Targets.Add(new Point2D(x, y));
+                }
+            }
+            else if (tileId == 4)
+            {
+                board.PlayerStartLocation = new Point2D(x, y);
+
+                if (board.Tiles[x, y].Id != 0 &&
+                    board.Tiles[x, y].Id != 3)
+                {
+                    board.Tiles[x, y] = boardManager.GetTile(0);
                 }
             }
             else if (tileId == 5)

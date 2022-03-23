@@ -44,9 +44,7 @@ namespace SokoGrump.Gui.Controls
             playerSprite = new TextureSprite
             {
                 ContentFile = "SpriteSheets/player",
-                SourceRectangle = new Rectangle2D(0, 0, GameDefines.MapTileSize, GameDefines.MapTileSize),
-                SpriteSheetEffect = new PlayerSpriteSheetEffect(),
-                IsActive = true
+                SourceRectangle = new Rectangle2D(0, 0, GameDefines.MapTileSize, GameDefines.MapTileSize)
             };
 
             foreach (Tile tile in editor.GetTiles())
@@ -75,7 +73,6 @@ namespace SokoGrump.Gui.Controls
 
             targetSprite.LoadContent();
             playerSprite.LoadContent();
-            playerSprite.SpriteSheetEffect.Activate();
         }
 
         /// <summary>
@@ -99,9 +96,9 @@ namespace SokoGrump.Gui.Controls
             targetSprite.Update(gameTime);
             playerSprite.Update(gameTime);
 
-            //Player player = board.GetPlayer();
+            Player player = editor.GetPlayer();
 
-            //playerSprite.Location = Location + player.Location * GameDefines.MapTileSize;
+            playerSprite.Location = Location + player.Location * GameDefines.MapTileSize;
         }
 
         /// <summary>

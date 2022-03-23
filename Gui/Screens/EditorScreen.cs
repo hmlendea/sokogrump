@@ -24,6 +24,7 @@ namespace SokoGrump.Gui.Screens
         GuiTileButton wallTileButton;
         GuiTileButton terrainTileButton;
         GuiTileButton targetTileButton;
+        GuiImage playerTileButton;
         GuiTileButton emptyCrateTileButton;
         GuiTileButton filledCrateTileButton;
 
@@ -67,31 +68,39 @@ namespace SokoGrump.Gui.Screens
                 Size = buttonSize
             };
 
-            targetTileButton = new GuiTileButton(3)
+            playerTileButton = new GuiImage()
             {
                 Location = new Point2D(0, GameDefines.MapTileSize * 2),
+                ContentFile = "Tiles/player/player",
                 Size = buttonSize
             };
 
-            emptyCrateTileButton = new GuiTileButton(2)
+            targetTileButton = new GuiTileButton(3)
             {
                 Location = new Point2D(0, GameDefines.MapTileSize * 3),
                 Size = buttonSize
             };
 
-            filledCrateTileButton = new GuiTileButton(5)
+            emptyCrateTileButton = new GuiTileButton(2)
             {
                 Location = new Point2D(0, GameDefines.MapTileSize * 4),
+                Size = buttonSize
+            };
+
+            filledCrateTileButton = new GuiTileButton(5)
+            {
+                Location = new Point2D(0, GameDefines.MapTileSize * 5),
                 Size = buttonSize
             };
 
             GuiManager.Instance.RegisterControls(
                 editorBoard,
                 saveButton,
-                terrainTileButton,
                 wallTileButton,
-                emptyCrateTileButton,
+                terrainTileButton,
+                playerTileButton,
                 targetTileButton,
+                emptyCrateTileButton,
                 filledCrateTileButton);
 
             RegisterEvents();
@@ -133,6 +142,7 @@ namespace SokoGrump.Gui.Screens
 
             wallTileButton.Clicked += delegate { selectedTileId = wallTileButton.TileId; };
             terrainTileButton.Clicked += delegate { selectedTileId = terrainTileButton.TileId; };
+            playerTileButton.Clicked += delegate { selectedTileId = 4; };
             targetTileButton.Clicked += delegate { selectedTileId = targetTileButton.TileId; };
             emptyCrateTileButton.Clicked += delegate { selectedTileId = emptyCrateTileButton.TileId; };
             filledCrateTileButton.Clicked += delegate { selectedTileId = filledCrateTileButton.TileId; };
