@@ -30,6 +30,12 @@ namespace SokoGrump.Settings
         public static string SettingsFile => Path.Combine(UserDataDirectory, "Settings.xml");
 
         /// <summary>
+        /// Gets the save file path.
+        /// </summary>
+        /// <value>The path to the save file.</value>
+        public static string SaveFile => Path.Combine(UserDataDirectory, "progress.sav");
+
+        /// <summary>
         /// Gets the word lists directory.
         /// </summary>
         /// <value>The word lists directory.</value>

@@ -1,6 +1,8 @@
 ﻿using NuciXNA.Gui.Controls;
 using NuciXNA.Gui.Screens;
 
+using SokoGrump.Settings;
+
 namespace SokoGrump.Gui.Screens
 {
     /// <summary>
@@ -8,6 +10,7 @@ namespace SokoGrump.Gui.Screens
     /// </summary>
     public class TitleScreen : MenuScreen
     {
+        GuiMenuLink continueGameLink;
         GuiMenuLink newGameLink;
         GuiMenuLink settingsLink;
 
@@ -16,6 +19,13 @@ namespace SokoGrump.Gui.Screens
         /// </summary>
         protected override void DoLoadContent()
         {
+            continueGameLink = new GuiMenuLink
+            {
+                Id = nameof(continueGameLink),
+                Text = "Continue Game",
+                TargetScreen = typeof(GameplayScreen),
+                Parameters = new object[] { SettingsManager.Instance.UserData.LastLevel }
+            };
             newGameLink = new GuiMenuLink
             {
                 Id = nameof(newGameLink),
@@ -30,6 +40,7 @@ namespace SokoGrump.Gui.Screens
                 TargetScreen = typeof(SettingsScreen)
             };
 
+            Items.Add(continueGameLink);
             Items.Add(newGameLink);
             Items.Add(settingsLink);
 

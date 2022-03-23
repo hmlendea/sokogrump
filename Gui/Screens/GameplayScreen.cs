@@ -12,6 +12,7 @@ using NuciXNA.Primitives;
 using SokoGrump.GameLogic.GameManagers;
 using SokoGrump.Gui.Controls;
 using SokoGrump.Models;
+using SokoGrump.Settings;
 
 namespace SokoGrump.Gui.Screens
 {
@@ -66,6 +67,8 @@ namespace SokoGrump.Gui.Screens
         {
             game.UnloadContent();
             UnregisterEvents();
+
+            SettingsManager.Instance.SaveContent();
         }
 
         /// <summary>
@@ -78,10 +81,12 @@ namespace SokoGrump.Gui.Screens
 
             if (game.Completed)
             {
+                int nextLevel = game.Level + 1;
 
-                if (File.Exists(Path.Combine("Levels", (game.Level + 1) + ".lvl")))
+                if (File.Exists(Path.Combine("Levels", $"{nextLevel}.lvl")))
                 {
-                    ScreenManager.Instance.ChangeScreens(typeof(VictoryScreen), game.Level + 1);
+                    ScreenManager.Instance.ChangeScreens(typeof(VictoryScreen), nextLevel);
+                    SettingsManager.Instance.UserData.LastLevel = nextLevel;
                 }
             }
 

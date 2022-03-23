@@ -2,7 +2,6 @@
 
 using NuciXNA.DataAccess.IO;
 using NuciXNA.Graphics;
-using NuciXNA.Primitives;
 
 namespace SokoGrump.Settings
 {
@@ -41,6 +40,8 @@ namespace SokoGrump.Settings
 
         public GraphicsSettings GraphicsSettings { get; set; }
 
+        public UserData UserData { get; set; }
+
         /// <summary>
         /// Gets or sets the debug mode.
         /// </summary>
@@ -54,6 +55,7 @@ namespace SokoGrump.Settings
         {
             AudioSettings = new AudioSettings();
             GraphicsSettings = new GraphicsSettings();
+            UserData = new UserData();
         }
 
         /// <summary>
@@ -80,6 +82,8 @@ namespace SokoGrump.Settings
             SettingsManager storedSettings = xmlManager.Read(ApplicationPaths.SettingsFile);
 
             instance = storedSettings;
+
+            UserData.LastLevel = LoadLastSavedLevel();
         }
 
         /// <summary>
@@ -89,6 +93,8 @@ namespace SokoGrump.Settings
         {
             XmlFileObject<SettingsManager> xmlManager = new XmlFileObject<SettingsManager>();
             xmlManager.Write(ApplicationPaths.SettingsFile, this);
+
+            File.WriteAllText(ApplicationPaths.SaveFile, UserData.LastLevel.ToString());
         }
 
         /// <summary>
@@ -118,6 +124,19 @@ namespace SokoGrump.Settings
             {
                 GraphicsManager.Instance.Graphics.ApplyChanges();
             }
+        }
+
+        int LoadLastSavedLevel()
+        {
+            int level = 0;
+
+            if (File.Exists(ApplicationPaths.SaveFile))
+            {
+                string saveFileContents = File.ReadAllText(ApplicationPaths.SaveFile);
+                int.TryParse(saveFileContents, out level);
+            }
+
+            return level;
         }
     }
 }
