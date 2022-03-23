@@ -37,9 +37,7 @@ namespace SokoGrump.GameLogic.GameManagers
         }
 
         public Tile GetTile(int id)
-        {
-            return tiles[id];
-        }
+            => new Tile(tiles[id]);
 
         public IEnumerable<Tile> GetTiles()
         {
