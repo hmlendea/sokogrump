@@ -8,8 +8,6 @@ It the features the Grumpy Cat trying to push all the crates in a werehouse to t
 
 The game currently contains 25+ levels of progressive difficulty, and the goal is to complete all of them in as less moves as possible.
 
-The game also includes a level editor that the players can use to create and share their own puzzles.
-
 [![Preview screenshot](https://raw.githubusercontent.com/hmlendea/sokogrump/master/preview.png)](https://raw.githubusercontent.com/hmlendea/sokogrump/master/preview.png)
 
 # Details
@@ -17,4 +15,3 @@ The game also includes a level editor that the players can use to create and sha
  - Programming language: C#
  - Technologies used: .NET, MonoGame
  - Development environment: Visual Studio Code
- - Operating Systems: Linux
