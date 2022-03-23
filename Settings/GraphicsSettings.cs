@@ -6,8 +6,6 @@ namespace SokoGrump.Settings
 {
     public class GraphicsSettings
     {
-        Size2D resolution;
-
         /// <summary>
         /// Gets the resolution.
         /// </summary>
