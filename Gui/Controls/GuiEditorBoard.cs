@@ -58,7 +58,14 @@ namespace SokoGrump.Gui.Controls
                     IsActive = true
                 };
 
-                tileSprite.SpriteSheetEffect = new BasicTileSpriteSheetEffect();
+                if (tile.Id == 2)
+                {
+                    tileSprite.SpriteSheetEffect = new BasicTileSpriteSheetEffect();
+                }
+                else
+                {
+                    tileSprite.SpriteSheetEffect = new ConnectedTileSpriteSheetEffect(editor);
+                }
 
                 tileSprite.LoadContent();
                 tileSprite.SpriteSheetEffect.Activate();
@@ -113,6 +120,25 @@ namespace SokoGrump.Gui.Controls
                     tileSprite.Location = Location + new Point2D(
                         x * GameDefines.MapTileSize,
                         y * GameDefines.MapTileSize);
+
+                    // TODO: This is temporary
+                    if (tile.Id == 0 || tile.Id == 1)
+                    {
+                        ConnectedTileSpriteSheetEffect tileEffect = (ConnectedTileSpriteSheetEffect)tileSprite.SpriteSheetEffect;
+
+                        tileEffect.TileLocation = new Point2D(x, y);
+
+                        if (tile.Id == 0)
+                        {
+                            tileEffect.TilesWith = new List<int> { 0, 2, 3, 5 };
+                        }
+                        else if (tile.Id == 1)
+                        {
+                            tileEffect.TilesWith = new List<int> { 1 };
+                        }
+
+                        tileEffect.Update(null);
+                    }
 
                     if (tile.Id == 2 && editor.GetTargets().Any(target => target.X == x && target.Y == y))
                     {

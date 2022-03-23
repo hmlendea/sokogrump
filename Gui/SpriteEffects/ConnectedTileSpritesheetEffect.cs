@@ -12,6 +12,7 @@ namespace SokoGrump.Gui.SpriteEffects
     public class ConnectedTileSpriteSheetEffect : SpriteSheetEffect
     {
         readonly IGameManager game;
+        readonly IEditorManager editor;
 
         public Point2D TileLocation { get; set; }
 
@@ -24,6 +25,15 @@ namespace SokoGrump.Gui.SpriteEffects
             TilesWith = new List<int>();
 
             this.game = game;
+        }
+
+        public ConnectedTileSpriteSheetEffect(IEditorManager editor)
+            : base()
+        {
+            FrameAmount = new Size2D(3, 6);
+            TilesWith = new List<int>();
+
+            this.editor = editor;
         }
 
         /// <summary>
@@ -39,11 +49,11 @@ namespace SokoGrump.Gui.SpriteEffects
                 return;
             }
 
-            int id = game.GetTile(TileLocation.X, TileLocation.Y).Id;
-            int idN = game.GetTile(TileLocation.X, TileLocation.Y - 1).Id;
-            int idW = game.GetTile(TileLocation.X - 1, TileLocation.Y).Id;
-            int idS = game.GetTile(TileLocation.X, TileLocation.Y + 1).Id;
-            int idE = game.GetTile(TileLocation.X + 1, TileLocation.Y).Id;
+            int id = GetTileId(TileLocation.X, TileLocation.Y);
+            int idN = GetTileId(TileLocation.X, TileLocation.Y - 1);
+            int idW = GetTileId(TileLocation.X - 1, TileLocation.Y);
+            int idS = GetTileId(TileLocation.X, TileLocation.Y + 1);
+            int idE = GetTileId(TileLocation.X + 1, TileLocation.Y);
 
             bool tilesN = TilesWith.Contains(idN);
             bool tilesW = TilesWith.Contains(idW);
@@ -117,6 +127,22 @@ namespace SokoGrump.Gui.SpriteEffects
             else
             {
                 CurrentFrame = new Point2D(0, 0);
+            }
+        }
+
+        private int GetTileId(int x, int y)
+        {
+            if (game is not null)
+            {
+                return game.GetTile(x, y).Id;
+            }
+            else if (editor is not null)
+            {
+                return editor.GetTile(x, y).Id;
+            }
+            else
+            {
+                return -1;
             }
         }
     }
