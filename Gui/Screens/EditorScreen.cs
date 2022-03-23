@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using NuciXNA.Gui;
 using NuciXNA.Gui.Screens;
+using NuciXNA.Input;
 using NuciXNA.Primitives;
 
 using SokoGrump.GameLogic.GameManagers;
@@ -19,6 +20,14 @@ namespace SokoGrump.Gui.Screens
         IEditorManager editor;
 
         GuiEditorBoard editorBoard;
+
+        GuiTileButton wallTileButton;
+        GuiTileButton terrainTileButton;
+        GuiTileButton targetTileButton;
+        GuiTileButton emptyCrateTileButton;
+        GuiTileButton filledCrateTileButton;
+
+        int selectedTileId = 1;
 
         public EditorScreen()
         {
@@ -39,7 +48,40 @@ namespace SokoGrump.Gui.Screens
                     GameDefines.BoardHeight * GameDefines.MapTileSize)
             };
 
-            GuiManager.Instance.RegisterControls(editorBoard);
+            wallTileButton = new GuiTileButton(1)
+            {
+                Location = new Point2D(0, 0)
+            };
+
+            terrainTileButton = new GuiTileButton(0)
+            {
+                Location = new Point2D(0, GameDefines.MapTileSize)
+            };
+
+            targetTileButton = new GuiTileButton(3)
+            {
+                Location = new Point2D(0, GameDefines.MapTileSize * 2)
+            };
+
+            emptyCrateTileButton = new GuiTileButton(2)
+            {
+                Location = new Point2D(0, GameDefines.MapTileSize * 3)
+            };
+
+            filledCrateTileButton = new GuiTileButton(5)
+            {
+                Location = new Point2D(0, GameDefines.MapTileSize * 4)
+            };
+
+            GuiManager.Instance.RegisterControls(
+                editorBoard,
+                terrainTileButton,
+                wallTileButton,
+                emptyCrateTileButton,
+                targetTileButton,
+                filledCrateTileButton);
+
+            RegisterEvents();
             SetChildrenProperties();
         }
 
@@ -51,6 +93,8 @@ namespace SokoGrump.Gui.Screens
             editor.UnloadContent();
 
             SettingsManager.Instance.SaveContent();
+
+            UnregisterEvents();
         }
 
         /// <summary>
@@ -81,6 +125,36 @@ namespace SokoGrump.Gui.Screens
             editorBoard.Location = new Point2D(
                 (ScreenManager.Instance.Size.Width - editorBoard.Size.Width) / 2,
                 (ScreenManager.Instance.Size.Height - editorBoard.Size.Height) / 2);
+        }
+
+        /// <summary>
+        /// Registers the events.
+        /// </summary>
+        void RegisterEvents()
+        {
+            wallTileButton.Clicked += OnTileButtonClicked;
+            terrainTileButton.Clicked += OnTileButtonClicked;
+            targetTileButton.Clicked += OnTileButtonClicked;
+            emptyCrateTileButton.Clicked += OnTileButtonClicked;
+            filledCrateTileButton.Clicked += OnTileButtonClicked;
+        }
+
+        /// <summary>
+        /// Unregisters the events.
+        /// </summary>
+        void UnregisterEvents()
+        {
+            wallTileButton.Clicked -= OnTileButtonClicked;
+            terrainTileButton.Clicked -= OnTileButtonClicked;
+            targetTileButton.Clicked -= OnTileButtonClicked;
+            emptyCrateTileButton.Clicked -= OnTileButtonClicked;
+            filledCrateTileButton.Clicked -= OnTileButtonClicked;
+        }
+
+        void OnTileButtonClicked(object sender, MouseButtonEventArgs eventArgs)
+        {
+            GuiTileButton tileButton = (GuiTileButton)sender;
+            selectedTileId = tileButton.TileId;
         }
     }
 }
