@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 using NuciXNA.Primitives;
 
@@ -51,6 +52,33 @@ namespace SokoGrump.GameLogic.GameManagers
         public Tile GetTile(int x, int y)
         {
             return board.Tiles[x, y];
+        }
+
+        public void SetTile(int x, int y, int tileId)
+        {
+            if (tileId == 3)
+            {
+                board.Tiles[x, y] = boardManager.GetTile(0);
+
+                if (board.Targets.All(target => target.X != x || target.Y != y))
+                {
+                    board.Targets.Add(new Point2D(x, y));
+                }
+            }
+            else if (tileId == 5)
+            {
+                board.Tiles[x, y] = boardManager.GetTile(2);
+
+                if (board.Targets.All(target => target.X != x || target.Y != y))
+                {
+                    board.Targets.Add(new Point2D(x, y));
+                }
+            }
+            else
+            {
+                board.Tiles[x, y] = boardManager.GetTile(tileId);
+                board.Targets.RemoveAll(target => target.X == x && target.Y == y);
+            }
         }
 
         public IEnumerable<Tile> GetTiles()

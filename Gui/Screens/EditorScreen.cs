@@ -12,9 +12,6 @@ using SokoGrump.Settings;
 
 namespace SokoGrump.Gui.Screens
 {
-    /// <summary>
-    /// Editor screen.
-    /// </summary>
     public class EditorScreen : Screen
     {
         IEditorManager editor;
@@ -33,9 +30,6 @@ namespace SokoGrump.Gui.Screens
         {
         }
 
-        /// <summary>
-        /// Loads the content.
-        /// </summary>
         protected override void DoLoadContent()
         {
             editor = new EditorManager();
@@ -48,29 +42,36 @@ namespace SokoGrump.Gui.Screens
                     GameDefines.BoardHeight * GameDefines.MapTileSize)
             };
 
+            Size2D tileButtonSize = new Size2D(GameDefines.MapTileSize, GameDefines.MapTileSize);
+
             wallTileButton = new GuiTileButton(1)
             {
-                Location = new Point2D(0, 0)
+                Location = new Point2D(0, 0),
+                Size = tileButtonSize
             };
 
             terrainTileButton = new GuiTileButton(0)
             {
-                Location = new Point2D(0, GameDefines.MapTileSize)
+                Location = new Point2D(0, GameDefines.MapTileSize),
+                Size = tileButtonSize
             };
 
             targetTileButton = new GuiTileButton(3)
             {
-                Location = new Point2D(0, GameDefines.MapTileSize * 2)
+                Location = new Point2D(0, GameDefines.MapTileSize * 2),
+                Size = tileButtonSize
             };
 
             emptyCrateTileButton = new GuiTileButton(2)
             {
-                Location = new Point2D(0, GameDefines.MapTileSize * 3)
+                Location = new Point2D(0, GameDefines.MapTileSize * 3),
+                Size = tileButtonSize
             };
 
             filledCrateTileButton = new GuiTileButton(5)
             {
-                Location = new Point2D(0, GameDefines.MapTileSize * 4)
+                Location = new Point2D(0, GameDefines.MapTileSize * 4),
+                Size = tileButtonSize
             };
 
             GuiManager.Instance.RegisterControls(
@@ -85,9 +86,6 @@ namespace SokoGrump.Gui.Screens
             SetChildrenProperties();
         }
 
-        /// <summary>
-        /// Unloads the content.
-        /// </summary>
         protected override void DoUnloadContent()
         {
             editor.UnloadContent();
@@ -97,10 +95,6 @@ namespace SokoGrump.Gui.Screens
             UnregisterEvents();
         }
 
-        /// <summary>
-        /// Updates the content.
-        /// </summary>
-        /// <param name="gameTime">The game time.</param>
         protected override void DoUpdate(GameTime gameTime)
         {
             editor.Update(gameTime.ElapsedGameTime.TotalMilliseconds);
@@ -108,18 +102,11 @@ namespace SokoGrump.Gui.Screens
             SetChildrenProperties();
         }
 
-        /// <summary>
-        /// Draw the content on the specified spriteBatch.
-        /// </summary>
-        /// <param name="spriteBatch">Sprite batch.</param>
         protected override void DoDraw(SpriteBatch spriteBatch)
         {
 
         }
 
-        /// <summary>
-        /// Sets the properties of the child controls.
-        /// </summary>
         void SetChildrenProperties()
         {
             editorBoard.Location = new Point2D(
@@ -127,34 +114,36 @@ namespace SokoGrump.Gui.Screens
                 (ScreenManager.Instance.Size.Height - editorBoard.Size.Height) / 2);
         }
 
-        /// <summary>
-        /// Registers the events.
-        /// </summary>
         void RegisterEvents()
         {
-            wallTileButton.Clicked += OnTileButtonClicked;
-            terrainTileButton.Clicked += OnTileButtonClicked;
-            targetTileButton.Clicked += OnTileButtonClicked;
-            emptyCrateTileButton.Clicked += OnTileButtonClicked;
-            filledCrateTileButton.Clicked += OnTileButtonClicked;
+            editorBoard.MouseButtonPressed += OnEditorBoardMouseButtonPressed;
+
+            wallTileButton.Clicked += delegate { selectedTileId = wallTileButton.TileId; };
+            terrainTileButton.Clicked += delegate { selectedTileId = terrainTileButton.TileId; };
+            targetTileButton.Clicked += delegate { selectedTileId = targetTileButton.TileId; };
+            emptyCrateTileButton.Clicked += delegate { selectedTileId = emptyCrateTileButton.TileId; };
+            filledCrateTileButton.Clicked += delegate { selectedTileId = filledCrateTileButton.TileId; };
         }
 
-        /// <summary>
-        /// Unregisters the events.
-        /// </summary>
         void UnregisterEvents()
         {
-            wallTileButton.Clicked -= OnTileButtonClicked;
-            terrainTileButton.Clicked -= OnTileButtonClicked;
-            targetTileButton.Clicked -= OnTileButtonClicked;
-            emptyCrateTileButton.Clicked -= OnTileButtonClicked;
-            filledCrateTileButton.Clicked -= OnTileButtonClicked;
+            editorBoard.MouseButtonPressed -= OnEditorBoardMouseButtonPressed;
         }
 
-        void OnTileButtonClicked(object sender, MouseButtonEventArgs eventArgs)
+        void OnEditorBoardMouseButtonPressed(object sender, MouseButtonEventArgs e)
         {
-            GuiTileButton tileButton = (GuiTileButton)sender;
-            selectedTileId = tileButton.TileId;
+            Point2D tileLocation = new Point2D(
+                (e.Location.X - editorBoard.Location.X) / GameDefines.MapTileSize,
+                (e.Location.Y - editorBoard.Location.Y) / GameDefines.MapTileSize);
+
+            if (e.Button == MouseButton.Left)
+            {
+                editor.SetTile(tileLocation.X, tileLocation.Y, selectedTileId);
+            }
+            else if (e.Button == MouseButton.Right)
+            {
+                editor.SetTile(tileLocation.X, tileLocation.Y, 7);
+            }
         }
     }
 }

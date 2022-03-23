@@ -11,6 +11,7 @@ namespace SokoGrump.GameLogic.GameManagers
         Player GetPlayer();
         List<Point2D> GetTargets();
         Tile GetTile(int x, int y);
+        void SetTile(int x, int y, int tileId);
         IEnumerable<Tile> GetTiles();
     }
 }
