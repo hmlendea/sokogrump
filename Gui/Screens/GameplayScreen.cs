@@ -50,9 +50,8 @@ namespace SokoGrump.Gui.Screens
             gameBoard = new GuiGameBoard(game)
             {
                 Size = new Size2D(
-                    ScreenManager.Instance.Size.Width,
-                    ScreenManager.Instance.Size.Height - 24),
-                Location = new Point2D(0, 24)
+                    GameDefines.BoardWidth * GameDefines.MapTileSize,
+                    GameDefines.BoardHeight * GameDefines.MapTileSize)
             };
 
             GuiManager.Instance.RegisterControls(gameBoard, infoBar);
@@ -123,6 +122,10 @@ namespace SokoGrump.Gui.Screens
         /// </summary>
         void SetChildrenProperties()
         {
+            gameBoard.Location = new Point2D(
+                (ScreenManager.Instance.Size.Width - gameBoard.Size.Width) / 2,
+                (ScreenManager.Instance.Size.Height - gameBoard.Size.Height) / 2);
+
             infoBar.Size = new Size2D(ScreenManager.Instance.Size.Width, 24);
         }
 
