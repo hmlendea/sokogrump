@@ -19,13 +19,6 @@ namespace SokoGrump.Gui.Screens
         /// </summary>
         protected override void DoLoadContent()
         {
-            continueGameLink = new GuiMenuLink
-            {
-                Id = nameof(continueGameLink),
-                Text = "Continue Game",
-                TargetScreen = typeof(GameplayScreen),
-                Parameters = new object[] { SettingsManager.Instance.UserData.LastLevel }
-            };
             newGameLink = new GuiMenuLink
             {
                 Id = nameof(newGameLink),
@@ -39,8 +32,20 @@ namespace SokoGrump.Gui.Screens
                 Text = "Settings",
                 TargetScreen = typeof(SettingsScreen)
             };
+            
+            if (SettingsManager.Instance.UserData.LastLevel > 0)
+            {
+                continueGameLink = new GuiMenuLink
+                {
+                    Id = nameof(continueGameLink),
+                    Text = "Continue Game",
+                    TargetScreen = typeof(GameplayScreen),
+                    Parameters = new object[] { SettingsManager.Instance.UserData.LastLevel }
+                };
 
-            Items.Add(continueGameLink);
+                Items.Add(continueGameLink);
+            }
+
             Items.Add(newGameLink);
             Items.Add(settingsLink);
 
