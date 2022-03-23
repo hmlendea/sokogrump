@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 using NuciXNA.Primitives;
 
 using SokoGrump.Models;
+using SokoGrump.Settings;
 
 namespace SokoGrump.GameLogic.GameManagers
 {
@@ -32,6 +35,26 @@ namespace SokoGrump.GameLogic.GameManagers
         public void UnloadContent()
         {
             boardManager.UnloadContent();
+        }
+
+        public void SaveContent()
+        {
+            string fileContents = string.Empty;
+
+            for (int y = 0; y < GameDefines.BoardHeight; y++)
+            {
+                for (int x = 0; x < GameDefines.BoardWidth; x++)
+                {
+                    fileContents += GetTile(x, y).Id;
+                }
+
+                fileContents += Environment.NewLine;
+            }
+
+            // TODO: Save to a user-inputted path
+            string path = Path.Combine(ApplicationPaths.UserDataDirectory, "editor.lvl");
+            
+            File.WriteAllText(path, fileContents);
         }
 
         public void Update(double elapsedMiliseconds)

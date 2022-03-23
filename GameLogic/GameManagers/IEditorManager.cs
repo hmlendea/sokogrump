@@ -13,5 +13,6 @@ namespace SokoGrump.GameLogic.GameManagers
         Tile GetTile(int x, int y);
         void SetTile(int x, int y, int tileId);
         IEnumerable<Tile> GetTiles();
+        void SaveContent();
     }
 }
