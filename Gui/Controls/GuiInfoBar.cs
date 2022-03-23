@@ -59,7 +59,7 @@ namespace SokoGrump.Gui.Controls
         /// <param name="gameTime">The game time.</param>
         protected override void DoUpdate(GameTime gameTime)
         {
-
+            this.SetChildrenProperties();
         }
         
         /// <summary>
