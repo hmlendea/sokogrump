@@ -10,6 +10,8 @@ The game currently contains 25+ levels of progressive difficulty, and the goal i
 
 The game also includes a level editor that the players can use to create and share their own puzzles.
 
+[![Preview screenshot](https://raw.githubusercontent.com/hmlendea/sokogrump/master/preview.png)](https://raw.githubusercontent.com/hmlendea/sokogrump/master/preview.png)
+
 # Details
 
  - Programming language: C#
