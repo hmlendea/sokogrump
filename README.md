@@ -6,7 +6,7 @@ SokoGrump is an open-sorce and cross-platform Sokoban-style puzzle game, develop
 
 It the features the Grumpy Cat trying to push all the crates in a werehouse to their storge locations, without getting stuck.
 
-The game currently contains 30+ levels of progressive difficulty, and the goal is to complete all of them in as less moves as possible.
+The game currently contains 100 levels of progressive difficulty, and the goal is to complete all of them in as less moves as possible.
 
 [![Preview screenshot](https://raw.githubusercontent.com/hmlendea/sokogrump/master/preview.png)](https://raw.githubusercontent.com/hmlendea/sokogrump/master/preview.png)
 
