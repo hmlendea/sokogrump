@@ -82,8 +82,6 @@ namespace SokoGrump.Settings
             SettingsManager storedSettings = xmlManager.Read(ApplicationPaths.SettingsFile);
 
             instance = storedSettings;
-
-            UserData.LastLevel = LoadLastSavedLevel();
         }
 
         /// <summary>
@@ -93,8 +91,6 @@ namespace SokoGrump.Settings
         {
             XmlFileObject<SettingsManager> xmlManager = new XmlFileObject<SettingsManager>();
             xmlManager.Write(ApplicationPaths.SettingsFile, this);
-
-            File.WriteAllText(ApplicationPaths.SaveFile, UserData.LastLevel.ToString());
         }
 
         /// <summary>
@@ -124,19 +120,6 @@ namespace SokoGrump.Settings
             {
                 GraphicsManager.Instance.Graphics.ApplyChanges();
             }
-        }
-
-        int LoadLastSavedLevel()
-        {
-            int level = 0;
-
-            if (File.Exists(ApplicationPaths.SaveFile))
-            {
-                string saveFileContents = File.ReadAllText(ApplicationPaths.SaveFile);
-                int.TryParse(saveFileContents, out level);
-            }
-
-            return level;
         }
     }
 }
