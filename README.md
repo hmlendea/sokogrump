@@ -6,9 +6,13 @@ SokoGrump is a puzzle game similar to the classic Sokoban.
 
 It the features the Grumpy Cat trying to push all the crates in a werehouse to their storge locations, without getting stuck.
 
-The game currently contains 25+ levels of progressive difficulty, and the goal is to complete all of them in as less moves as possible.
+The game currently contains 30+ levels of progressive difficulty, and the goal is to complete all of them in as less moves as possible.
 
 [![Preview screenshot](https://raw.githubusercontent.com/hmlendea/sokogrump/master/preview.png)](https://raw.githubusercontent.com/hmlendea/sokogrump/master/preview.png)
+
+# Installation
+
+[![Get it from FlatHub](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/flathub.png)](https://flathub.org/apps/details/ro.go.hmlendea.SokoGrump)
 
 # Details
 
