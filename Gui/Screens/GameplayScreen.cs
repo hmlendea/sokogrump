@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using NuciXNA.Gui;
+using NuciXNA.Gui.Controls;
 using NuciXNA.Gui.Screens;
 using NuciXNA.Input;
 using NuciXNA.Primitives;
@@ -23,6 +24,7 @@ namespace SokoGrump.Gui.Screens
     {
         IGameManager game;
 
+        GuiImage retryButton;
         GuiInfoBar infoBar;
         GuiGameBoard gameBoard;
 
@@ -42,11 +44,11 @@ namespace SokoGrump.Gui.Screens
             game.LoadContent();
             game.NewGame(level);
 
-            infoBar = new GuiInfoBar(game)
+            retryButton = new GuiImage
             {
-                Location = Point2D.Empty,
-                Size = new Size2D(ScreenManager.Instance.Size.Width, 24)
+                ContentFile = "Buttons/refresh"
             };
+            infoBar = new GuiInfoBar(game);
             gameBoard = new GuiGameBoard(game)
             {
                 Size = new Size2D(
@@ -54,7 +56,7 @@ namespace SokoGrump.Gui.Screens
                     GameDefines.BoardHeight * GameDefines.MapTileSize)
             };
 
-            GuiManager.Instance.RegisterControls(gameBoard, infoBar);
+            GuiManager.Instance.RegisterControls(retryButton, infoBar, gameBoard);
             RegisterEvents();
             SetChildrenProperties();
         }
@@ -111,6 +113,7 @@ namespace SokoGrump.Gui.Screens
         /// </summary>
         void RegisterEvents()
         {
+            retryButton.Clicked += OnRetryButtonPressed;
             InputManager.Instance.KeyboardKeyPressed += OnInputManagerKeyboardKeyPressed;
         }
 
@@ -119,6 +122,7 @@ namespace SokoGrump.Gui.Screens
         /// </summary>
         void UnregisterEvents()
         {
+            retryButton.Clicked -= OnRetryButtonPressed;
             InputManager.Instance.KeyboardKeyPressed -= OnInputManagerKeyboardKeyPressed;
         }
 
@@ -127,11 +131,15 @@ namespace SokoGrump.Gui.Screens
         /// </summary>
         void SetChildrenProperties()
         {
+            retryButton.Location = new Point2D(ScreenManager.Instance.Size.Width - GameDefines.MapTileSize, 0);
+            retryButton.Size = new Size2D(GameDefines.MapTileSize, GameDefines.MapTileSize);
+
+            infoBar.Location = Point2D.Empty;
+            infoBar.Size = new Size2D(240, 24);
+
             gameBoard.Location = new Point2D(
                 (ScreenManager.Instance.Size.Width - gameBoard.Size.Width) / 2,
                 (ScreenManager.Instance.Size.Height - gameBoard.Size.Height) / 2);
-
-            infoBar.Size = new Size2D(ScreenManager.Instance.Size.Width, 24);
         }
 
         void OnInputManagerKeyboardKeyPressed(object sender, KeyboardKeyEventArgs e)
@@ -162,6 +170,11 @@ namespace SokoGrump.Gui.Screens
                     game.Retry();
                     break;
             }
+        }
+
+        void OnRetryButtonPressed(object sender, MouseButtonEventArgs e)
+        {
+            game.Retry();
         }
     }
 }
