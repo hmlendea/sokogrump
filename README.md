@@ -2,7 +2,7 @@
 
 # About
 
-SokoGrump is a Sokoban-style puzzle game, made as an open source remake of the old win32 game BoxWorld.
+SokoGrump is an open-sorce and cross-platform Sokoban-style puzzle game, developed as a remake of the old win32 game BoxWorld.
 
 It the features the Grumpy Cat trying to push all the crates in a werehouse to their storge locations, without getting stuck.
 
@@ -14,7 +14,16 @@ The game currently contains 30+ levels of progressive difficulty, and the goal i
 
 [![Get it from FlatHub](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/flathub.png)](https://flathub.org/apps/details/ro.go.hmlendea.SokoGrump)
 
+# Manual installation
+
+ - Go to the [latest release](https://github.com/hmlendea/geforcenow-electron/releases/latest).
+ - Download the specific file that best fits your operating system
+
 # Details
 
  - Programming language: C#
  - Technologies used: .NET, MonoGame
+
+# Links
+ - [FlatHub release](https://flathub.org/apps/details/ro.go.hmlendea.SokoGrump)
+ - [FlatHub repository](https://github.com/flathub/ro.go.hmlendea.SokoGrump)
