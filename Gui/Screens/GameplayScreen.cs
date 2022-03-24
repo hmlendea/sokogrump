@@ -135,7 +135,7 @@ namespace SokoGrump.Gui.Screens
             retryButton.Size = new Size2D(GameDefines.MapTileSize, GameDefines.MapTileSize);
 
             infoBar.Location = Point2D.Empty;
-            infoBar.Size = new Size2D(240, 24);
+            infoBar.Size = new Size2D(ScreenManager.Instance.Size.Width, 24);
 
             gameBoard.Location = new Point2D(
                 (ScreenManager.Instance.Size.Width - gameBoard.Size.Width) / 2,

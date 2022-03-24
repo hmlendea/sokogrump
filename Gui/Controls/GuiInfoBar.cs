@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using NuciXNA.Graphics.Drawing;
 using NuciXNA.Gui.Controls;
 using NuciXNA.Primitives;
 
@@ -12,14 +13,13 @@ namespace SokoGrump.Gui.Controls
     {
         readonly IGameManager game;
 
-        GuiImage background;
         GuiText movesText;
+        GuiText levelText;
 
         public GuiInfoBar(IGameManager game)
         {
             this.game = game;
 
-            BackgroundColour = Colour.Black;
             FontName = "InfoBarFont";
         }
 
@@ -28,20 +28,25 @@ namespace SokoGrump.Gui.Controls
         /// </summary>
         protected override void DoLoadContent()
         {
-            background = new GuiImage
-            {
-                TintColour = BackgroundColour,
-                ContentFile = "ScreenManager/FillImage"
-            };
             movesText = new GuiText
             {
                 Location = new Point2D(0,0),
-                Size= new Size2D(100, Size.Height),
+                Size= new Size2D(200, Size.Height),
+                HorizontalAlignment = Alignment.Beginning,
+                VerticalAlignment = Alignment.Middle,
                 BackgroundColour = Colour.Transparent,
                 ForegroundColour = Colour.White
             };
+            levelText = new GuiText
+            {
+                Size = new Size2D(200, Size.Height),
+                HorizontalAlignment = Alignment.Middle,
+                VerticalAlignment = Alignment.Middle,
+                BackgroundColour = movesText.BackgroundColour,
+                ForegroundColour = movesText.ForegroundColour
+            };
 
-            RegisterChildren(background, movesText);
+            RegisterChildren(movesText, levelText);
             SetChildrenProperties();
         }
 
@@ -74,6 +79,11 @@ namespace SokoGrump.Gui.Controls
         void SetChildrenProperties()
         {
             movesText.Text = $"Moves: {game.GetPlayer().MovesCount}";
+            levelText.Text = $"Level {game.Level}";
+
+            levelText.Location = new Point2D(
+                (Size.Width - levelText.Size.Width) / 2,
+                (Size.Height - levelText.Size.Height) / 2);
         }
     }
 }
