@@ -14,7 +14,7 @@ The game currently contains 30+ levels of progressive difficulty, and the goal i
 
 [![Get it from FlatHub](https://raw.githubusercontent.com/hmlendea/readme-assets/master/badges/stores/flathub.png)](https://flathub.org/apps/details/ro.go.hmlendea.SokoGrump)
 
-# Manual installation
+## Manual installation
 
  - Go to the [latest release](https://github.com/hmlendea/geforcenow-electron/releases/latest).
  - Download the specific file that best fits your operating system
