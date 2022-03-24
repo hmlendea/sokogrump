@@ -2,7 +2,7 @@
 
 # About
 
-SokoGrump is a puzzle game similar to the classic Sokoban.
+SokoGrump is a Sokoban-style puzzle game, made as an open source remake of the old win32 game BoxWorld.
 
 It the features the Grumpy Cat trying to push all the crates in a werehouse to their storge locations, without getting stuck.
 
@@ -18,4 +18,3 @@ The game currently contains 30+ levels of progressive difficulty, and the goal i
 
  - Programming language: C#
  - Technologies used: .NET, MonoGame
- - Development environment: Visual Studio Code
