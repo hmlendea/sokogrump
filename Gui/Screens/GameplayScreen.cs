@@ -87,6 +87,11 @@ namespace SokoGrump.Gui.Screens
                     ScreenManager.Instance.ChangeScreens(typeof(VictoryScreen), nextLevel);
                     SettingsManager.Instance.UserData.LastLevel = nextLevel;
                 }
+                else
+                {
+                    ScreenManager.Instance.ChangeScreens(typeof(GameFinishedScreen));
+                    SettingsManager.Instance.UserData.LastLevel = 0;
+                }
             }
 
             SetChildrenProperties();
