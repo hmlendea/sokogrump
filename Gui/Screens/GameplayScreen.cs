@@ -50,7 +50,7 @@ namespace SokoGrump.Gui.Screens
             retryButton = new GuiButton
             {
                 ContentFile = "Buttons/refresh",
-                TooltipText = "Retry this level"
+                TooltipText = "Retry this level ('R' key)"
             };
             infoBar = new GuiInfoBar(game);
             gameBoard = new GuiGameBoard(game)

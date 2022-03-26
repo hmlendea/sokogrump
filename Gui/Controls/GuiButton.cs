@@ -36,7 +36,7 @@ namespace SokoGrump.Gui.Controls
             tooltip = new GuiTooltip()
             {
                 FontName = "ToolTipFont",
-                Size = new Size2D(Size.Width * 2, (int)(Size.Height * 0.75))
+                Size = new Size2D((int)(Size.Width * 2.5), (int)(Size.Height * 0.8))
             };
             
             RegisterChildren(image, tooltip);
