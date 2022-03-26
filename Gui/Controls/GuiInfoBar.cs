@@ -33,17 +33,13 @@ namespace SokoGrump.Gui.Controls
                 Location = new Point2D(0,0),
                 Size= new Size2D(200, Size.Height),
                 HorizontalAlignment = Alignment.Beginning,
-                VerticalAlignment = Alignment.Middle,
-                BackgroundColour = Colour.Transparent,
-                ForegroundColour = Colour.White
+                VerticalAlignment = Alignment.Middle
             };
             levelText = new GuiText
             {
                 Size = new Size2D(200, Size.Height),
                 HorizontalAlignment = Alignment.Middle,
-                VerticalAlignment = Alignment.Middle,
-                BackgroundColour = movesText.BackgroundColour,
-                ForegroundColour = movesText.ForegroundColour
+                VerticalAlignment = Alignment.Middle
             };
 
             RegisterChildren(movesText, levelText);
@@ -78,6 +74,12 @@ namespace SokoGrump.Gui.Controls
 
         void SetChildrenProperties()
         {
+            movesText.BackgroundColour = BackgroundColour;
+            movesText.ForegroundColour = ForegroundColour;
+
+            levelText.BackgroundColour = BackgroundColour;
+            levelText.ForegroundColour = ForegroundColour;
+            
             movesText.Text = $"Moves: {game.GetPlayer().MovesCount}";
             levelText.Text = $"Level {game.Level}";
 
