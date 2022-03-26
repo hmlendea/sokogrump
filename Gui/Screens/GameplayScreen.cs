@@ -24,7 +24,7 @@ namespace SokoGrump.Gui.Screens
     {
         IGameManager game;
 
-        GuiImage retryButton;
+        GuiButton retryButton;
         GuiInfoBar infoBar;
         GuiGameBoard gameBoard;
 
@@ -33,6 +33,9 @@ namespace SokoGrump.Gui.Screens
         public GameplayScreen(int level)
         {
             this.level = level;
+
+            BackgroundColour = Colour.Black;
+            ForegroundColour = Colour.White;
         }
 
         /// <summary>
@@ -44,9 +47,10 @@ namespace SokoGrump.Gui.Screens
             game.LoadContent();
             game.NewGame(level);
 
-            retryButton = new GuiImage
+            retryButton = new GuiButton
             {
-                ContentFile = "Buttons/refresh"
+                ContentFile = "Buttons/refresh",
+                TooltipText = "Retry this level ('R' key)"
             };
             infoBar = new GuiInfoBar(game);
             gameBoard = new GuiGameBoard(game)
@@ -133,9 +137,13 @@ namespace SokoGrump.Gui.Screens
         {
             retryButton.Location = new Point2D(ScreenManager.Instance.Size.Width - GameDefines.MapTileSize, 0);
             retryButton.Size = new Size2D(GameDefines.MapTileSize, GameDefines.MapTileSize);
+            retryButton.BackgroundColour = BackgroundColour;
+            retryButton.ForegroundColour = ForegroundColour;
 
             infoBar.Location = Point2D.Empty;
             infoBar.Size = new Size2D(ScreenManager.Instance.Size.Width, 24);
+            infoBar.BackgroundColour = Colour.Transparent;
+            infoBar.ForegroundColour = ForegroundColour;
 
             gameBoard.Location = new Point2D(
                 (ScreenManager.Instance.Size.Width - gameBoard.Size.Width) / 2,
