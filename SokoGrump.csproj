@@ -15,11 +15,11 @@
   <ItemGroup>
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
-    <PackageReference Include="NuciXNA.DataAccess" Version="1.5.0" />
-    <PackageReference Include="NuciXNA.Graphics" Version="1.7.0" />
-    <PackageReference Include="NuciXNA.Gui" Version="2.1.1" />
-    <PackageReference Include="NuciXNA.Input" Version="1.5.0" />
-    <PackageReference Include="NuciXNA.Primitives" Version="1.4.0" />
+    <PackageReference Include="NuciXNA.DataAccess" Version="2.0.0" />
+    <PackageReference Include="NuciXNA.Graphics" Version="2.0.0" />
+    <PackageReference Include="NuciXNA.Gui" Version="3.0.0" />
+    <PackageReference Include="NuciXNA.Input" Version="2.0.0" />
+    <PackageReference Include="NuciXNA.Primitives" Version="2.0.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
   </ItemGroup>
 
