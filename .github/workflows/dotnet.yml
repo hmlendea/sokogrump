@@ -17,6 +17,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 8.0.x
+    - name: Setup MGCB
+      run: |
+        dotnet tool install --global dotnet-mgcb
+        ln -s ~/.dotnet/tools/mgcb ~/.dotnet/tools/dotnet-mgcb
     - name: Setup fonts
       run: |
         echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | sudo debconf-set-selections
