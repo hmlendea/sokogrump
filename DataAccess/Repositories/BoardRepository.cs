@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 
-using NuciXNA.DataAccess.Repositories;
+using NuciDAL.Repositories;
 
 using SokoGrump.DataAccess.DataObjects;
 using SokoGrump.Settings;
@@ -16,6 +17,8 @@ namespace SokoGrump.DataAccess.Repositories
     public class BoardRepository : IRepository<string, BoardEntity>
     {
         readonly string boardsDirectory;
+
+        public int EntitiesCount => GetAll().Count();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BoardRepository"/> class.
@@ -35,6 +38,10 @@ namespace SokoGrump.DataAccess.Repositories
             // TODO: Implement this
             throw new NotImplementedException();
         }
+
+        public void TryAdd(BoardEntity boardEntity) { }
+
+        public bool ContainsId(string id) => TryGet(id) is not null;
 
         /// <summary>
         /// Get the board with the specified identifier.
@@ -90,6 +97,18 @@ namespace SokoGrump.DataAccess.Repositories
             return boardEntity;
         }
 
+        public BoardEntity TryGet(string id)
+        {
+            try
+            {
+                return Get(id);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         /// <summary>
         /// Gets all the boards.
         /// </summary>
@@ -127,6 +146,15 @@ namespace SokoGrump.DataAccess.Repositories
             // TODO: Save the ProvinceMap and TerrainMap as well
         }
 
+        public void TryUpdate(BoardEntity boardEntity)
+        {
+            try
+            {
+                Update(boardEntity);
+            }
+            catch { }
+        }
+
         /// <summary>
         /// Removes the board with the specified identifier.
         /// </summary>
@@ -134,6 +162,15 @@ namespace SokoGrump.DataAccess.Repositories
         public void Remove(string id)
         {
             Directory.Delete(Path.Combine(boardsDirectory, id));
+        }
+
+        public void TryRemove(string id)
+        {
+            try
+            {
+                Remove(id);
+            }
+            catch { }
         }
 
         /// <summary>
@@ -144,6 +181,17 @@ namespace SokoGrump.DataAccess.Repositories
         {
             Remove(boardEntity.Id);
         }
+
+        public void TryRemove(BoardEntity boardEntity)
+        {
+            try
+            {
+                Remove(boardEntity);
+            }
+            catch { }
+        }
+
+        public void ApplyChanges() { }
 
         Dictionary<int, TileEntity> GetTileEntities()
         {
