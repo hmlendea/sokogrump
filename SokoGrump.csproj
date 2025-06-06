@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>SokoGrump</RootNamespace>
     <Authors>Horațiu Mlendea</Authors>
     <Copyright>Copyright 2024 © Horațiu Mlendea</Copyright>
