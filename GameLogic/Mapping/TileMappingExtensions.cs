@@ -18,34 +18,24 @@ namespace SokoGrump.GameLogic.Mapping
         /// </summary>
         /// <returns>The domain model.</returns>
         /// <param name="tileEntity">World Tile entity.</param>
-        internal static Tile ToDomainModel(this TileEntity tileEntity)
+        internal static Tile ToDomainModel(this TileEntity tileEntity) => new()
         {
-            Tile tile = new Tile
-            {
-                Id = tileEntity.Id,
-                SpriteSheet = tileEntity.SpriteSheet,
-                TileType = (TileType)Enum.Parse(typeof(TileType), tileEntity.TileType)
-            };
-
-            return tile;
-        }
+            Id = tileEntity.Id,
+            SpriteSheet = tileEntity.SpriteSheet,
+            TileType = Enum.Parse<TileType>(tileEntity.TileType)
+        };
 
         /// <summary>
         /// Converts the domain model into an entity.
         /// </summary>
         /// <returns>The entity.</returns>
         /// <param name="tile">World Tile.</param>
-        internal static TileEntity ToEntity(this Tile tile)
+        internal static TileEntity ToEntity(this Tile tile) => new()
         {
-            TileEntity worldEntity = new TileEntity
-            {
-                Id = tile.Id,
-                SpriteSheet = tile.SpriteSheet,
-                TileType = tile.TileType.ToString()
-            };
-
-            return worldEntity;
-        }
+            Id = tile.Id,
+            SpriteSheet = tile.SpriteSheet,
+            TileType = tile.TileType.ToString()
+        };
 
         /// <summary>
         /// Converts the entities into domain models.
@@ -53,11 +43,7 @@ namespace SokoGrump.GameLogic.Mapping
         /// <returns>The domain models.</returns>
         /// <param name="tileEntities">World Tile entities.</param>
         internal static IEnumerable<Tile> ToDomainModels(this IEnumerable<TileEntity> tileEntities)
-        {
-            IEnumerable<Tile> tiles = tileEntities.Select(tileEntity => tileEntity.ToDomainModel());
-
-            return tiles;
-        }
+            => tileEntities.Select(tileEntity => tileEntity.ToDomainModel());
 
         /// <summary>
         /// Converts the domain models into entities.
@@ -65,11 +51,7 @@ namespace SokoGrump.GameLogic.Mapping
         /// <returns>The entities.</returns>
         /// <param name="tiles">World Tiles.</param>
         internal static IEnumerable<TileEntity> ToEntities(this IEnumerable<Tile> tiles)
-        {
-            IEnumerable<TileEntity> tileEntities = tiles.Select(tile => tile.ToEntity());
-
-            return tileEntities;
-        }
+            => tiles.Select(tile => tile.ToEntity());
 
         /// <summary>
         /// Converts the entities into domain models.

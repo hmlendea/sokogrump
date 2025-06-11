@@ -17,7 +17,6 @@ namespace SokoGrump.Gui
     {
         GameTime gameTime;
         SpriteFont fpsFont;
-        Vector2 fpsCounterSize;
         string fpsString;
 
         /// <summary>
@@ -29,26 +28,17 @@ namespace SokoGrump.Gui
         /// <summary>
         /// Initializes a new instance of the <see cref="FpsIndicator"/> class.
         /// </summary>
-        public FpsIndicator()
-        {
-            Location = Vector2.Zero;
-        }
+        public FpsIndicator() => Location = Vector2.Zero;
 
         /// <summary>
         /// Loads the content.
         /// </summary>
-        public void LoadContent()
-        {
-            fpsFont = NuciContentManager.Instance.LoadSpriteFont("Fonts/FrameCounterFont");
-        }
+        public void LoadContent() => fpsFont = NuciContentManager.Instance.LoadSpriteFont("Fonts/FrameCounterFont");
 
         /// <summary>
         /// Unloads the content.
         /// </summary>
-        public void UnloadContent()
-        {
-
-        }
+        public static void UnloadContent() { }
 
         /// <summary>
         /// Updates the content.
@@ -59,7 +49,6 @@ namespace SokoGrump.Gui
             this.gameTime = gameTime;
 
             fpsString = $"FPS: {Math.Round(FramerateCounter.Instance.AverageFramesPerSecond)}";
-            fpsCounterSize = fpsFont.MeasureString(fpsString);
         }
 
         /// <summary>

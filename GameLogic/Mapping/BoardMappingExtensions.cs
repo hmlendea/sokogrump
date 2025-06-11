@@ -20,7 +20,7 @@ namespace SokoGrump.GameLogic.Mapping
         /// <param name="boardEntity">Board entity.</param>
         internal static Board ToDomainModel(this BoardEntity boardEntity)
         {
-            Board board = new Board
+            Board board = new()
             {
                 Id = boardEntity.Id,
                 PlayerStartLocation = new Point2D(
@@ -33,11 +33,11 @@ namespace SokoGrump.GameLogic.Mapping
             {
                 for (int x = 0; x < boardEntity.Tiles.GetLength(0); x++)
                 {
-                    if (boardEntity.Tiles[x, y].Id == 3)
+                    if (boardEntity.Tiles[x, y].Id.Equals(TileId.EmptyTarget))
                     {
                         board.Targets.Add(new Point2D(x, y));
                     }
-                    else if (boardEntity.Tiles[x, y].Id == 5)
+                    else if (boardEntity.Tiles[x, y].Id.Equals(TileId.CrateOnTarget))
                     {
                         board.Targets.Add(new Point2D(x, y));
                     }
@@ -52,18 +52,13 @@ namespace SokoGrump.GameLogic.Mapping
         /// </summary>
         /// <returns>The entity.</returns>
         /// <param name="board">Board.</param>
-        internal static BoardEntity ToEntity(this Board board)
+        internal static BoardEntity ToEntity(this Board board) => new()
         {
-            BoardEntity boardEntity = new BoardEntity
-            {
-                Id = board.Id,
-                PlayerStartLocationX = board.PlayerStartLocation.X,
-                PlayerStartLocationY = board.PlayerStartLocation.Y,
-                Tiles = board.Tiles.ToEntities()
-            };
-
-            return boardEntity;
-        }
+            Id = board.Id,
+            PlayerStartLocationX = board.PlayerStartLocation.X,
+            PlayerStartLocationY = board.PlayerStartLocation.Y,
+            Tiles = board.Tiles.ToEntities()
+        };
 
         /// <summary>
         /// Converts the entities into domain models.
@@ -71,11 +66,7 @@ namespace SokoGrump.GameLogic.Mapping
         /// <returns>The domain models.</returns>
         /// <param name="boardEntities">Board entities.</param>
         internal static IEnumerable<Board> ToDomainModels(this IEnumerable<BoardEntity> boardEntities)
-        {
-            IEnumerable<Board> boards = boardEntities.Select(boardEntity => boardEntity.ToDomainModel());
-
-            return boards;
-        }
+            => boardEntities.Select(boardEntity => boardEntity.ToDomainModel());
 
         /// <summary>
         /// Converts the domain models into entities.
@@ -83,10 +74,6 @@ namespace SokoGrump.GameLogic.Mapping
         /// <returns>The entities.</returns>
         /// <param name="boards">Boards.</param>
         internal static IEnumerable<BoardEntity> ToEntities(this IEnumerable<Board> boards)
-        {
-            IEnumerable<BoardEntity> boardEntities = boards.Select(board => board.ToEntity());
-
-            return boardEntities;
-        }
+            => boards.Select(board => board.ToEntity());
     }
 }

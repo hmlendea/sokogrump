@@ -49,28 +49,19 @@ namespace SokoGrump.Gui.Controls
         /// <summary>
         /// Unloads the content.
         /// </summary>
-        protected override void DoUnloadContent()
-        {
+        protected override void DoUnloadContent() { }
 
-        }
-        
         /// <summary>
         /// Updates the content.
         /// </summary>
         /// <param name="gameTime">The game time.</param>
-        protected override void DoUpdate(GameTime gameTime)
-        {
-            this.SetChildrenProperties();
-        }
-        
+        protected override void DoUpdate(GameTime gameTime) => SetChildrenProperties();
+
         /// <summary>
         /// Draw the content on the specified spriteBatch.
         /// </summary>
         /// <param name="spriteBatch">Sprite batch.</param>
-        protected override void DoDraw(SpriteBatch spriteBatch)
-        {
-
-        }
+        protected override void DoDraw(SpriteBatch spriteBatch) { }
 
         void SetChildrenProperties()
         {
@@ -79,7 +70,7 @@ namespace SokoGrump.Gui.Controls
 
             levelText.BackgroundColour = BackgroundColour;
             levelText.ForegroundColour = ForegroundColour;
-            
+
             movesText.Text = $"Moves: {game.GetPlayer().MovesCount}";
             levelText.Text = $"Level {game.Level}";
 

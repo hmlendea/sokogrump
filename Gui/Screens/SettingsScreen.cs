@@ -32,12 +32,12 @@ namespace SokoGrump.Gui.Screens
                 Text = "Back",
                 TargetScreen = typeof(TitleScreen)
             };
-            
+
             Items.Add(fullScreenToggle);
             Items.Add(backLink);
 
             RegisterEvents();
-            
+
             fullScreenToggle.SetState(SettingsManager.Instance.GraphicsSettings.Fullscreen);
 
             base.DoLoadContent();
@@ -58,22 +58,14 @@ namespace SokoGrump.Gui.Screens
         /// <summary>
         /// Registers the events.
         /// </summary>
-        void RegisterEvents()
-        {
-            fullScreenToggle.StateChanged += OnFullscreenToggleStateChanged;
-        }
+        void RegisterEvents() => fullScreenToggle.StateChanged += OnFullscreenToggleStateChanged;
 
         /// <summary>
         /// Unregisters the events.
         /// </summary>
-        void UnregisterEvents()
-        {
-            fullScreenToggle.StateChanged -= OnFullscreenToggleStateChanged;
-        }
+        void UnregisterEvents() => fullScreenToggle.StateChanged -= OnFullscreenToggleStateChanged;
 
         void OnFullscreenToggleStateChanged(object sender, EventArgs e)
-        {
-            SettingsManager.Instance.GraphicsSettings.Fullscreen = fullScreenToggle.IsOn;
-        }
+            => SettingsManager.Instance.GraphicsSettings.Fullscreen = fullScreenToggle.IsOn;
     }
 }

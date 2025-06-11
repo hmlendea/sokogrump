@@ -25,72 +25,56 @@ namespace SokoGrump.GameLogic.GameManagers
             tiles.Clear();
         }
 
-        public void Update(double elapsedMiliseconds)
-        {
+        public void Update(double elapsedMiliseconds) { }
 
-        }
+        public Board GetBoard(int id) => new(boards[id.ToString()]);
 
-        public Board GetBoard(int id)
-        {
-            Board loadedBoard = boards[id.ToString()];
-            return new Board(loadedBoard);
-        }
+        public Tile GetTile(int id) => new(tiles[id]);
 
-        public Tile GetTile(int id)
-            => new Tile(tiles[id]);
+        public IEnumerable<Tile> GetTiles() => tiles.Values;
 
-        public IEnumerable<Tile> GetTiles()
-        {
-            return tiles.Values;
-        }
-
-        void LoadBoards()
-        {
-            BoardRepository repository = new BoardRepository(ApplicationPaths.LevelsDirectory);
-
-            boards = repository.GetAll().ToDictionary(x => x.Id, x => x.ToDomainModel());
-        }
+        void LoadBoards() => boards = new BoardRepository(ApplicationPaths.LevelsDirectory).GetAll().ToDictionary(x => x.Id, x => x.ToDomainModel());
 
         void LoadTiles()
         {
-            Tile terrainTile = new Tile
+            Tile terrainTile = new()
             {
                 Id = 0,
                 SpriteSheet = "SpriteSheets/brick",
                 TileType = TileType.Walkable
             };
-            Tile wallTile = new Tile
+            Tile wallTile = new()
             {
                 Id = 1,
                 SpriteSheet = "SpriteSheets/wall",
                 TileType = TileType.Solid
             };
-            Tile boxTile = new Tile
+            Tile boxTile = new()
             {
                 Id = 2,
                 SpriteSheet = "SpriteSheets/crate",
                 TileType = TileType.Moveable
             };
-            Tile targetTile = new Tile
+            Tile targetTile = new()
             {
                 Id = 3,
                 SpriteSheet = "Tiles/tile3/0",
                 TileType = TileType.Walkable
             };
-            Tile completedTargetTile = new Tile
+            Tile completedTargetTile = new()
             {
                 Id = 5,
                 SpriteSheet = "Tiles/tile5/0",
                 TileType = TileType.Moveable
             };
-            Tile voidTile = new Tile
+            Tile voidTile = new()
             {
                 Id = 7,
                 SpriteSheet = "Tiles/tile7/0",
                 TileType = TileType.Solid
             };
 
-            tiles = new Dictionary<int, Tile>
+            tiles = new()
             {
                 { terrainTile.Id, terrainTile },
                 { wallTile.Id, wallTile },

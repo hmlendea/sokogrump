@@ -21,10 +21,7 @@ namespace SokoGrump.Gui.Controls
         GuiImage image;
         GuiTooltip tooltip;
 
-        public GuiButton()
-        {
-            FontName = "ButtonFont";
-        }
+        public GuiButton() => FontName = "ButtonFont";
 
         protected override void DoLoadContent()
         {
@@ -38,26 +35,17 @@ namespace SokoGrump.Gui.Controls
                 FontName = "ToolTipFont",
                 Size = new Size2D((int)(Size.Width * 2.5), (int)(Size.Height * 0.8))
             };
-            
+
             RegisterChildren(image, tooltip);
             RegisterEvents();
             SetChildrenProperties();
         }
 
-        protected override void DoUnloadContent()
-        {
-            UnregisterEvents();
-        }
+        protected override void DoUnloadContent() => UnregisterEvents();
 
-        protected override void DoUpdate(GameTime gameTime)
-        {
-            SetChildrenProperties();
-        }
+        protected override void DoUpdate(GameTime gameTime) => SetChildrenProperties();
 
-        protected override void DoDraw(SpriteBatch spriteBatch)
-        {
-
-        }
+        protected override void DoDraw(SpriteBatch spriteBatch) { }
 
         void RegisterEvents()
         {
@@ -86,9 +74,6 @@ namespace SokoGrump.Gui.Controls
             }
         }
 
-        void OnMouseLeft(object sender, MouseEventArgs e)
-        {
-            tooltip.Hide();
-        }
+        void OnMouseLeft(object sender, MouseEventArgs e) => tooltip.Hide();
     }
 }

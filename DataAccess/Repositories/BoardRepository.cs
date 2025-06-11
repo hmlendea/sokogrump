@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 using NuciDAL.Repositories;
 
 using SokoGrump.DataAccess.DataObjects;
+using SokoGrump.Models;
 using SokoGrump.Settings;
 
 namespace SokoGrump.DataAccess.Repositories
@@ -14,20 +15,13 @@ namespace SokoGrump.DataAccess.Repositories
     /// <summary>
     /// Board repository implementation.
     /// </summary>
-    public class BoardRepository : IRepository<string, BoardEntity>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="BoardRepository"/> class.
+    /// </remarks>
+    /// <param name="boardsDirectory">File name.</param>
+    public class BoardRepository(string boardsDirectory) : IRepository<string, BoardEntity>
     {
-        readonly string boardsDirectory;
-
         public int EntitiesCount => GetAll().Count();
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BoardRepository"/> class.
-        /// </summary>
-        /// <param name="boardsDirectory">File name.</param>
-        public BoardRepository(string boardsDirectory)
-        {
-            this.boardsDirectory = boardsDirectory;
-        }
 
         /// <summary>
         /// Adds the specified board.
@@ -50,8 +44,7 @@ namespace SokoGrump.DataAccess.Repositories
         /// <param name="id">Identifier.</param>
         public BoardEntity Get(string id)
         {
-            BoardEntity boardEntity = new BoardEntity();
-            string boardFile = Path.Combine(boardsDirectory, id, "board.xml");
+            BoardEntity boardEntity = new();
             string levelFile = Path.Combine("Levels", $"{id}.lvl");
             string[] rows = File.ReadAllLines(levelFile);
 
@@ -66,13 +59,13 @@ namespace SokoGrump.DataAccess.Repositories
                 {
                     int tileId = (int)char.GetNumericValue(rows[y][x]);
 
-                    if (tileId == 4)
+                    if (tileId.Equals(TileId.PlayerOnGround))
                     {
                         boardEntity.PlayerStartLocationX = x;
                         boardEntity.PlayerStartLocationY = y;
                         boardEntity.Tiles[x, y] = tileEntities[0];
                     }
-                    else if (tileId == 6)
+                    else if (tileId.Equals(TileId.PlayerOnTarget))
                     {
                         boardEntity.PlayerStartLocationX = x;
                         boardEntity.PlayerStartLocationY = y;
@@ -115,7 +108,7 @@ namespace SokoGrump.DataAccess.Repositories
         /// <returns>The boards</returns>
         public IEnumerable<BoardEntity> GetAll()
         {
-            List<BoardEntity> boardEntities = new List<BoardEntity>();
+            List<BoardEntity> boardEntities = [];
 
             foreach (string boardFile in Directory.GetFiles(boardsDirectory))
             {
@@ -137,13 +130,9 @@ namespace SokoGrump.DataAccess.Repositories
         {
             string boardFile = Path.Combine(boardsDirectory, boardEntity.Id, "board.xml");
 
-            using (TextWriter writer = new StreamWriter(boardFile))
-            {
-                XmlSerializer xml = new XmlSerializer(typeof(BoardEntity));
-                xml.Serialize(writer, boardEntity);
-            }
-
-            // TODO: Save the ProvinceMap and TerrainMap as well
+            using TextWriter writer = new StreamWriter(boardFile);
+            XmlSerializer xml = new(typeof(BoardEntity));
+            xml.Serialize(writer, boardEntity);
         }
 
         public void TryUpdate(BoardEntity boardEntity)
@@ -160,9 +149,7 @@ namespace SokoGrump.DataAccess.Repositories
         /// </summary>
         /// <param name="id">Identifier.</param>
         public void Remove(string id)
-        {
-            Directory.Delete(Path.Combine(boardsDirectory, id));
-        }
+            => Directory.Delete(Path.Combine(boardsDirectory, id));
 
         public void TryRemove(string id)
         {
@@ -178,9 +165,7 @@ namespace SokoGrump.DataAccess.Repositories
         /// </summary>
         /// <param name="boardEntity">Board.</param>
         public void Remove(BoardEntity boardEntity)
-        {
-            Remove(boardEntity.Id);
-        }
+            => Remove(boardEntity.Id);
 
         public void TryRemove(BoardEntity boardEntity)
         {
@@ -193,41 +178,41 @@ namespace SokoGrump.DataAccess.Repositories
 
         public void ApplyChanges() { }
 
-        Dictionary<int, TileEntity> GetTileEntities()
+        static Dictionary<int, TileEntity> GetTileEntities()
         {
-            Dictionary<int, TileEntity> tiles = new Dictionary<int, TileEntity>();
+            Dictionary<int, TileEntity> tiles = [];
 
-            TileEntity terrainTile = new TileEntity
+            TileEntity terrainTile = new()
             {
                 Id = 0,
                 SpriteSheet = "SpriteSheets/brick",
                 TileType = "Walkable"
             };
-            TileEntity wallTile = new TileEntity
+            TileEntity wallTile = new()
             {
                 Id = 1,
                 SpriteSheet = "SpriteSheets/wall",
                 TileType = "Solid"
             };
-            TileEntity boxTile = new TileEntity
+            TileEntity boxTile = new()
             {
                 Id = 2,
                 SpriteSheet = "SpriteSheets/crate",
                 TileType = "Moveable"
             };
-            TileEntity targetTile = new TileEntity
+            TileEntity targetTile = new()
             {
                 Id = 3,
                 SpriteSheet = "Tiles/tile3/0",
                 TileType = "Walkable"
             };
-            TileEntity completedTargetTile = new TileEntity
+            TileEntity completedTargetTile = new()
             {
                 Id = 5,
                 SpriteSheet = "Tiles/tile5/0",
                 TileType = "Moveable"
             };
-            TileEntity voidTile = new TileEntity
+            TileEntity voidTile = new()
             {
                 Id = 7,
                 SpriteSheet = "Tiles/tile7/0",

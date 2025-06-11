@@ -17,11 +17,10 @@ namespace SokoGrump.Gui.SpriteEffects
 
         public List<int> TilesWith { get; set; }
 
-        public TileSpriteSheetEffect(IGameManager game)
-            : base()
+        public TileSpriteSheetEffect(IGameManager game) : base()
         {
             FrameAmount = new Size2D(3, 6);
-            TilesWith = new List<int>();
+            TilesWith = [];
 
             this.game = game;
         }
@@ -33,13 +32,12 @@ namespace SokoGrump.Gui.SpriteEffects
         protected override void DoUpdate(GameTime gameTime)
         {
             // TODO: Dirty fix
-            if (TileLocation.X == 0 || TileLocation.X == GameDefines.BoardWidth - 1 ||
-                TileLocation.Y == 0 || TileLocation.Y == GameDefines.BoardHeight - 1)
+            if (TileLocation.X.Equals(0) || TileLocation.X.Equals(GameDefines.BoardWidth - 1) ||
+                TileLocation.Y.Equals(0) || TileLocation.Y.Equals(GameDefines.BoardHeight - 1))
             {
                 return;
             }
 
-            int id = game.GetTile(TileLocation.X, TileLocation.Y).Id;
             int idN = game.GetTile(TileLocation.X, TileLocation.Y - 1).Id;
             int idW = game.GetTile(TileLocation.X - 1, TileLocation.Y).Id;
             int idS = game.GetTile(TileLocation.X, TileLocation.Y + 1).Id;

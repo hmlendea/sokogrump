@@ -35,7 +35,7 @@ namespace SokoGrump.Models
         /// <see cref="ModelBase"/>; otherwise, <c>false</c>.</returns>
         public virtual bool Equals(ModelBase other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -58,7 +58,7 @@ namespace SokoGrump.Models
         /// <see cref="ModelBase"/>; otherwise, <c>false</c>.</returns>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -68,7 +68,7 @@ namespace SokoGrump.Models
                 return true;
             }
 
-            if (obj.GetType() != GetType())
+            if (!obj.GetType().Equals(GetType()))
             {
                 return false;
             }
@@ -85,9 +85,9 @@ namespace SokoGrump.Models
         {
             unchecked
             {
-                return ((Id != null ? Id.GetHashCode() : 0) * 397) ^
-                       (Name != null ? Name.GetHashCode() : 0) ^
-                       (Description != null ? Description.GetHashCode() : 0);
+                return ((Id is not null ? Id.GetHashCode() : 0) * 397) ^
+                       (Name is not null ? Name.GetHashCode() : 0) ^
+                       (Description is not null ? Description.GetHashCode() : 0);
             }
         }
     }

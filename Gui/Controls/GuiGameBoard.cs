@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Xna.Framework;
@@ -19,25 +18,18 @@ namespace SokoGrump.Gui.Controls
     /// <summary>
     /// World map GUI element.
     /// </summary>
-    public class GuiGameBoard : GuiControl
+    public class GuiGameBoard(IGameManager game) : GuiControl
     {
-        IGameManager game;
-
         Dictionary<int, TextureSprite> tileSprites;
         TextureSprite targetSprite;
         TextureSprite playerSprite;
-
-        public GuiGameBoard(IGameManager game)
-        {
-            this.game = game;
-        }
 
         /// <summary>
         /// Loads the content.
         /// </summary>
         protected override void DoLoadContent()
         {
-            tileSprites = new Dictionary<int, TextureSprite>();
+            tileSprites = [];
             targetSprite = new TextureSprite
             {
                 ContentFile = "SpriteSheets/target"
@@ -52,14 +44,14 @@ namespace SokoGrump.Gui.Controls
 
             foreach (Tile tile in game.GetTiles())
             {
-                TextureSprite tileSprite = new TextureSprite
+                TextureSprite tileSprite = new()
                 {
                     ContentFile = tile.SpriteSheet,
                     SourceRectangle = new Rectangle2D(0, 0, GameDefines.MapTileSize, GameDefines.MapTileSize),
                     IsActive = true
                 };
 
-                if (tile.Id == 2)
+                if (tile.Id.Equals(TileId.CrateOnGround))
                 {
                     tileSprite.SpriteSheetEffect = new CrateSpriteSheetEffect(game);
                 }
@@ -125,24 +117,24 @@ namespace SokoGrump.Gui.Controls
                         y * GameDefines.MapTileSize);
 
                     // TODO: This is temporary
-                    if (tile.Id == 0 || tile.Id == 1)
+                    if (tile.Id.Equals(TileId.Ground) || tile.Id.Equals(TileId.Wall))
                     {
                         TileSpriteSheetEffect tileEffect = (TileSpriteSheetEffect)tileSprite.SpriteSheetEffect;
 
                         tileEffect.TileLocation = new Point2D(x, y);
 
-                        if (tile.Id == 0)
+                        if (tile.Id.Equals(TileId.Ground))
                         {
-                            tileEffect.TilesWith = new List<int> { 0, 2, 3, 5 };
+                            tileEffect.TilesWith = [0, 2, 3, 5];
                         }
-                        else if (tile.Id == 1)
+                        else if (tile.Id.Equals(TileId.Wall))
                         {
-                            tileEffect.TilesWith = new List<int> { 1 };
+                            tileEffect.TilesWith = [1];
                         }
 
                         tileEffect.Update(null);
                     }
-                    else if (tile.Id == 2)
+                    else if (tile.Id.Equals(TileId.CrateOnGround))
                     {
                         CrateSpriteSheetEffect crateEffect = (CrateSpriteSheetEffect)tileSprite.SpriteSheetEffect;
 
@@ -150,7 +142,7 @@ namespace SokoGrump.Gui.Controls
                         crateEffect.Update(null);
                     }
 
-                    if (tile.Id == 2 && targets.Any(target => target.X == x && target.Y == y))
+                    if (tile.Id.Equals(TileId.CrateOnGround) && targets.Any(target => target.X.Equals(x) && target.Y.Equals(y)))
                     {
                         tileSprite.Tint = Colour.Red;
                     }
@@ -167,14 +159,12 @@ namespace SokoGrump.Gui.Controls
             {
                 Tile tile = game.GetTile(targetLocation.X, targetLocation.Y);
 
-                if (tile.Id == 2)
+                if (tile.Id.Equals(TileId.CrateOnGround))
                 {
                     continue;
                 }
 
-                targetSprite.Location = new Point2D(
-                    Location.X + targetLocation.X * GameDefines.MapTileSize,
-                    Location.Y + targetLocation.Y * GameDefines.MapTileSize);
+                targetSprite.Location = Location + targetLocation * GameDefines.MapTileSize;
 
                 targetSprite.Draw(spriteBatch);
             }

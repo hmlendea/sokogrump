@@ -26,9 +26,7 @@
         /// <value>The variation.</value>
         public int Variation { get; set; }
 
-        public Tile()
-        {
-        }
+        public Tile() { }
 
         public Tile(Tile tile)
         {

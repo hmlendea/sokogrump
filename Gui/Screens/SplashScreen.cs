@@ -50,10 +50,7 @@ namespace SokoGrump.Gui.Screens
         /// <summary>
         /// Unloads the content.
         /// </summary>
-        protected override void DoUnloadContent()
-        {
-            UnregisterEvents();
-        }
+        protected override void DoUnloadContent() => UnregisterEvents();
 
         /// <summary>
         /// Updates the content.
@@ -75,10 +72,7 @@ namespace SokoGrump.Gui.Screens
         /// Draw the content on the specified spriteBatch.
         /// </summary>
         /// <param name="spriteBatch">Sprite batch.</param>
-        protected override void DoDraw(SpriteBatch spriteBatch)
-        {
-
-        }
+        protected override void DoDraw(SpriteBatch spriteBatch) { }
 
         /// <summary>
         /// Registers the events.
@@ -102,24 +96,14 @@ namespace SokoGrump.Gui.Screens
         /// Sets the properties of the child controls.
         /// </summary>
         void SetChildrenProperties()
-        {
-            LogoImage.Location = new Point2D((ScreenManager.Instance.Size.Width - LogoImage.Size.Width) / 2,
-                                             (ScreenManager.Instance.Size.Height - LogoImage.Size.Height) / 2);
-        }
+            => LogoImage.Location = new Point2D(
+                (ScreenManager.Instance.Size.Width - LogoImage.Size.Width) / 2,
+                (ScreenManager.Instance.Size.Height - LogoImage.Size.Height) / 2);
 
-        void OnInputManagerKeyboardKeyPressed(object sender, KeyboardKeyEventArgs e)
-        {
-            ChangeScreen();
-        }
+        void OnInputManagerKeyboardKeyPressed(object sender, KeyboardKeyEventArgs e) => ChangeScreen();
 
-        void OnInputManagerMouseButtonPressed(object sender, MouseButtonEventArgs e)
-        {
-            ChangeScreen();
-        }
+        void OnInputManagerMouseButtonPressed(object sender, MouseButtonEventArgs e) => ChangeScreen();
 
-        void ChangeScreen()
-        {
-            ScreenManager.Instance.ChangeScreens<TitleScreen>();
-        }
+        static void ChangeScreen() => ScreenManager.Instance.ChangeScreens<TitleScreen>();
     }
 }

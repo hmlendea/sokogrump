@@ -1,5 +1,5 @@
 ﻿using System.IO;
-
+using System.Threading;
 using NuciXNA.DataAccess.IO;
 using NuciXNA.Graphics;
 
@@ -11,7 +11,7 @@ namespace SokoGrump.Settings
     public class SettingsManager
     {
         static volatile SettingsManager instance;
-        static object syncRoot = new object();
+        static readonly Lock syncRoot = new();
 
         /// <summary>
         /// Gets the instance.
@@ -21,14 +21,11 @@ namespace SokoGrump.Settings
         {
             get
             {
-                if (instance == null)
+                if (instance is null)
                 {
                     lock (syncRoot)
                     {
-                        if (instance == null)
-                        {
-                            instance = new SettingsManager();
-                        }
+                        instance ??= new SettingsManager();
                     }
                 }
 
@@ -78,7 +75,7 @@ namespace SokoGrump.Settings
                 return;
             }
 
-            XmlFileObject<SettingsManager> xmlManager = new XmlFileObject<SettingsManager>();
+            XmlFileObject<SettingsManager> xmlManager = new();
             SettingsManager storedSettings = xmlManager.Read(ApplicationPaths.SettingsFile);
 
             instance = storedSettings;
@@ -89,7 +86,7 @@ namespace SokoGrump.Settings
         /// </summary>
         public void SaveContent()
         {
-            XmlFileObject<SettingsManager> xmlManager = new XmlFileObject<SettingsManager>();
+            XmlFileObject<SettingsManager> xmlManager = new();
             xmlManager.Write(ApplicationPaths.SettingsFile, this);
         }
 
