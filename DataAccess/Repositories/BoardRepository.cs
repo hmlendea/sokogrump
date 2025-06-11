@@ -59,13 +59,13 @@ namespace SokoGrump.DataAccess.Repositories
                 {
                     int tileId = (int)char.GetNumericValue(rows[y][x]);
 
-                    if (tileId.Equals(TileId.PlayerOnGround))
+                    if (tileId.Equals((int)TileId.PlayerOnGround))
                     {
                         boardEntity.PlayerStartLocationX = x;
                         boardEntity.PlayerStartLocationY = y;
                         boardEntity.Tiles[x, y] = tileEntities[0];
                     }
-                    else if (tileId.Equals(TileId.PlayerOnTarget))
+                    else if (tileId.Equals((int)TileId.PlayerOnTarget))
                     {
                         boardEntity.PlayerStartLocationX = x;
                         boardEntity.PlayerStartLocationY = y;
