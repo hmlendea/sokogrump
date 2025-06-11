@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using NuciXNA.DataAccess.DataObjects;
+using NuciDAL.DataObjects;
 using NuciXNA.Primitives;
 
 namespace SokoGrump.DataAccess.DataObjects
