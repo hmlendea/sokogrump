@@ -5,7 +5,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>SokoGrump</RootNamespace>
     <Authors>Horațiu Mlendea</Authors>
-    <Copyright>Copyright 2024 © Horațiu Mlendea</Copyright>
+    <Copyright>Copyright 2025 © Horațiu Mlendea</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
