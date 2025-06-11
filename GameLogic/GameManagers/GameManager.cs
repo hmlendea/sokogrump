@@ -45,7 +45,7 @@ namespace SokoGrump.GameLogic.GameManagers
 
         public void Update(double elapsedMiliseconds)
         {
-            Completed = board.Targets.All(targetLocation => board.Tiles[targetLocation.X, targetLocation.Y].Id.Equals(TileId.CrateOnGround));
+            Completed = board.Targets.All(targetLocation => board.Tiles[targetLocation.X, targetLocation.Y].Id.Equals((int)TileId.CrateOnGround));
 
             boardManager.Update(elapsedMiliseconds);
         }
@@ -61,19 +61,20 @@ namespace SokoGrump.GameLogic.GameManagers
 
             player = new Player
             {
-                Location = board.PlayerStartLocation
+                Location = board.PlayerStartLocation,
+                Direction = MovementDirection.South
             };
 
             for (int y = 0; y < GameDefines.BoardHeight; y++)
             {
                 for (int x = 0; x < GameDefines.BoardWidth; x++)
                 {
-                    if (board.Tiles[x, y].Id.Equals(TileId.EmptyTarget))
+                    if (board.Tiles[x, y].Id.Equals((int)TileId.EmptyTarget))
                     {
                         board.Tiles[x, y] = boardManager.GetTile(0);
                     }
 
-                    if (board.Tiles[x, y].Id.Equals(TileId.CrateOnTarget))
+                    if (board.Tiles[x, y].Id.Equals((int)TileId.CrateOnTarget))
                     {
                         board.Tiles[x, y] = boardManager.GetTile(2);
                     }
@@ -99,30 +100,29 @@ namespace SokoGrump.GameLogic.GameManagers
             int dest2X, dest2Y;
             bool moved;
 
-            switch (direction)
+            if (direction is MovementDirection.North)
             {
-                case MovementDirection.North:
-                    dirX = 0;
-                    dirY = -1;
-                    break;
-
-                case MovementDirection.West:
-                    dirX = -1;
-                    dirY = 0;
-                    break;
-
-                case MovementDirection.South:
-                    dirX = 0;
-                    dirY = 1;
-                    break;
-
-                case MovementDirection.East:
-                    dirX = 1;
-                    dirY = 0;
-                    break;
-
-                default:
-                    return;
+                dirX = 0;
+                dirY = -1;
+            }
+            else if (direction is MovementDirection.West)
+            {
+                dirX = -1;
+                dirY = 0;
+            }
+            else if (direction is MovementDirection.South)
+            {
+                dirX = 0;
+                dirY = 1;
+            }
+            else if (direction is MovementDirection.East)
+            {
+                dirX = 1;
+                dirY = 0;
+            }
+            else
+            {
+                return;
             }
 
             destX = player.Location.X + dirX;
@@ -138,19 +138,19 @@ namespace SokoGrump.GameLogic.GameManagers
                 return;
             }
 
-            if (board.Tiles[destX, destY].TileType.Equals(TileType.Walkable))
+            if (board.Tiles[destX, destY].TileType is TileType.Walkable)
             {
                 moved = true;
             }
-            else if (board.Tiles[destX, destY].TileType.Equals(TileType.Moveable))
+            else if (board.Tiles[destX, destY].TileType is TileType.Moveable)
             {
                 if ((dirX < 0 && player.Location.X >= 2) || (dirX > 0 && player.Location.X < GameDefines.BoardWidth - 2) ||
                     (dirY < 0 && player.Location.Y >= 2) || (dirY > 0 && player.Location.Y < GameDefines.BoardHeight - 2))
                 {
                     // If it's a crate
-                    if (board.Tiles[destX, destY].Id.Equals(TileId.CrateOnGround))
+                    if (board.Tiles[destX, destY].Id.Equals((int)TileId.CrateOnGround))
                     {
-                        if (board.Tiles[dest2X, dest2Y].Id.Equals(TileId.Ground))
+                        if (board.Tiles[dest2X, dest2Y].Id.Equals((int)TileId.Ground))
                         {
                             int variation = board.Tiles[destX, destY].Variation;
                             board.Tiles[destX, destY] = boardManager.GetTile(0);
@@ -163,9 +163,17 @@ namespace SokoGrump.GameLogic.GameManagers
                 }
             }
 
-            if (dirX < 0)
+            if (dirY < 0)
+            {
+                player.Direction = MovementDirection.North;
+            }
+            else if (dirX < 0)
             {
                 player.Direction = MovementDirection.West;
+            }
+            else if (dirY > 0)
+            {
+                player.Direction = MovementDirection.South;
             }
             else if (dirX > 0)
             {
@@ -195,7 +203,7 @@ namespace SokoGrump.GameLogic.GameManagers
             {
                 for (int x = 0; x < GameDefines.BoardWidth; x++)
                 {
-                    if (board.Tiles[x, y].Id.Equals(TileId.CrateOnGround))
+                    if (board.Tiles[x, y].Id.Equals((int)TileId.CrateOnGround))
                     {
                         board.Tiles[x, y].Variation = random.Next(0, 11);
                     }
