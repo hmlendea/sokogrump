@@ -55,10 +55,7 @@ namespace SokoGrump.Gui.Screens
         /// <summary>
         /// Unloads the content.
         /// </summary>
-        protected override void DoUnloadContent()
-        {
-            UnregisterEvents();
-        }
+        protected override void DoUnloadContent() => UnregisterEvents();
 
         /// <summary>
         /// Updates the content.
@@ -80,13 +77,10 @@ namespace SokoGrump.Gui.Screens
         /// Draw the content on the specified spriteBatch.
         /// </summary>
         /// <param name="spriteBatch">Sprite batch.</param>
-        protected override void DoDraw(SpriteBatch spriteBatch)
-        {
-
-        }
+        protected override void DoDraw(SpriteBatch spriteBatch) { }
 
         /// <summary>
-        /// Registers the 
+        /// Registers the
         void RegisterEvents()
         {
             InputManager.Instance.KeyboardKeyPressed += OnInputManagerKeyboardKeyPressed;
@@ -105,24 +99,12 @@ namespace SokoGrump.Gui.Screens
         /// <summary>
         /// Sets the properties of the child controls.
         /// </summary>
-        void SetChildrenProperties()
-        {
-            Image.Size = ScreenManager.Instance.Size;
-        }
+        void SetChildrenProperties() => Image.Size = ScreenManager.Instance.Size;
 
-        void OnInputManagerKeyboardKeyPressed(object sender, KeyboardKeyEventArgs e)
-        {
-            ChangeScreen();
-        }
+        void OnInputManagerKeyboardKeyPressed(object sender, KeyboardKeyEventArgs e) => ChangeScreen();
 
-        void OnInputManagerMouseButtonPressed(object sender, MouseButtonEventArgs e)
-        {
-            ChangeScreen();
-        }
+        void OnInputManagerMouseButtonPressed(object sender, MouseButtonEventArgs e) => ChangeScreen();
 
-        void ChangeScreen()
-        {
-            ScreenManager.Instance.ChangeScreens<TitleScreen>();
-        }
+        static void ChangeScreen() => ScreenManager.Instance.ChangeScreens<TitleScreen>();
     }
 }

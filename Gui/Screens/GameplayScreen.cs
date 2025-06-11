@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using NuciXNA.Gui;
-using NuciXNA.Gui.Controls;
 using NuciXNA.Gui.Screens;
 using NuciXNA.Input;
 using NuciXNA.Primitives;
@@ -28,7 +27,7 @@ namespace SokoGrump.Gui.Screens
         GuiInfoBar infoBar;
         GuiGameBoard gameBoard;
 
-        int level;
+        readonly int level;
 
         public GameplayScreen(int level)
         {
@@ -95,7 +94,7 @@ namespace SokoGrump.Gui.Screens
                 }
                 else
                 {
-                    ScreenManager.Instance.ChangeScreens(typeof(GameFinishedScreen));
+                    ScreenManager.Instance.ChangeScreens<GameFinishedScreen>();
                     SettingsManager.Instance.UserData.LastLevel = 0;
                 }
             }
@@ -107,10 +106,7 @@ namespace SokoGrump.Gui.Screens
         /// Draw the content on the specified spriteBatch.
         /// </summary>
         /// <param name="spriteBatch">Sprite batch.</param>
-        protected override void DoDraw(SpriteBatch spriteBatch)
-        {
-
-        }
+        protected override void DoDraw(SpriteBatch spriteBatch) { }
 
         /// <summary>
         /// Registers the events.
@@ -180,9 +176,6 @@ namespace SokoGrump.Gui.Screens
             }
         }
 
-        void OnRetryButtonPressed(object sender, MouseButtonEventArgs e)
-        {
-            game.Retry();
-        }
+        void OnRetryButtonPressed(object sender, MouseButtonEventArgs e) => game.Retry();
     }
 }

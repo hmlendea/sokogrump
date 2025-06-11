@@ -15,7 +15,7 @@ namespace SokoGrump.Models
         public Point2D PlayerStartLocation { get; set; }
 
         public List<Point2D> Targets { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the tiles.
         /// </summary>
@@ -24,13 +24,13 @@ namespace SokoGrump.Models
 
         public Board()
         {
-            Targets = new List<Point2D>();
+            Targets = [];
         }
 
         public Board(Board board)
         {
             PlayerStartLocation = board.PlayerStartLocation;
-            Targets = new List<Point2D>(board.Targets);
+            Targets = [.. board.Targets];
             Tiles = new Tile[GameDefines.BoardWidth, GameDefines.BoardHeight];
 
             for (int y = 0; y < GameDefines.BoardHeight; y++)

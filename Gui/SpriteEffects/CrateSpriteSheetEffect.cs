@@ -3,7 +3,6 @@ using NuciXNA.Graphics.SpriteEffects;
 using NuciXNA.Primitives;
 
 using SokoGrump.GameLogic.GameManagers;
-using SokoGrump.Models;
 
 namespace SokoGrump.Gui.SpriteEffects
 {
@@ -25,10 +24,6 @@ namespace SokoGrump.Gui.SpriteEffects
         /// </summary>
         /// <param name="gameTime">Game time.</param>
         protected override void DoUpdate(GameTime gameTime)
-        {
-            Tile tile = game.GetTile(TileLocation.X, TileLocation.Y);
-
-            CurrentFrame = new Point2D(tile.Variation, 0);
-        }
+            => CurrentFrame = new Point2D(game.GetTile(TileLocation.X, TileLocation.Y).Variation, 0);
     }
 }

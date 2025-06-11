@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace SokoGrump.Gui.Helpers
 {
@@ -9,7 +10,7 @@ namespace SokoGrump.Gui.Helpers
     public class FramerateCounter
     {
         static volatile FramerateCounter instance;
-        static object syncRoot = new object();
+        static readonly Lock syncRoot = new();
 
         readonly Queue<float> sampleBuffer;
 
@@ -21,14 +22,11 @@ namespace SokoGrump.Gui.Helpers
         {
             get
             {
-                if (instance == null)
+                if (instance is null)
                 {
                     lock (syncRoot)
                     {
-                        if (instance == null)
-                        {
-                            instance = new FramerateCounter();
-                        }
+                        instance ??= new FramerateCounter();
                     }
                 }
 
@@ -68,10 +66,7 @@ namespace SokoGrump.Gui.Helpers
         /// <summary>
         /// Initializes a new instance of the <see cref="FramerateCounter"/> class.
         /// </summary>
-        public FramerateCounter()
-        {
-            sampleBuffer = new Queue<float>();
-        }
+        public FramerateCounter() => sampleBuffer = new Queue<float>();
 
         /// <summary>
         /// Updates the framerate.

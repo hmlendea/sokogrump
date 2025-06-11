@@ -24,7 +24,7 @@ namespace SokoGrump.Gui.Screens
                 Id = nameof(newGameLink),
                 Text = "New Game",
                 TargetScreen = typeof(GameplayScreen),
-                Parameters = new object[] { default(int) }
+                Parameters = [default(int)]
             };
             settingsLink = new GuiMenuLink
             {
@@ -32,7 +32,7 @@ namespace SokoGrump.Gui.Screens
                 Text = "Settings",
                 TargetScreen = typeof(SettingsScreen)
             };
-            
+
             if (SettingsManager.Instance.UserData.LastLevel > 0)
             {
                 continueGameLink = new GuiMenuLink
@@ -40,7 +40,7 @@ namespace SokoGrump.Gui.Screens
                     Id = nameof(continueGameLink),
                     Text = "Continue Game",
                     TargetScreen = typeof(GameplayScreen),
-                    Parameters = new object[] { SettingsManager.Instance.UserData.LastLevel }
+                    Parameters = [SettingsManager.Instance.UserData.LastLevel]
                 };
 
                 Items.Add(continueGameLink);

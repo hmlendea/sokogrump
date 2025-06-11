@@ -8,9 +8,6 @@
         /// <value>The sound toggle.</value>
         public bool SoundEnabled { get; set; }
 
-        public AudioSettings()
-        {
-            SoundEnabled = true;
-        }
+        public AudioSettings() => SoundEnabled = true;
     }
 }

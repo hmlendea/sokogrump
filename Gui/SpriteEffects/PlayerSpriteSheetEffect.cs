@@ -11,8 +11,7 @@ namespace SokoGrump.Gui.SpriteEffects
     {
         readonly IGameManager game;
 
-        public PlayerSpriteSheetEffect(IGameManager game)
-            : base()
+        public PlayerSpriteSheetEffect(IGameManager game) : base()
         {
             FrameAmount = new Size2D(3, 6);
 

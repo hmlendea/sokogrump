@@ -33,22 +33,15 @@ namespace SokoGrump.GameLogic.GameManagers
         /// <summary>
         /// Initializes a new instance of the <see cref="GameEngine"/> class.
         /// </summary>
-        public GameManager()
-        {
-            boardManager = new BoardManager();
-        }
+        public GameManager() => boardManager = new BoardManager();
 
         public void LoadContent()
         {
             random = new Random();
-
             boardManager.LoadContent();
         }
 
-        public void UnloadContent()
-        {
-            boardManager.UnloadContent();
-        }
+        public void UnloadContent() => boardManager.UnloadContent();
 
         public void Update(double elapsedMiliseconds)
         {
@@ -66,10 +59,10 @@ namespace SokoGrump.GameLogic.GameManagers
             Level = level;
             board = boardManager.GetBoard(level);
 
-            player = new Player();
-            player.Location = new Point2D(
-                board.PlayerStartLocation.X,
-                board.PlayerStartLocation.Y);
+            player = new Player
+            {
+                Location = board.PlayerStartLocation
+            };
 
             for (int y = 0; y < GameDefines.BoardHeight; y++)
             {
@@ -93,10 +86,7 @@ namespace SokoGrump.GameLogic.GameManagers
         /// <summary>
         /// Retry this instance.
         /// </summary>
-        public void Retry()
-        {
-            NewGame(Level);
-        }
+        public void Retry() => NewGame(Level);
 
         /// <summary>
         /// Moves the player in a certain direction.
@@ -191,25 +181,13 @@ namespace SokoGrump.GameLogic.GameManagers
             }
         }
 
-        public List<Point2D> GetTargets()
-        {
-            return board.Targets;
-        }
+        public List<Point2D> GetTargets() => board.Targets;
 
-        public Player GetPlayer()
-        {
-            return player;
-        }
+        public Player GetPlayer() => player;
 
-        public Tile GetTile(int x, int y)
-        {
-            return board.Tiles[x, y];
-        }
+        public Tile GetTile(int x, int y) => board.Tiles[x, y];
 
-        public IEnumerable<Tile> GetTiles()
-        {
-            return boardManager.GetTiles();
-        }
+        public IEnumerable<Tile> GetTiles() => boardManager.GetTiles();
 
         void GenerateVariations()
         {
@@ -217,7 +195,7 @@ namespace SokoGrump.GameLogic.GameManagers
             {
                 for (int x = 0; x < GameDefines.BoardWidth; x++)
                 {
-                    if (board.Tiles[x, y].Id == 2)
+                    if (board.Tiles[x, y].Id.Equals(2))
                     {
                         board.Tiles[x, y].Variation = random.Next(0, 11);
                     }
