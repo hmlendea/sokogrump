@@ -68,7 +68,7 @@ namespace SokoGrump.Models
                 return true;
             }
 
-            if (obj.GetType() != GetType())
+            if (!obj.GetType().Equals(GetType()))
             {
                 return false;
             }

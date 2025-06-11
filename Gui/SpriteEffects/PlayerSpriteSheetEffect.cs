@@ -24,9 +24,7 @@ namespace SokoGrump.Gui.SpriteEffects
         /// <param name="gameTime">Game time.</param>
         protected override void DoUpdate(GameTime gameTime)
         {
-            Player player = game.GetPlayer();
-
-            if (player.Direction == MovementDirection.West)
+            if (game.GetPlayer().Direction.Equals(MovementDirection.West))
             {
                 CurrentFrame = new Point2D(0, 0);
             }
