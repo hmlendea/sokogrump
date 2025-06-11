@@ -51,7 +51,7 @@ namespace SokoGrump.Gui.Controls
                     IsActive = true
                 };
 
-                if (tile.Id.Equals(2))
+                if (tile.Id.Equals(TileId.CrateOnGround))
                 {
                     tileSprite.SpriteSheetEffect = new CrateSpriteSheetEffect(game);
                 }
@@ -117,24 +117,24 @@ namespace SokoGrump.Gui.Controls
                         y * GameDefines.MapTileSize);
 
                     // TODO: This is temporary
-                    if (tile.Id.Equals(0) || tile.Id.Equals(1))
+                    if (tile.Id.Equals(TileId.Ground) || tile.Id.Equals(TileId.Wall))
                     {
                         TileSpriteSheetEffect tileEffect = (TileSpriteSheetEffect)tileSprite.SpriteSheetEffect;
 
                         tileEffect.TileLocation = new Point2D(x, y);
 
-                        if (tile.Id.Equals(0))
+                        if (tile.Id.Equals(TileId.Ground))
                         {
                             tileEffect.TilesWith = [0, 2, 3, 5];
                         }
-                        else if (tile.Id.Equals(1))
+                        else if (tile.Id.Equals(TileId.Wall))
                         {
                             tileEffect.TilesWith = [1];
                         }
 
                         tileEffect.Update(null);
                     }
-                    else if (tile.Id.Equals(2))
+                    else if (tile.Id.Equals(TileId.CrateOnGround))
                     {
                         CrateSpriteSheetEffect crateEffect = (CrateSpriteSheetEffect)tileSprite.SpriteSheetEffect;
 
@@ -142,7 +142,7 @@ namespace SokoGrump.Gui.Controls
                         crateEffect.Update(null);
                     }
 
-                    if (tile.Id.Equals(2) && targets.Any(target => target.X.Equals(x) && target.Y.Equals(y)))
+                    if (tile.Id.Equals(TileId.CrateOnGround) && targets.Any(target => target.X.Equals(x) && target.Y.Equals(y)))
                     {
                         tileSprite.Tint = Colour.Red;
                     }
@@ -159,7 +159,7 @@ namespace SokoGrump.Gui.Controls
             {
                 Tile tile = game.GetTile(targetLocation.X, targetLocation.Y);
 
-                if (tile.Id.Equals(2))
+                if (tile.Id.Equals(TileId.CrateOnGround))
                 {
                     continue;
                 }

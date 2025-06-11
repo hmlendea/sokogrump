@@ -45,7 +45,7 @@ namespace SokoGrump.GameLogic.GameManagers
 
         public void Update(double elapsedMiliseconds)
         {
-            Completed = board.Targets.All(targetLocation => board.Tiles[targetLocation.X, targetLocation.Y].Id.Equals(2));
+            Completed = board.Targets.All(targetLocation => board.Tiles[targetLocation.X, targetLocation.Y].Id.Equals(TileId.CrateOnGround));
 
             boardManager.Update(elapsedMiliseconds);
         }
@@ -68,12 +68,12 @@ namespace SokoGrump.GameLogic.GameManagers
             {
                 for (int x = 0; x < GameDefines.BoardWidth; x++)
                 {
-                    if (board.Tiles[x, y].Id.Equals(3))
+                    if (board.Tiles[x, y].Id.Equals(TileId.EmptyTarget))
                     {
                         board.Tiles[x, y] = boardManager.GetTile(0);
                     }
 
-                    if (board.Tiles[x, y].Id.Equals(5))
+                    if (board.Tiles[x, y].Id.Equals(TileId.CrateOnTarget))
                     {
                         board.Tiles[x, y] = boardManager.GetTile(2);
                     }
@@ -148,9 +148,9 @@ namespace SokoGrump.GameLogic.GameManagers
                     (dirY < 0 && player.Location.Y >= 2) || (dirY > 0 && player.Location.Y < GameDefines.BoardHeight - 2))
                 {
                     // If it's a crate
-                    if (board.Tiles[destX, destY].Id.Equals(2))
+                    if (board.Tiles[destX, destY].Id.Equals(TileId.CrateOnGround))
                     {
-                        if (board.Tiles[dest2X, dest2Y].Id.Equals(0))
+                        if (board.Tiles[dest2X, dest2Y].Id.Equals(TileId.Ground))
                         {
                             int variation = board.Tiles[destX, destY].Variation;
                             board.Tiles[destX, destY] = boardManager.GetTile(0);
@@ -195,7 +195,7 @@ namespace SokoGrump.GameLogic.GameManagers
             {
                 for (int x = 0; x < GameDefines.BoardWidth; x++)
                 {
-                    if (board.Tiles[x, y].Id.Equals(2))
+                    if (board.Tiles[x, y].Id.Equals(TileId.CrateOnGround))
                     {
                         board.Tiles[x, y].Variation = random.Next(0, 11);
                     }

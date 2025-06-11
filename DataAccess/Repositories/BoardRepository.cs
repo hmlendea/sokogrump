@@ -7,6 +7,7 @@ using System.Xml.Serialization;
 using NuciDAL.Repositories;
 
 using SokoGrump.DataAccess.DataObjects;
+using SokoGrump.Models;
 using SokoGrump.Settings;
 
 namespace SokoGrump.DataAccess.Repositories
@@ -58,13 +59,13 @@ namespace SokoGrump.DataAccess.Repositories
                 {
                     int tileId = (int)char.GetNumericValue(rows[y][x]);
 
-                    if (tileId.Equals(4))
+                    if (tileId.Equals(TileId.PlayerOnGround))
                     {
                         boardEntity.PlayerStartLocationX = x;
                         boardEntity.PlayerStartLocationY = y;
                         boardEntity.Tiles[x, y] = tileEntities[0];
                     }
-                    else if (tileId.Equals(6))
+                    else if (tileId.Equals(TileId.PlayerOnTarget))
                     {
                         boardEntity.PlayerStartLocationX = x;
                         boardEntity.PlayerStartLocationY = y;
