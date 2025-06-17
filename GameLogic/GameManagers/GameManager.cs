@@ -92,6 +92,71 @@ namespace SokoGrump.GameLogic.GameManagers
         public void SetPlayerDirection(MovementDirection direction)
             => player.Direction = direction;
 
+        public bool CanMove(MovementDirection direction)
+        {
+            int dirX, dirY;
+            int destX, destY;
+            int dest2X, dest2Y;
+
+            if (direction is MovementDirection.North)
+            {
+                dirX = 0;
+                dirY = -1;
+            }
+            else if (direction is MovementDirection.West)
+            {
+                dirX = -1;
+                dirY = 0;
+            }
+            else if (direction is MovementDirection.South)
+            {
+                dirX = 0;
+                dirY = 1;
+            }
+            else if (direction is MovementDirection.East)
+            {
+                dirX = 1;
+                dirY = 0;
+            }
+            else
+            {
+                return false;
+            }
+
+            destX = player.Location.X + dirX;
+            destY = player.Location.Y + dirY;
+            dest2X = player.Location.X + dirX * 2;
+            dest2Y = player.Location.Y + dirY * 2;
+
+            if (destX < 0 || destX >= GameDefines.BoardWidth ||
+                destY < 0 || destY >= GameDefines.BoardHeight)
+            {
+                return false;
+            }
+
+            if (board.Tiles[destX, destY].TileType is TileType.Walkable)
+            {
+                return true;
+            }
+
+            if (board.Tiles[destX, destY].TileType is TileType.Moveable)
+            {
+                if ((dirX < 0 && player.Location.X >= 2) || (dirX > 0 && player.Location.X < GameDefines.BoardWidth - 2) ||
+                    (dirY < 0 && player.Location.Y >= 2) || (dirY > 0 && player.Location.Y < GameDefines.BoardHeight - 2))
+                {
+                    if (board.Tiles[destX, destY].Id.Equals((int)TileId.CrateOnGround))
+                    {
+                        if (board.Tiles[dest2X, dest2Y].Id.Equals((int)TileId.Ground))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// Moves the player in a certain direction.
         /// </summary>
@@ -133,19 +198,14 @@ namespace SokoGrump.GameLogic.GameManagers
             dest2X = player.Location.X + dirX * 2;
             dest2Y = player.Location.Y + dirY * 2;
 
-            moved = false;
+            moved = CanMove(direction);
 
-            if (destX < 0 || destX >= GameDefines.BoardWidth ||
-                destY < 0 || destY >= GameDefines.BoardHeight)
+            if (!moved)
             {
                 return;
             }
 
-            if (board.Tiles[destX, destY].TileType is TileType.Walkable)
-            {
-                moved = true;
-            }
-            else if (board.Tiles[destX, destY].TileType is TileType.Moveable)
+            if (board.Tiles[destX, destY].TileType is TileType.Moveable)
             {
                 if ((dirX < 0 && player.Location.X >= 2) || (dirX > 0 && player.Location.X < GameDefines.BoardWidth - 2) ||
                     (dirY < 0 && player.Location.Y >= 2) || (dirY > 0 && player.Location.Y < GameDefines.BoardHeight - 2))

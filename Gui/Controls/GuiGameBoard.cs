@@ -191,6 +191,11 @@ namespace SokoGrump.Gui.Controls
 
             game.SetPlayerDirection(direction);
 
+            if (!game.CanMove(direction))
+            {
+                return;
+            }
+
             Point2D targetLocation = playerSprite.Location;
 
             if (direction is MovementDirection.North)
@@ -219,8 +224,6 @@ namespace SokoGrump.Gui.Controls
             Player player = game.GetPlayer();
             game.MovePlayer(player.Direction);
             playerSprite.Location = Location + player.Location * GameDefines.MapTileSize;
-
-                Console.WriteLine(player.Location.X + " " + player.Location.Y);
         }
 
         void OnInputManagerKeyboardKeyPressed(object sender, KeyboardKeyEventArgs e)
