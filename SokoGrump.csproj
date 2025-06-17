@@ -17,7 +17,7 @@
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.4" />
     <PackageReference Include="NuciDAL" Version="2.2.1" />
     <PackageReference Include="NuciXNA.DataAccess" Version="3.0.3" />
-    <PackageReference Include="NuciXNA.Graphics" Version="2.1.1" />
+    <PackageReference Include="NuciXNA.Graphics" Version="2.2.0" />
     <PackageReference Include="NuciXNA.Gui" Version="3.0.2" />
     <PackageReference Include="NuciXNA.Input" Version="2.0.1" />
     <PackageReference Include="NuciXNA.Primitives" Version="2.1.1" />
