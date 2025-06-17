@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using Microsoft.Xna.Framework.Input;
 using NuciXNA.Graphics.Drawing;
+using NuciXNA.Graphics.SpriteEffects;
 using NuciXNA.Gui.Controls;
+using NuciXNA.Input;
 using NuciXNA.Primitives;
 
 using SokoGrump.GameLogic.GameManagers;
@@ -39,6 +42,7 @@ namespace SokoGrump.Gui.Controls
                 ContentFile = "SpriteSheets/player",
                 SourceRectangle = new Rectangle2D(0, 0, GameDefines.MapTileSize, GameDefines.MapTileSize),
                 SpriteSheetEffect = new PlayerSpriteSheetEffect(game),
+                MovementEffect = new MovementEffect(),
                 IsActive = true
             };
 
@@ -69,6 +73,9 @@ namespace SokoGrump.Gui.Controls
             targetSprite.LoadContent();
             playerSprite.LoadContent();
             playerSprite.SpriteSheetEffect.Activate();
+
+            playerSprite.MovementEffect.Deactivated += OnPlayerSpriteMovementEffectDeactivated;
+            InputManager.Instance.KeyboardKeyPressed += OnInputManagerKeyboardKeyPressed;
         }
 
         /// <summary>
@@ -81,6 +88,9 @@ namespace SokoGrump.Gui.Controls
             playerSprite.UnloadContent();
 
             tileSprites.Clear();
+
+            playerSprite.MovementEffect.Deactivated -= OnPlayerSpriteMovementEffectDeactivated;
+            InputManager.Instance.KeyboardKeyPressed -= OnInputManagerKeyboardKeyPressed;
         }
 
         /// <summary>
@@ -170,6 +180,77 @@ namespace SokoGrump.Gui.Controls
             }
 
             playerSprite.Draw(spriteBatch);
+        }
+
+        void MovePlayer(MovementDirection direction)
+        {
+            if (playerSprite.MovementEffect.IsActive)
+            {
+                return;
+            }
+
+            game.SetPlayerDirection(direction);
+
+            Point2D targetLocation = playerSprite.Location;
+
+            if (direction is MovementDirection.North)
+            {
+                targetLocation.Y -= GameDefines.MapTileSize;
+            }
+            else if (direction is MovementDirection.West)
+            {
+                targetLocation.X -= GameDefines.MapTileSize;
+            }
+            else if (direction is MovementDirection.South)
+            {
+                targetLocation.Y += GameDefines.MapTileSize;
+            }
+            else if (direction is MovementDirection.East)
+            {
+                targetLocation.X += GameDefines.MapTileSize;
+            }
+
+            playerSprite.MovementEffect.TargetLocation = targetLocation;
+            playerSprite.MovementEffect.Activate();
+        }
+
+        void OnPlayerSpriteMovementEffectDeactivated(object sender, EventArgs e)
+        {
+            Player player = game.GetPlayer();
+            game.MovePlayer(player.Direction);
+            playerSprite.Location = Location + player.Location * GameDefines.MapTileSize;
+
+                Console.WriteLine(player.Location.X + " " + player.Location.Y);
+        }
+
+        void OnInputManagerKeyboardKeyPressed(object sender, KeyboardKeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Keys.W:
+                case Keys.Up:
+                    MovePlayer(MovementDirection.North);
+                    break;
+
+                case Keys.A:
+                case Keys.Left:
+                    MovePlayer(MovementDirection.West);
+                    break;
+
+                case Keys.S:
+                case Keys.Down:
+                    MovePlayer(MovementDirection.South);
+                    break;
+
+                case Keys.D:
+                case Keys.Right:
+                    MovePlayer(MovementDirection.East);
+                    break;
+
+                case Keys.R:
+                    game.Retry();
+                    break;
+            }
         }
     }
 }

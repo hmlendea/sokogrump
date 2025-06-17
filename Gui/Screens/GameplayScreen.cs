@@ -2,7 +2,6 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 using NuciXNA.Gui;
 using NuciXNA.Gui.Screens;
@@ -11,7 +10,6 @@ using NuciXNA.Primitives;
 
 using SokoGrump.GameLogic.GameManagers;
 using SokoGrump.Gui.Controls;
-using SokoGrump.Models;
 using SokoGrump.Settings;
 
 namespace SokoGrump.Gui.Screens
@@ -114,7 +112,6 @@ namespace SokoGrump.Gui.Screens
         void RegisterEvents()
         {
             retryButton.Clicked += OnRetryButtonPressed;
-            InputManager.Instance.KeyboardKeyPressed += OnInputManagerKeyboardKeyPressed;
         }
 
         /// <summary>
@@ -123,7 +120,6 @@ namespace SokoGrump.Gui.Screens
         void UnregisterEvents()
         {
             retryButton.Clicked -= OnRetryButtonPressed;
-            InputManager.Instance.KeyboardKeyPressed -= OnInputManagerKeyboardKeyPressed;
         }
 
         /// <summary>
@@ -144,36 +140,6 @@ namespace SokoGrump.Gui.Screens
             gameBoard.Location = new Point2D(
                 (ScreenManager.Instance.Size.Width - gameBoard.Size.Width) / 2,
                 (ScreenManager.Instance.Size.Height - gameBoard.Size.Height) / 2);
-        }
-
-        void OnInputManagerKeyboardKeyPressed(object sender, KeyboardKeyEventArgs e)
-        {
-            switch (e.Key)
-            {
-                case Keys.W:
-                case Keys.Up:
-                    game.MovePlayer(MovementDirection.North);
-                    break;
-
-                case Keys.A:
-                case Keys.Left:
-                    game.MovePlayer(MovementDirection.West);
-                    break;
-
-                case Keys.S:
-                case Keys.Down:
-                    game.MovePlayer(MovementDirection.South);
-                    break;
-
-                case Keys.D:
-                case Keys.Right:
-                    game.MovePlayer(MovementDirection.East);
-                    break;
-
-                case Keys.R:
-                    game.Retry();
-                    break;
-            }
         }
 
         void OnRetryButtonPressed(object sender, MouseButtonEventArgs e) => game.Retry();

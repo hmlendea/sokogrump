@@ -89,6 +89,9 @@ namespace SokoGrump.GameLogic.GameManagers
         /// </summary>
         public void Retry() => NewGame(Level);
 
+        public void SetPlayerDirection(MovementDirection direction)
+            => player.Direction = direction;
+
         /// <summary>
         /// Moves the player in a certain direction.
         /// </summary>
