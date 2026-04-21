@@ -1,4 +1,4 @@
-﻿using NuciXNA.DataAccess.DataObjects;
+﻿using NuciDAL.DataObjects;
 
 namespace SokoGrump.DataAccess.DataObjects
 {

@@ -1,6 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using Microsoft.Xna.Framework.Input;
 using NuciXNA.DataAccess.Content;
 using NuciXNA.Graphics;
 using NuciXNA.Gui;
@@ -100,7 +101,7 @@ namespace SokoGrump
 
             if (IsActive)
             {
-                InputManager.Instance.Update();
+                InputManager.Instance.Update(Window);
             }
             else // TODO: It shouldn't reset them every single tick when the window's not active
             {
