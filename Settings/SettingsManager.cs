@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Threading;
-using NuciXNA.DataAccess.IO;
+using NuciDAL.IO;
 using NuciXNA.Graphics;
 
 namespace SokoGrump.Settings
