@@ -24,6 +24,36 @@ The game currently contains 100 levels of progressive difficulty, and the goal i
  - Programming language: C#
  - Technologies used: .NET, MonoGame
 
+## Development
+
+### Build
+
+```bash
+dotnet build
+```
+
+### Run
+
+```bash
+dotnet run
+```
+
+## Contributing
+
+Contributions are welcome.
+
+Please:
+
+- keep changes cross-platform
+- keep pull requests focused and consistent with existing style
+- update documentation when behaviour changes
+- add or update tests for new behaviour
+
 # Links
  - [FlatHub release](https://flathub.org/apps/details/ro.go.hmlendea.SokoGrump)
  - [FlatHub repository](https://github.com/flathub/ro.go.hmlendea.SokoGrump)
+
+## License
+
+Licensed under the GNU General Public License v3.0 or later.
+See [LICENSE](./LICENSE) for details.
