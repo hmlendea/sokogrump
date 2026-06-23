@@ -102,6 +102,12 @@ namespace SokoGrump.DataAccess.Repositories
             }
         }
 
+        public BoardEntity GetRandom()
+        {
+            var all = GetAll().ToList();
+            return all[Random.Shared.Next(all.Count)];
+        }
+
         /// <summary>
         /// Gets all the boards.
         /// </summary>

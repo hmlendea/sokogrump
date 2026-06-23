@@ -100,7 +100,7 @@ namespace SokoGrump
 
             if (IsActive)
             {
-                InputManager.Instance.Update();
+                InputManager.Instance.Update(Window);
             }
             else // TODO: It shouldn't reset them every single tick when the window's not active
             {
