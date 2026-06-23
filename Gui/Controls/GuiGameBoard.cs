@@ -26,6 +26,10 @@ namespace SokoGrump.Gui.Controls
         Dictionary<int, TextureSprite> tileSprites;
         TextureSprite targetSprite;
         TextureSprite playerSprite;
+        TextureSprite pushedBoxAnimSprite;
+
+        Point2D pushedBoxStartTile;
+        bool isPushingBox;
 
         /// <summary>
         /// Loads the content.
@@ -74,6 +78,17 @@ namespace SokoGrump.Gui.Controls
             playerSprite.LoadContent();
             playerSprite.SpriteSheetEffect.Activate();
 
+            pushedBoxAnimSprite = new TextureSprite
+            {
+                ContentFile = tileSprites[(int)TileId.CrateOnGround].ContentFile,
+                SourceRectangle = new Rectangle2D(0, 0, GameDefines.MapTileSize, GameDefines.MapTileSize),
+                SpriteSheetEffect = new CrateSpriteSheetEffect(game),
+                MovementEffect = new MovementEffect(),
+                IsActive = true
+            };
+            pushedBoxAnimSprite.LoadContent();
+            pushedBoxAnimSprite.SpriteSheetEffect.Activate();
+
             playerSprite.MovementEffect.Deactivated += OnPlayerSpriteMovementEffectDeactivated;
             InputManager.Instance.KeyboardKeyPressed += OnInputManagerKeyboardKeyPressed;
         }
@@ -86,6 +101,7 @@ namespace SokoGrump.Gui.Controls
             tileSprites.Values.ToList().ForEach(x => x.UnloadContent());
             targetSprite.UnloadContent();
             playerSprite.UnloadContent();
+            pushedBoxAnimSprite.UnloadContent();
 
             tileSprites.Clear();
 
@@ -101,6 +117,11 @@ namespace SokoGrump.Gui.Controls
         {
             targetSprite.Update(gameTime);
             playerSprite.Update(gameTime);
+
+            if (isPushingBox)
+            {
+                pushedBoxAnimSprite.Update(gameTime);
+            }
 
             Player player = game.GetPlayer();
 
@@ -119,6 +140,19 @@ namespace SokoGrump.Gui.Controls
             {
                 for (int x = 0; x < GameDefines.BoardWidth; x++)
                 {
+                    if (isPushingBox && x == pushedBoxStartTile.X && y == pushedBoxStartTile.Y)
+                    {
+                        TextureSprite groundSprite = tileSprites[(int)TileId.Ground];
+                        groundSprite.Location = Location + new Point2D(x * GameDefines.MapTileSize, y * GameDefines.MapTileSize);
+                        TileSpriteSheetEffect groundEffect = (TileSpriteSheetEffect)groundSprite.SpriteSheetEffect;
+                        groundEffect.TileLocation = new Point2D(x, y);
+                        groundEffect.TilesWith = [0, 2, 3, 5];
+                        groundEffect.Update(null);
+                        groundSprite.Tint = Colour.White;
+                        groundSprite.Draw(spriteBatch);
+                        continue;
+                    }
+
                     Tile tile = game.GetTile(x, y);
 
                     TextureSprite tileSprite = tileSprites[tile.Id];
@@ -169,7 +203,11 @@ namespace SokoGrump.Gui.Controls
             {
                 Tile tile = game.GetTile(targetLocation.X, targetLocation.Y);
 
-                if (tile.Id.Equals((int)TileId.CrateOnGround))
+                bool isAnimatedCratePos = isPushingBox
+                    && targetLocation.X == pushedBoxStartTile.X
+                    && targetLocation.Y == pushedBoxStartTile.Y;
+
+                if (tile.Id.Equals((int)TileId.CrateOnGround) && !isAnimatedCratePos)
                 {
                     continue;
                 }
@@ -180,6 +218,11 @@ namespace SokoGrump.Gui.Controls
             }
 
             playerSprite.Draw(spriteBatch);
+
+            if (isPushingBox)
+            {
+                pushedBoxAnimSprite.Draw(spriteBatch);
+            }
         }
 
         void MovePlayer(MovementDirection direction)
@@ -194,6 +237,28 @@ namespace SokoGrump.Gui.Controls
             if (!game.CanMove(direction))
             {
                 return;
+            }
+
+            Player player = game.GetPlayer();
+            int dirX = direction switch { MovementDirection.West => -1, MovementDirection.East => 1, _ => 0 };
+            int dirY = direction switch { MovementDirection.North => -1, MovementDirection.South => 1, _ => 0 };
+            int destX = player.Location.X + dirX;
+            int destY = player.Location.Y + dirY;
+
+            if (game.GetTile(destX, destY).TileType is TileType.Moveable)
+            {
+                pushedBoxStartTile = new Point2D(destX, destY);
+                isPushingBox = true;
+
+                Point2D boxPixelStart = Location + pushedBoxStartTile * GameDefines.MapTileSize;
+
+                CrateSpriteSheetEffect crateEffect = (CrateSpriteSheetEffect)pushedBoxAnimSprite.SpriteSheetEffect;
+                crateEffect.TileLocation = pushedBoxStartTile;
+                crateEffect.Update(null);
+
+                pushedBoxAnimSprite.Location = boxPixelStart;
+                pushedBoxAnimSprite.MovementEffect.TargetLocation = boxPixelStart + new Point2D(dirX * GameDefines.MapTileSize, dirY * GameDefines.MapTileSize);
+                pushedBoxAnimSprite.MovementEffect.Activate();
             }
 
             Point2D targetLocation = playerSprite.Location;
@@ -221,6 +286,8 @@ namespace SokoGrump.Gui.Controls
 
         void OnPlayerSpriteMovementEffectDeactivated(object sender, EventArgs e)
         {
+            isPushingBox = false;
+
             Player player = game.GetPlayer();
             game.MovePlayer(player.Direction);
             playerSprite.Location = Location + player.Location * GameDefines.MapTileSize;
@@ -251,6 +318,7 @@ namespace SokoGrump.Gui.Controls
                     break;
 
                 case Keys.R:
+                    isPushingBox = false;
                     game.Retry();
                     break;
             }
