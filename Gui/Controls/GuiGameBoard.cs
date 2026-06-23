@@ -30,6 +30,7 @@ namespace SokoGrump.Gui.Controls
 
         Point2D pushedBoxStartTile;
         bool isPushingBox;
+        bool pushedBoxWasOnTarget;
 
         /// <summary>
         /// Loads the content.
@@ -221,6 +222,7 @@ namespace SokoGrump.Gui.Controls
 
             if (isPushingBox)
             {
+                pushedBoxAnimSprite.Tint = pushedBoxWasOnTarget ? Colour.Red : Colour.White;
                 pushedBoxAnimSprite.Draw(spriteBatch);
             }
         }
@@ -249,6 +251,7 @@ namespace SokoGrump.Gui.Controls
             {
                 pushedBoxStartTile = new Point2D(destX, destY);
                 isPushingBox = true;
+                pushedBoxWasOnTarget = game.GetTargets().Any(t => t.X == destX && t.Y == destY);
 
                 Point2D boxPixelStart = Location + pushedBoxStartTile * GameDefines.MapTileSize;
 
