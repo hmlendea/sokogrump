@@ -92,9 +92,6 @@ namespace SokoGrump.DataAccess.Repositories
             return boardEntities;
         }
 
-        public BoardEntity GetRandom()
-            => throw new NotImplementedException();
-
         /// <summary>
         /// Updates the specified board.
         /// </summary>
