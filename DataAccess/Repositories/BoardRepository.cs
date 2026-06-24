@@ -108,6 +108,12 @@ namespace SokoGrump.DataAccess.Repositories
             return all[Random.Shared.Next(all.Count)];
         }
 
+        public BoardEntity GetFirst(Func<BoardEntity, bool> predicate)
+            => throw new NotImplementedException();
+
+        public BoardEntity TryGetFirst(Func<BoardEntity, bool> predicate)
+            => throw new NotImplementedException();
+
         /// <summary>
         /// Gets all the boards.
         /// </summary>
