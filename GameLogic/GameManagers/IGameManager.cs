@@ -16,6 +16,8 @@ namespace SokoGrump.GameLogic.GameManagers
         Tile GetTile(int x, int y);
         IEnumerable<Tile> GetTiles();
 
+        void SetPlayerDirection(MovementDirection direction);
+        bool CanMove(MovementDirection direction);
         void MovePlayer(MovementDirection direction);
         void NewGame(int level);
         void Retry();
