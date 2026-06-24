@@ -96,9 +96,18 @@ namespace SokoGrump.Gui.Screens
         /// Sets the properties of the child controls.
         /// </summary>
         void SetChildrenProperties()
-            => LogoImage.Location = new Point2D(
+        {
+            if (!LogoImage.SourceRectangle.IsEmpty)
+            {
+                int targetWidth = (int)(ScreenManager.Instance.Size.Width * 0.8f);
+                float aspectRatio = (float)LogoImage.SourceRectangle.Height / LogoImage.SourceRectangle.Width;
+                LogoImage.Size = new Size2D(targetWidth, (int)(targetWidth * aspectRatio));
+            }
+
+            LogoImage.Location = new Point2D(
                 (ScreenManager.Instance.Size.Width - LogoImage.Size.Width) / 2,
                 (ScreenManager.Instance.Size.Height - LogoImage.Size.Height) / 2);
+        }
 
         void OnInputManagerKeyboardKeyPressed(object sender, KeyboardKeyEventArgs e) => ChangeScreen();
 
