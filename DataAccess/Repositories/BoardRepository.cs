@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Xml.Serialization;
 
 using NuciDAL.Repositories;
@@ -19,30 +17,14 @@ namespace SokoGrump.DataAccess.Repositories
     /// Initializes a new instance of the <see cref="BoardRepository"/> class.
     /// </remarks>
     /// <param name="boardsDirectory">File name.</param>
-    public class BoardRepository(string boardsDirectory) : IRepository<string, BoardEntity>
+    public class BoardRepository(string boardsDirectory) : Repository<string, BoardEntity>
     {
-        public int EntitiesCount => GetAll().Count();
-
-        /// <summary>
-        /// Adds the specified board.
-        /// </summary>
-        /// <param name="boardEntity">Board.</param>
-        public void Add(BoardEntity boardEntity)
-        {
-            // TODO: Implement this
-            throw new NotImplementedException();
-        }
-
-        public void TryAdd(BoardEntity boardEntity) { }
-
-        public bool ContainsId(string id) => TryGet(id) is not null;
-
         /// <summary>
         /// Get the board with the specified identifier.
         /// </summary>
         /// <returns>The board.</returns>
         /// <param name="id">Identifier.</param>
-        public BoardEntity Get(string id)
+        public override BoardEntity Get(string id)
         {
             BoardEntity boardEntity = new();
             string levelFile = Path.Combine("Levels", $"{id}.lvl");
@@ -90,35 +72,11 @@ namespace SokoGrump.DataAccess.Repositories
             return boardEntity;
         }
 
-        public BoardEntity TryGet(string id)
-        {
-            try
-            {
-                return Get(id);
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        public BoardEntity GetRandom()
-        {
-            var all = GetAll().ToList();
-            return all[Random.Shared.Next(all.Count)];
-        }
-
-        public BoardEntity GetFirst(Func<BoardEntity, bool> predicate)
-            => throw new NotImplementedException();
-
-        public BoardEntity TryGetFirst(Func<BoardEntity, bool> predicate)
-            => throw new NotImplementedException();
-
         /// <summary>
         /// Gets all the boards.
         /// </summary>
         /// <returns>The boards</returns>
-        public IEnumerable<BoardEntity> GetAll()
+        public override IEnumerable<BoardEntity> GetAll()
         {
             List<BoardEntity> boardEntities = [];
 
@@ -138,7 +96,7 @@ namespace SokoGrump.DataAccess.Repositories
         /// Updates the specified board.
         /// </summary>
         /// <param name="boardEntity">Board.</param>
-        public void Update(BoardEntity boardEntity)
+        public override void Update(BoardEntity boardEntity)
         {
             string boardFile = Path.Combine(boardsDirectory, boardEntity.Id, "board.xml");
 
@@ -147,46 +105,12 @@ namespace SokoGrump.DataAccess.Repositories
             xml.Serialize(writer, boardEntity);
         }
 
-        public void TryUpdate(BoardEntity boardEntity)
-        {
-            try
-            {
-                Update(boardEntity);
-            }
-            catch { }
-        }
-
         /// <summary>
         /// Removes the board with the specified identifier.
         /// </summary>
         /// <param name="id">Identifier.</param>
-        public void Remove(string id)
+        public override void Remove(string id)
             => Directory.Delete(Path.Combine(boardsDirectory, id));
-
-        public void TryRemove(string id)
-        {
-            try
-            {
-                Remove(id);
-            }
-            catch { }
-        }
-
-        /// <summary>
-        /// Removes the specified board.
-        /// </summary>
-        /// <param name="boardEntity">Board.</param>
-        public void Remove(BoardEntity boardEntity)
-            => Remove(boardEntity.Id);
-
-        public void TryRemove(BoardEntity boardEntity)
-        {
-            try
-            {
-                Remove(boardEntity);
-            }
-            catch { }
-        }
 
         public void ApplyChanges() { }
 
