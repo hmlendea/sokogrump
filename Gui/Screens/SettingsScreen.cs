@@ -4,6 +4,7 @@ using System;
 using NuciXNA.Gui.Controls;
 using NuciXNA.Gui.Screens;
 
+using SokoGrump.Localisation;
 using SokoGrump.Settings;
 
 namespace SokoGrump.Gui.Screens
@@ -24,12 +25,12 @@ namespace SokoGrump.Gui.Screens
             fullScreenToggle = new GuiMenuToggle
             {
                 Id = nameof(fullScreenToggle),
-                Text = "Fullscreen"
+                Text = LocalisationManager.Instance.Fullscreen
             };
             backLink = new GuiMenuLink
             {
                 Id = nameof(backLink),
-                Text = "Back",
+                Text = LocalisationManager.Instance.Back,
                 TargetScreen = typeof(TitleScreen)
             };
 

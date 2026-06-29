@@ -34,5 +34,11 @@ namespace SokoGrump.Settings
         /// </summary>
         /// <value>The word lists directory.</value>
         public static string LevelsDirectory => Path.Combine(rootDirectory, "Levels");
+
+        public static string DataDirectory => Path.Combine(rootDirectory, "Data");
+
+        public static string LocalisationDirectory => Path.Combine(DataDirectory, "Localisation");
+
+        public static string LocalisationFile(string language) => Path.Combine(LocalisationDirectory, $"{language}.json");
     }
 }

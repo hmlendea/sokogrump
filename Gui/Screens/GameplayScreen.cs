@@ -10,6 +10,7 @@ using NuciXNA.Primitives;
 
 using SokoGrump.GameLogic.GameManagers;
 using SokoGrump.Gui.Controls;
+using SokoGrump.Localisation;
 using SokoGrump.Settings;
 
 namespace SokoGrump.Gui.Screens
@@ -47,7 +48,7 @@ namespace SokoGrump.Gui.Screens
             retryButton = new GuiButton
             {
                 ContentFile = "Buttons/refresh",
-                TooltipText = "Retry this level ('R' key)"
+                TooltipText = LocalisationManager.Instance.RetryTooltip
             };
             infoBar = new GuiInfoBar(game);
             gameBoard = new GuiGameBoard(game)

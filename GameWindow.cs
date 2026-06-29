@@ -10,6 +10,7 @@ using NuciXNA.Input;
 
 using SokoGrump.Gui;
 using SokoGrump.Gui.Screens;
+using SokoGrump.Localisation;
 using SokoGrump.Settings;
 
 namespace SokoGrump
@@ -59,6 +60,7 @@ namespace SokoGrump
 
             NuciContentManager.Instance.LoadContent(Content, GraphicsDevice);
             SettingsManager.Instance.LoadContent();
+            LocalisationManager.Instance.LoadContent();
 
             ScreenManager.Instance.SpriteBatch = spriteBatch;
             ScreenManager.Instance.StartingScreenType = typeof(SplashScreen);
