@@ -13,5 +13,6 @@
     "fullscreen": "Ecran complet",
     "back": "Înapoi",
 
-    "retryTooltip": "Reîncepe nivelul"
+    "retryTooltip": "Reîncepe nivelul",
+    "undoTooltip": "Anulează ultima mutare"
 }

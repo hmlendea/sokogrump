@@ -16,6 +16,7 @@ namespace SokoGrump.DataAccess.DataObjects
         public string Fullscreen { get; set; } = "Fullscreen";
         public string Back { get; set; } = "Back";
 
-        public string RetryTooltip { get; set; } = "Retry this level ('R' key)";
+        public string RetryTooltip { get; set; } = "Retry this level";
+        public string UndoTooltip { get; set; } = "Undo last move";
     }
 }

@@ -31,6 +31,7 @@ namespace SokoGrump.Gui.Controls
         Point2D pushedBoxStartTile;
         bool isPushingBox;
         bool pushedBoxWasOnTarget;
+        bool isUndoAnimation;
 
         /// <summary>
         /// Loads the content.
@@ -287,12 +288,57 @@ namespace SokoGrump.Gui.Controls
             playerSprite.MovementEffect.Activate();
         }
 
+        public void UndoPlayer()
+        {
+            if (playerSprite.MovementEffect.IsActive || !game.CanUndo)
+            {
+                return;
+            }
+
+            UndoInfo undoInfo = game.PeekUndo();
+
+            if (undoInfo.CratePushed)
+            {
+                pushedBoxStartTile = undoInfo.CrateAnimStart;
+                isPushingBox = true;
+                pushedBoxWasOnTarget = game.GetTargets().Any(t => t.X == undoInfo.CrateAnimStart.X && t.Y == undoInfo.CrateAnimStart.Y);
+
+                Point2D cratePixelStart = Location + undoInfo.CrateAnimStart * GameDefines.MapTileSize;
+                Point2D cratePixelEnd = Location + undoInfo.CrateAnimEnd * GameDefines.MapTileSize;
+
+                CrateSpriteSheetEffect crateEffect = (CrateSpriteSheetEffect)pushedBoxAnimSprite.SpriteSheetEffect;
+                crateEffect.TileLocation = undoInfo.CrateAnimStart;
+                crateEffect.Update(null);
+
+                pushedBoxAnimSprite.Location = cratePixelStart;
+                pushedBoxAnimSprite.MovementEffect.TargetLocation = cratePixelEnd;
+                pushedBoxAnimSprite.MovementEffect.Activate();
+            }
+
+            Point2D playerPixelTarget = Location + undoInfo.PlayerTarget * GameDefines.MapTileSize;
+            playerSprite.MovementEffect.TargetLocation = playerPixelTarget;
+            playerSprite.MovementEffect.Activate();
+
+            isUndoAnimation = true;
+        }
+
         void OnPlayerSpriteMovementEffectDeactivated(object sender, EventArgs e)
         {
             isPushingBox = false;
 
             Player player = game.GetPlayer();
-            game.MovePlayer(player.Direction);
+
+            if (isUndoAnimation)
+            {
+                isUndoAnimation = false;
+                game.Undo();
+            }
+            else
+            {
+                game.MovePlayer(player.Direction);
+            }
+
+            player = game.GetPlayer();
             playerSprite.Location = Location + player.Location * GameDefines.MapTileSize;
         }
 
@@ -323,6 +369,10 @@ namespace SokoGrump.Gui.Controls
                 case Keys.R:
                     isPushingBox = false;
                     game.Retry();
+                    break;
+
+                case Keys.U:
+                    UndoPlayer();
                     break;
             }
         }
