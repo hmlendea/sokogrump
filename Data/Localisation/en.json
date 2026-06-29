@@ -1,0 +1,17 @@
+{
+    "languageName": "English",
+    "languageSetting": "Language",
+
+    "timeLabel": "Time",
+    "movesLabel": "Moves",
+    "levelLabel": "Level",
+
+    "newGame": "New Game",
+    "settings": "Settings",
+    "continueGame": "Continue Game",
+
+    "fullscreen": "Fullscreen",
+    "back": "Back",
+
+    "retryTooltip": "Retry this level ('R' key)"
+}

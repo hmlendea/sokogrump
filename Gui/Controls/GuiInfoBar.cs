@@ -6,6 +6,7 @@ using NuciXNA.Gui.Controls;
 using NuciXNA.Primitives;
 
 using SokoGrump.GameLogic.GameManagers;
+using SokoGrump.Localisation;
 
 namespace SokoGrump.Gui.Controls
 {
@@ -86,9 +87,9 @@ namespace SokoGrump.Gui.Controls
             levelText.BackgroundColour = BackgroundColour;
             levelText.ForegroundColour = ForegroundColour;
 
-            timerText.Text = $"Time: {(int)game.ElapsedTime.TotalMinutes:D2}:{game.ElapsedTime.Seconds:D2}";
-            movesText.Text = $"Moves: {game.GetPlayer().MovesCount}";
-            levelText.Text = $"Level {game.Level}";
+            timerText.Text = $"{LocalisationManager.Instance.TimeLabel}: {(int)game.ElapsedTime.TotalMinutes:D2}:{game.ElapsedTime.Seconds:D2}";
+            movesText.Text = $"{LocalisationManager.Instance.MovesLabel}: {game.GetPlayer().MovesCount}";
+            levelText.Text = $"{LocalisationManager.Instance.LevelLabel} {game.Level}";
 
             levelText.Location = new Point2D(
                 (Size.Width - levelText.Size.Width) / 2,

@@ -1,6 +1,7 @@
 ﻿using NuciXNA.Gui.Controls;
 using NuciXNA.Gui.Screens;
 
+using SokoGrump.Localisation;
 using SokoGrump.Settings;
 
 namespace SokoGrump.Gui.Screens
@@ -22,14 +23,14 @@ namespace SokoGrump.Gui.Screens
             newGameLink = new GuiMenuLink
             {
                 Id = nameof(newGameLink),
-                Text = "New Game",
+                Text = LocalisationManager.Instance.NewGame,
                 TargetScreen = typeof(GameplayScreen),
                 Parameters = [default(int)]
             };
             settingsLink = new GuiMenuLink
             {
                 Id = nameof(settingsLink),
-                Text = "Settings",
+                Text = LocalisationManager.Instance.Settings,
                 TargetScreen = typeof(SettingsScreen)
             };
 
@@ -38,7 +39,7 @@ namespace SokoGrump.Gui.Screens
                 continueGameLink = new GuiMenuLink
                 {
                     Id = nameof(continueGameLink),
-                    Text = "Continue Game",
+                    Text = LocalisationManager.Instance.ContinueGame,
                     TargetScreen = typeof(GameplayScreen),
                     Parameters = [SettingsManager.Instance.UserData.LastLevel]
                 };

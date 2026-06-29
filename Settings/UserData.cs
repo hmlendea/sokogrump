@@ -3,5 +3,6 @@
     public class UserData
     {
         public int LastLevel { get; set; }
+        public string Language { get; set; }
     }
 }
