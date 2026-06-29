@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using NuciXNA.Primitives;
 
@@ -10,6 +11,7 @@ namespace SokoGrump.GameLogic.GameManagers
     {
         bool Completed { get; }
         int Level { get; }
+        TimeSpan ElapsedTime { get; }
 
         Player GetPlayer();
         List<Point2D> GetTargets();
