@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.IO;
 using System.Threading;
 
@@ -10,6 +11,8 @@ namespace SokoGrump.Localisation
 {
     public class LocalisationManager
     {
+        const string FallbackLanguage = "en";
+
         static volatile LocalisationManager instance;
         static readonly Lock syncRoot = new();
 
@@ -51,15 +54,30 @@ namespace SokoGrump.Localisation
 
         public void LoadContent()
         {
-            string localisationFile = ApplicationPaths.LocalisationFile("ro");
-
-            if (!File.Exists(localisationFile))
-            {
-                return;
-            }
-
             JsonFileObject<LocalisationData> jsonManager = new();
-            data = jsonManager.Read(localisationFile);
+
+            foreach (string candidate in GetLanguageCandidates())
+            {
+                string localisationFile = ApplicationPaths.LocalisationFile(candidate);
+
+                if (File.Exists(localisationFile))
+                {
+                    data = jsonManager.Read(localisationFile);
+                    return;
+                }
+            }
+        }
+
+        static string[] GetLanguageCandidates()
+        {
+            CultureInfo culture = CultureInfo.CurrentUICulture;
+
+            return
+            [
+                culture.Name,                // e.g. "ro-RO"
+                culture.TwoLetterISOLanguageName, // e.g. "ro"
+                FallbackLanguage
+            ];
         }
     }
 }
