@@ -1,0 +1,14 @@
+{
+    "timeLabel": "Timp",
+    "movesLabel": "Mișcări",
+    "levelLabel": "Nivelul",
+
+    "newGame": "Joc nou",
+    "settings": "Setări",
+    "continueGame": "Continuă jocul",
+
+    "fullscreen": "Ecran complet",
+    "back": "Înapoi",
+
+    "retryTooltip": "Reîncepe nivelul (tasta 'R')"
+}

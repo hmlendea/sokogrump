@@ -51,10 +51,12 @@ namespace SokoGrump.Localisation
 
         public void LoadContent()
         {
-            string localisationFile = ApplicationPaths.LocalisationFile("en");
+            string localisationFile = ApplicationPaths.LocalisationFile("ro");
 
             if (!File.Exists(localisationFile))
+            {
                 return;
+            }
 
             JsonFileObject<LocalisationData> jsonManager = new();
             data = jsonManager.Read(localisationFile);
