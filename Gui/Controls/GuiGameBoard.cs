@@ -324,6 +324,11 @@ namespace SokoGrump.Gui.Controls
                     isPushingBox = false;
                     game.Retry();
                     break;
+
+                case Keys.U:
+                    isPushingBox = false;
+                    game.Undo();
+                    break;
             }
         }
     }

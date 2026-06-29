@@ -18,6 +18,14 @@ namespace SokoGrump.GameLogic.GameManagers
         Board board;
         Player player;
 
+        readonly record struct MoveSnapshot(
+            Point2D PlayerLocation,
+            MovementDirection PlayerDirection,
+            int MovesCount,
+            int CrateFromX, int CrateFromY, Tile CrateFromTile,
+            int CrateToX, int CrateToY, Tile CrateToTile,
+            bool CratePushed);
+
         /// <summary>
         /// Gets the level.
         /// </summary>
@@ -31,6 +39,8 @@ namespace SokoGrump.GameLogic.GameManagers
         public bool Completed { get; private set; }
 
         public TimeSpan ElapsedTime { get; private set; }
+
+        readonly Stack<MoveSnapshot> undoHistory = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameEngine"/> class.
@@ -89,6 +99,7 @@ namespace SokoGrump.GameLogic.GameManagers
             }
 
             GenerateVariations();
+            undoHistory.Clear();
         }
 
         /// <summary>
@@ -212,6 +223,16 @@ namespace SokoGrump.GameLogic.GameManagers
                 return;
             }
 
+            // Snapshot before applying
+            bool cratePushed = board.Tiles[destX, destY].TileType is TileType.Moveable;
+            MoveSnapshot snapshot = new(
+                player.Location,
+                player.Direction,
+                player.MovesCount,
+                destX, destY, new Tile(board.Tiles[destX, destY]),
+                dest2X, dest2Y, new Tile(board.Tiles[dest2X, dest2Y]),
+                cratePushed);
+
             if (board.Tiles[destX, destY].TileType is TileType.Moveable)
             {
                 if ((dirX < 0 && player.Location.X >= 2) || (dirX > 0 && player.Location.X < GameDefines.BoardWidth - 2) ||
@@ -256,7 +277,29 @@ namespace SokoGrump.GameLogic.GameManagers
                 player.Location = new Point2D(
                     player.Location.X + dirX,
                     player.Location.Y + dirY);
+
+                undoHistory.Push(snapshot);
             }
+        }
+
+        public void Undo()
+        {
+            if (undoHistory.Count == 0)
+            {
+                return;
+            }
+
+            MoveSnapshot snapshot = undoHistory.Pop();
+
+            if (snapshot.CratePushed)
+            {
+                board.Tiles[snapshot.CrateFromX, snapshot.CrateFromY] = snapshot.CrateFromTile;
+                board.Tiles[snapshot.CrateToX, snapshot.CrateToY] = snapshot.CrateToTile;
+            }
+
+            player.Location = snapshot.PlayerLocation;
+            player.Direction = snapshot.PlayerDirection;
+            player.MovesCount = snapshot.MovesCount;
         }
 
         public List<Point2D> GetTargets() => board.Targets;

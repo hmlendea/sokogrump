@@ -21,6 +21,7 @@ namespace SokoGrump.GameLogic.GameManagers
         void SetPlayerDirection(MovementDirection direction);
         bool CanMove(MovementDirection direction);
         void MovePlayer(MovementDirection direction);
+        void Undo();
         void NewGame(int level);
         void Retry();
     }
