@@ -20,6 +20,8 @@ namespace SokoGrump.Gui.Controls
 
         GuiImage image;
         GuiTooltip tooltip;
+        int _frameSize;
+        bool _hasPressedFrame;
 
         public GuiButton() => FontName = "ButtonFont";
 
@@ -61,7 +63,24 @@ namespace SokoGrump.Gui.Controls
 
         void SetChildrenProperties()
         {
-            image.ContentFile = image.ContentFile;
+            if (_frameSize == 0 && image.SourceRectangle.Height > 0 &&
+                image.SourceRectangle.Width > image.SourceRectangle.Height)
+            {
+                _frameSize = image.SourceRectangle.Height;
+                _hasPressedFrame = image.SourceRectangle.Width >= _frameSize * 3;
+            }
+
+            if (_frameSize > 0)
+            {
+                bool isPressed = IsHovered && InputManager.Instance.IsMouseButtonDown(MouseButton.Left);
+
+                int frameIndex = (_hasPressedFrame && isPressed) ? 2
+                               : IsHovered ? 1
+                               : 0;
+
+                image.SourceRectangle = new Rectangle2D(frameIndex * _frameSize, 0, _frameSize, _frameSize);
+            }
+
             tooltip.Text = TooltipText;
             tooltip.Location = new Point2D(0, Size.Height);
         }
