@@ -158,6 +158,6 @@ namespace SokoGrump.Gui.Screens
 
         void OnRetryButtonPressed(object sender, MouseButtonEventArgs e) => game.Retry();
 
-        void OnUndoButtonPressed(object sender, MouseButtonEventArgs e) => game.Undo();
+        void OnUndoButtonPressed(object sender, MouseButtonEventArgs e) => gameBoard.UndoPlayer();
     }
 }

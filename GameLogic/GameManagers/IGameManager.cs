@@ -10,6 +10,7 @@ namespace SokoGrump.GameLogic.GameManagers
     public interface IGameManager : IGameLogicManager
     {
         bool Completed { get; }
+        bool CanUndo { get; }
         int Level { get; }
         TimeSpan ElapsedTime { get; }
 
@@ -22,6 +23,7 @@ namespace SokoGrump.GameLogic.GameManagers
         bool CanMove(MovementDirection direction);
         void MovePlayer(MovementDirection direction);
         void Undo();
+        UndoInfo PeekUndo();
         void NewGame(int level);
         void Retry();
     }

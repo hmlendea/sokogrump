@@ -40,6 +40,8 @@ namespace SokoGrump.GameLogic.GameManagers
 
         public TimeSpan ElapsedTime { get; private set; }
 
+        public bool CanUndo => undoHistory.Count > 0;
+
         readonly Stack<MoveSnapshot> undoHistory = new();
 
         /// <summary>
@@ -300,6 +302,16 @@ namespace SokoGrump.GameLogic.GameManagers
             player.Location = snapshot.PlayerLocation;
             player.Direction = snapshot.PlayerDirection;
             player.MovesCount = snapshot.MovesCount;
+        }
+
+        public UndoInfo PeekUndo()
+        {
+            MoveSnapshot snapshot = undoHistory.Peek();
+            return new UndoInfo(
+                snapshot.PlayerLocation,
+                snapshot.CratePushed,
+                new Point2D(snapshot.CrateToX, snapshot.CrateToY),
+                new Point2D(snapshot.CrateFromX, snapshot.CrateFromY));
         }
 
         public List<Point2D> GetTargets() => board.Targets;
