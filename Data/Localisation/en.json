@@ -13,5 +13,6 @@
     "fullscreen": "Fullscreen",
     "back": "Back",
 
-    "retryTooltip": "Retry this level"
+    "retryTooltip": "Retry this level",
+    "undoTooltip": "Undo last move"
 }

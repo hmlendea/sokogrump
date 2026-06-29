@@ -32,6 +32,18 @@
 /processorParam:TextureFormat=Color
 /build:Buttons/refresh.png
 
+#begin Buttons/undo.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=True
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Buttons/undo.png
+
 #begin Cursors/idle.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -611,4 +623,3 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:SpriteSheets/crate.png
-

@@ -23,6 +23,7 @@ namespace SokoGrump.Gui.Screens
         IGameManager game;
 
         GuiButton retryButton;
+        GuiButton undoButton;
         GuiInfoBar infoBar;
         GuiGameBoard gameBoard;
 
@@ -50,6 +51,11 @@ namespace SokoGrump.Gui.Screens
                 ContentFile = "Buttons/refresh",
                 TooltipText = LocalisationManager.Instance.RetryTooltip
             };
+            undoButton = new GuiButton
+            {
+                ContentFile = "Buttons/undo",
+                TooltipText = LocalisationManager.Instance.UndoTooltip
+            };
             infoBar = new GuiInfoBar(game);
             gameBoard = new GuiGameBoard(game)
             {
@@ -58,7 +64,7 @@ namespace SokoGrump.Gui.Screens
                     GameDefines.BoardHeight * GameDefines.MapTileSize)
             };
 
-            GuiManager.Instance.RegisterControls(retryButton, infoBar, gameBoard);
+            GuiManager.Instance.RegisterControls(retryButton, undoButton, infoBar, gameBoard);
             RegisterEvents();
             SetChildrenProperties();
         }
@@ -132,6 +138,11 @@ namespace SokoGrump.Gui.Screens
             retryButton.Size = new Size2D(GameDefines.MapTileSize, GameDefines.MapTileSize);
             retryButton.BackgroundColour = BackgroundColour;
             retryButton.ForegroundColour = ForegroundColour;
+
+            undoButton.Location = new Point2D(ScreenManager.Instance.Size.Width - GameDefines.MapTileSize * 2, 0);
+            undoButton.Size = new Size2D(GameDefines.MapTileSize, GameDefines.MapTileSize);
+            undoButton.BackgroundColour = BackgroundColour;
+            undoButton.ForegroundColour = ForegroundColour;
 
             infoBar.Location = Point2D.Empty;
             infoBar.Size = new Size2D(ScreenManager.Instance.Size.Width, 24);

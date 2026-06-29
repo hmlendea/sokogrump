@@ -50,6 +50,7 @@ namespace SokoGrump.Localisation
         public string LanguageSetting => data.LanguageSetting;
 
         public string RetryTooltip => data.RetryTooltip;
+        public string UndoTooltip => data.UndoTooltip;
 
         public LocalisationManager()
         {
