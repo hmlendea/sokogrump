@@ -13,6 +13,7 @@ namespace SokoGrump.Gui.Controls
     {
         readonly IGameManager game;
 
+        GuiText timerText;
         GuiText movesText;
         GuiText levelText;
 
@@ -28,10 +29,17 @@ namespace SokoGrump.Gui.Controls
         /// </summary>
         protected override void DoLoadContent()
         {
+            timerText = new GuiText
+            {
+                Location = new Point2D(0, 0),
+                Size = new Size2D(160, Size.Height),
+                HorizontalAlignment = Alignment.Beginning,
+                VerticalAlignment = Alignment.Middle
+            };
             movesText = new GuiText
             {
-                Location = new Point2D(0,0),
-                Size= new Size2D(200, Size.Height),
+                Location = new Point2D(160, 0),
+                Size = new Size2D(160, Size.Height),
                 HorizontalAlignment = Alignment.Beginning,
                 VerticalAlignment = Alignment.Middle
             };
@@ -42,7 +50,11 @@ namespace SokoGrump.Gui.Controls
                 VerticalAlignment = Alignment.Middle
             };
 
-            RegisterChildren(movesText, levelText);
+            RegisterChildren(
+                timerText,
+                movesText,
+                levelText);
+
             SetChildrenProperties();
         }
 
@@ -65,12 +77,16 @@ namespace SokoGrump.Gui.Controls
 
         void SetChildrenProperties()
         {
+            timerText.BackgroundColour = BackgroundColour;
+            timerText.ForegroundColour = ForegroundColour;
+
             movesText.BackgroundColour = BackgroundColour;
             movesText.ForegroundColour = ForegroundColour;
 
             levelText.BackgroundColour = BackgroundColour;
             levelText.ForegroundColour = ForegroundColour;
 
+            timerText.Text = $"Time: {(int)game.ElapsedTime.TotalMinutes:D2}:{game.ElapsedTime.Seconds:D2}";
             movesText.Text = $"Moves: {game.GetPlayer().MovesCount}";
             levelText.Text = $"Level {game.Level}";
 

@@ -30,6 +30,8 @@ namespace SokoGrump.GameLogic.GameManagers
         /// <value><c>true</c> if completed; otherwise, <c>false</c>.</value>
         public bool Completed { get; private set; }
 
+        public TimeSpan ElapsedTime { get; private set; }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="GameEngine"/> class.
         /// </summary>
@@ -47,6 +49,9 @@ namespace SokoGrump.GameLogic.GameManagers
         {
             Completed = board.Targets.All(targetLocation => board.Tiles[targetLocation.X, targetLocation.Y].Id.Equals((int)TileId.CrateOnGround));
 
+            if (!Completed)
+                ElapsedTime += TimeSpan.FromMilliseconds(elapsedMiliseconds);
+
             boardManager.Update(elapsedMiliseconds);
         }
 
@@ -58,6 +63,8 @@ namespace SokoGrump.GameLogic.GameManagers
         {
             Level = level;
             board = boardManager.GetBoard(level);
+
+            ElapsedTime = TimeSpan.Zero;
 
             player = new Player
             {
