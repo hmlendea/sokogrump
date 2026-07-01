@@ -27,7 +27,7 @@ namespace SokoGrump.DataAccess.Repositories
         public override BoardEntity Get(string id)
         {
             BoardEntity boardEntity = new();
-            string levelFile = Path.Combine("Levels", $"{id}.lvl");
+            string levelFile = Path.Combine(boardsDirectory, $"{id}.lvl");
             string[] rows = File.ReadAllLines(levelFile);
 
             boardEntity.Id = id;
