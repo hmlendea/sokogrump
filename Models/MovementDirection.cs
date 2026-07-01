@@ -7,5 +7,4 @@
         South,
         East
     }
-
 }

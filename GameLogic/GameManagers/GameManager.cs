@@ -178,76 +178,75 @@ namespace SokoGrump.GameLogic.GameManagers
                 return;
             }
 
+            if (!CanMove(direction))
+            {
+                return;
+            }
+
             int dirX = delta.X;
             int dirY = delta.Y;
             int destX = player.Location.X + dirX;
             int destY = player.Location.Y + dirY;
             int dest2X = player.Location.X + dirX * 2;
             int dest2Y = player.Location.Y + dirY * 2;
-            bool moved = CanMove(direction);
 
-            if (!moved)
-            {
-                return;
-            }
+            MoveSnapshot snapshot = CreateMoveSnapshot(destX, destY, dest2X, dest2Y);
+            TryPushCrate(dirX, dirY, destX, destY, dest2X, dest2Y);
+            player.Direction = direction;
+            CommitMove(dirX, dirY, snapshot);
+        }
 
-            // Snapshot before applying
+        MoveSnapshot CreateMoveSnapshot(int destX, int destY, int dest2X, int dest2Y)
+        {
             bool cratePushed = board.Tiles[destX, destY].TileType is TileType.Moveable;
-            MoveSnapshot snapshot = new(
+
+            return new MoveSnapshot(
                 player.Location,
                 player.Direction,
                 player.MovesCount,
                 destX, destY, new Tile(board.Tiles[destX, destY]),
                 dest2X, dest2Y, new Tile(board.Tiles[dest2X, dest2Y]),
                 cratePushed);
+        }
 
-            if (board.Tiles[destX, destY].TileType is TileType.Moveable)
+        void TryPushCrate(int dirX, int dirY, int destX, int destY, int dest2X, int dest2Y)
+        {
+            if (board.Tiles[destX, destY].TileType is not TileType.Moveable)
             {
-                if ((dirX < 0 && player.Location.X >= 2) || (dirX > 0 && player.Location.X < GameDefines.BoardWidth - 2) ||
-                    (dirY < 0 && player.Location.Y >= 2) || (dirY > 0 && player.Location.Y < GameDefines.BoardHeight - 2))
-                {
-                    // If it's a crate
-                    if (board.Tiles[destX, destY].Id.Equals((int)TileId.CrateOnGround))
-                    {
-                        if (board.Tiles[dest2X, dest2Y].Id.Equals((int)TileId.Ground))
-                        {
-                            int variation = board.Tiles[destX, destY].Variation;
-                            board.Tiles[destX, destY] = boardManager.GetTile(0);
-                            board.Tiles[dest2X, dest2Y] = boardManager.GetTile(2);
-                            board.Tiles[dest2X, dest2Y].Variation = variation;
-
-                            moved = true;
-                        }
-                    }
-                }
+                return;
             }
 
-            if (dirY < 0)
+            bool canReachDest2 =
+                (dirX < 0 && player.Location.X >= 2) ||
+                (dirX > 0 && player.Location.X < GameDefines.BoardWidth - 2) ||
+                (dirY < 0 && player.Location.Y >= 2) ||
+                (dirY > 0 && player.Location.Y < GameDefines.BoardHeight - 2);
+
+            if (!canReachDest2)
             {
-                player.Direction = MovementDirection.North;
-            }
-            else if (dirX < 0)
-            {
-                player.Direction = MovementDirection.West;
-            }
-            else if (dirY > 0)
-            {
-                player.Direction = MovementDirection.South;
-            }
-            else if (dirX > 0)
-            {
-                player.Direction = MovementDirection.East;
+                return;
             }
 
-            if (moved)
+            if (!board.Tiles[destX, destY].Id.Equals((int)TileId.CrateOnGround) ||
+                !board.Tiles[dest2X, dest2Y].Id.Equals((int)TileId.Ground))
             {
-                player.MovesCount += 1;
-                player.Location = new Point2D(
-                    player.Location.X + dirX,
-                    player.Location.Y + dirY);
-
-                undoHistory.Push(snapshot);
+                return;
             }
+
+            int variation = board.Tiles[destX, destY].Variation;
+            board.Tiles[destX, destY] = boardManager.GetTile(0);
+            board.Tiles[dest2X, dest2Y] = boardManager.GetTile(2);
+            board.Tiles[dest2X, dest2Y].Variation = variation;
+        }
+
+        void CommitMove(int dirX, int dirY, MoveSnapshot snapshot)
+        {
+            player.MovesCount += 1;
+            player.Location = new Point2D(
+                player.Location.X + dirX,
+                player.Location.Y + dirY);
+
+            undoHistory.Push(snapshot);
         }
 
         public void Undo()
@@ -273,6 +272,7 @@ namespace SokoGrump.GameLogic.GameManagers
         public UndoInfo PeekUndo()
         {
             MoveSnapshot snapshot = undoHistory.Peek();
+
             return new UndoInfo(
                 snapshot.PlayerLocation,
                 snapshot.CratePushed,
