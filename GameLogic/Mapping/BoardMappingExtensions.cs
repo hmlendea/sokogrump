@@ -33,11 +33,11 @@ namespace SokoGrump.GameLogic.Mapping
             {
                 for (int x = 0; x < boardEntity.Tiles.GetLength(0); x++)
                 {
-                    if (boardEntity.Tiles[x, y].Id.Equals((int)TileId.EmptyTarget))
+                    if (((TileId)boardEntity.Tiles[x, y].Id).Equals(TileId.EmptyTarget))
                     {
                         board.Targets.Add(new Point2D(x, y));
                     }
-                    else if (boardEntity.Tiles[x, y].Id.Equals((int)TileId.CrateOnTarget))
+                    else if (((TileId)boardEntity.Tiles[x, y].Id).Equals(TileId.CrateOnTarget))
                     {
                         board.Targets.Add(new Point2D(x, y));
                     }

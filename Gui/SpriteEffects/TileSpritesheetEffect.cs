@@ -5,6 +5,7 @@ using NuciXNA.Graphics.SpriteEffects;
 using NuciXNA.Primitives;
 
 using SokoGrump.GameLogic.GameManagers;
+using SokoGrump.Models;
 using SokoGrump.Settings;
 
 namespace SokoGrump.Gui.SpriteEffects
@@ -35,7 +36,7 @@ namespace SokoGrump.Gui.SpriteEffects
 
         public Point2D TileLocation { get; set; }
 
-        public List<int> TilesWith { get; set; }
+        public List<TileId> TilesWith { get; set; }
 
         public TileSpriteSheetEffect(IGameManager game) : base()
         {
@@ -58,10 +59,10 @@ namespace SokoGrump.Gui.SpriteEffects
                 return;
             }
 
-            int idN = game.GetTile(TileLocation.X, TileLocation.Y - 1).Id;
-            int idW = game.GetTile(TileLocation.X - 1, TileLocation.Y).Id;
-            int idS = game.GetTile(TileLocation.X, TileLocation.Y + 1).Id;
-            int idE = game.GetTile(TileLocation.X + 1, TileLocation.Y).Id;
+            TileId idN = game.GetTile(TileLocation.X, TileLocation.Y - 1).Id;
+            TileId idW = game.GetTile(TileLocation.X - 1, TileLocation.Y).Id;
+            TileId idS = game.GetTile(TileLocation.X, TileLocation.Y + 1).Id;
+            TileId idE = game.GetTile(TileLocation.X + 1, TileLocation.Y).Id;
 
             bool tilesN = TilesWith.Contains(idN);
             bool tilesW = TilesWith.Contains(idW);
