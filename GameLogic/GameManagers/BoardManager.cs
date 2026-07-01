@@ -29,7 +29,7 @@ namespace SokoGrump.GameLogic.GameManagers
 
         public Board GetBoard(int id) => boards[id.ToString()].Clone();
 
-        public Tile GetTile(TileId id) => new(tiles[id]);
+        public Tile GetTile(TileId id) => tiles[id].Clone();
 
         public IEnumerable<Tile> GetTiles() => tiles.Values;
 
