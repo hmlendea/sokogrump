@@ -62,7 +62,9 @@ namespace SokoGrump.GameLogic.GameManagers
             Completed = board.Targets.All(targetLocation => board.Tiles[targetLocation.X, targetLocation.Y].Id.Equals((int)TileId.CrateOnGround));
 
             if (!Completed)
+            {
                 ElapsedTime += TimeSpan.FromMilliseconds(elapsedMiliseconds);
+            }
 
             boardManager.Update(elapsedMiliseconds);
         }
@@ -112,41 +114,29 @@ namespace SokoGrump.GameLogic.GameManagers
         public void SetPlayerDirection(MovementDirection direction)
             => player.Direction = direction;
 
+        static DirectionDelta? GetDirectionDelta(MovementDirection direction) => direction switch
+        {
+            MovementDirection.North => new DirectionDelta(0, -1),
+            MovementDirection.West  => new DirectionDelta(-1, 0),
+            MovementDirection.South => new DirectionDelta(0, 1),
+            MovementDirection.East  => new DirectionDelta(1, 0),
+            _ => null
+        };
+
         public bool CanMove(MovementDirection direction)
         {
-            int dirX, dirY;
-            int destX, destY;
-            int dest2X, dest2Y;
-
-            if (direction is MovementDirection.North)
-            {
-                dirX = 0;
-                dirY = -1;
-            }
-            else if (direction is MovementDirection.West)
-            {
-                dirX = -1;
-                dirY = 0;
-            }
-            else if (direction is MovementDirection.South)
-            {
-                dirX = 0;
-                dirY = 1;
-            }
-            else if (direction is MovementDirection.East)
-            {
-                dirX = 1;
-                dirY = 0;
-            }
-            else
+            if (GetDirectionDelta(direction) is not DirectionDelta delta)
             {
                 return false;
             }
 
-            destX = player.Location.X + dirX;
-            destY = player.Location.Y + dirY;
-            dest2X = player.Location.X + dirX * 2;
-            dest2Y = player.Location.Y + dirY * 2;
+            int dirX = delta.X;
+            int dirY = delta.Y;
+
+            int destX = player.Location.X + dirX;
+            int destY = player.Location.Y + dirY;
+            int dest2X = player.Location.X + dirX * 2;
+            int dest2Y = player.Location.Y + dirY * 2;
 
             if (destX < 0 || destX >= GameDefines.BoardWidth ||
                 destY < 0 || destY >= GameDefines.BoardHeight)
@@ -183,42 +173,18 @@ namespace SokoGrump.GameLogic.GameManagers
         /// <param name="direction">Movement direction.</param>
         public void MovePlayer(MovementDirection direction)
         {
-            int dirX, dirY;
-            int destX, destY;
-            int dest2X, dest2Y;
-            bool moved;
-
-            if (direction is MovementDirection.North)
-            {
-                dirX = 0;
-                dirY = -1;
-            }
-            else if (direction is MovementDirection.West)
-            {
-                dirX = -1;
-                dirY = 0;
-            }
-            else if (direction is MovementDirection.South)
-            {
-                dirX = 0;
-                dirY = 1;
-            }
-            else if (direction is MovementDirection.East)
-            {
-                dirX = 1;
-                dirY = 0;
-            }
-            else
+            if (GetDirectionDelta(direction) is not DirectionDelta delta)
             {
                 return;
             }
 
-            destX = player.Location.X + dirX;
-            destY = player.Location.Y + dirY;
-            dest2X = player.Location.X + dirX * 2;
-            dest2Y = player.Location.Y + dirY * 2;
-
-            moved = CanMove(direction);
+            int dirX = delta.X;
+            int dirY = delta.Y;
+            int destX = player.Location.X + dirX;
+            int destY = player.Location.Y + dirY;
+            int dest2X = player.Location.X + dirX * 2;
+            int dest2Y = player.Location.Y + dirY * 2;
+            bool moved = CanMove(direction);
 
             if (!moved)
             {
