@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Threading;
 using NuciDAL.IO;
 using NuciXNA.Graphics;
 
@@ -8,30 +7,8 @@ namespace SokoGrump.Settings
     /// <summary>
     /// Settings manager.
     /// </summary>
-    public class SettingsManager
+    public class SettingsManager : Singleton<SettingsManager>
     {
-        static volatile SettingsManager instance;
-        static readonly Lock syncRoot = new();
-
-        /// <summary>
-        /// Gets the instance.
-        /// </summary>
-        /// <value>The instance.</value>
-        public static SettingsManager Instance
-        {
-            get
-            {
-                if (instance is null)
-                {
-                    lock (syncRoot)
-                    {
-                        instance ??= new SettingsManager();
-                    }
-                }
-
-                return instance;
-            }
-        }
 
         public AudioSettings AudioSettings { get; set; }
 
@@ -78,7 +55,7 @@ namespace SokoGrump.Settings
             XmlFileObject<SettingsManager> xmlManager = new();
             SettingsManager storedSettings = xmlManager.Read(ApplicationPaths.SettingsFile);
 
-            instance = storedSettings;
+            SetInstance(storedSettings);
         }
 
         /// <summary>
