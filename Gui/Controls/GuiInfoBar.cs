@@ -78,14 +78,11 @@ namespace SokoGrump.Gui.Controls
 
         void SetChildrenProperties()
         {
-            timerText.BackgroundColour = BackgroundColour;
-            timerText.ForegroundColour = ForegroundColour;
-
-            movesText.BackgroundColour = BackgroundColour;
-            movesText.ForegroundColour = ForegroundColour;
-
-            levelText.BackgroundColour = BackgroundColour;
-            levelText.ForegroundColour = ForegroundColour;
+            foreach (GuiText text in new[] { timerText, movesText, levelText })
+            {
+                text.BackgroundColour = BackgroundColour;
+                text.ForegroundColour = ForegroundColour;
+            }
 
             timerText.Text = $"{LocalisationManager.Instance.TimeLabel}: {(int)game.ElapsedTime.TotalMinutes:D2}:{game.ElapsedTime.Seconds:D2}";
             movesText.Text = $"{LocalisationManager.Instance.MovesLabel}: {game.GetPlayer().MovesCount}";
