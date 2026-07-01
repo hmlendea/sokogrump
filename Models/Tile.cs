@@ -6,7 +6,7 @@
         /// Gets or sets the identifier.
         /// </summary>
         /// <value>The identifier.</value>
-        public int Id { get; set; }
+        public TileId Id { get; set; }
 
         /// <summary>
         /// Gets or sets the sprite sheet.
@@ -28,12 +28,12 @@
 
         public Tile() { }
 
-        public Tile(Tile tile)
+        public Tile Clone() => new()
         {
-            Id = tile.Id;
-            SpriteSheet = tile.SpriteSheet;
-            TileType = tile.TileType;
-            Variation = tile.Variation;
-        }
+            Id = Id,
+            SpriteSheet = SpriteSheet,
+            TileType = TileType,
+            Variation = Variation
+        };
     }
 }

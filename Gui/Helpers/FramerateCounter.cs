@@ -1,38 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 
 namespace SokoGrump.Gui.Helpers
 {
     /// <summary>
     /// Framerate counter.
     /// </summary>
-    public class FramerateCounter
+    public class FramerateCounter : Singleton<FramerateCounter>
     {
-        static volatile FramerateCounter instance;
-        static readonly Lock syncRoot = new();
-
         readonly Queue<float> sampleBuffer;
-
-        /// <summary>
-        /// Gets the instance of the FramerateCounter.
-        /// </summary>
-        /// <value>The instance.</value>
-        public static FramerateCounter Instance
-        {
-            get
-            {
-                if (instance is null)
-                {
-                    lock (syncRoot)
-                    {
-                        instance ??= new FramerateCounter();
-                    }
-                }
-
-                return instance;
-            }
-        }
 
         /// <summary>
         /// Gets the total number of frames.

@@ -27,7 +27,7 @@ namespace SokoGrump.DataAccess.Repositories
         public override BoardEntity Get(string id)
         {
             BoardEntity boardEntity = new();
-            string levelFile = Path.Combine("Levels", $"{id}.lvl");
+            string levelFile = Path.Combine(boardsDirectory, $"{id}.lvl");
             string[] rows = File.ReadAllLines(levelFile);
 
             boardEntity.Id = id;
@@ -41,13 +41,13 @@ namespace SokoGrump.DataAccess.Repositories
                 {
                     int tileId = (int)char.GetNumericValue(rows[y][x]);
 
-                    if (tileId.Equals((int)TileId.PlayerOnGround))
+                    if (((TileId)tileId).Equals(TileId.PlayerOnGround))
                     {
                         boardEntity.PlayerStartLocationX = x;
                         boardEntity.PlayerStartLocationY = y;
                         boardEntity.Tiles[x, y] = tileEntities[0];
                     }
-                    else if (tileId.Equals((int)TileId.PlayerOnTarget))
+                    else if (((TileId)tileId).Equals(TileId.PlayerOnTarget))
                     {
                         boardEntity.PlayerStartLocationX = x;
                         boardEntity.PlayerStartLocationY = y;

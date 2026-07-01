@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Threading;
 
 using NuciDAL.IO;
 
@@ -10,30 +9,11 @@ using SokoGrump.Settings;
 
 namespace SokoGrump.Localisation
 {
-    public class LocalisationManager
+    public class LocalisationManager : Singleton<LocalisationManager>
     {
         const string FallbackLanguage = "en";
 
-        static volatile LocalisationManager instance;
-        static readonly Lock syncRoot = new();
-
         LocalisationData data;
-
-        public static LocalisationManager Instance
-        {
-            get
-            {
-                if (instance is null)
-                {
-                    lock (syncRoot)
-                    {
-                        instance ??= new LocalisationManager();
-                    }
-                }
-
-                return instance;
-            }
-        }
 
         public string CurrentLanguage { get; private set; } = FallbackLanguage;
 

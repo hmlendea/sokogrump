@@ -27,19 +27,24 @@ namespace SokoGrump.Models
             Targets = [];
         }
 
-        public Board(Board board)
+        public Board Clone()
         {
-            PlayerStartLocation = board.PlayerStartLocation;
-            Targets = [.. board.Targets];
-            Tiles = new Tile[GameDefines.BoardWidth, GameDefines.BoardHeight];
+            Board clone = new()
+            {
+                PlayerStartLocation = PlayerStartLocation,
+                Targets = [.. Targets],
+                Tiles = new Tile[GameDefines.BoardWidth, GameDefines.BoardHeight]
+            };
 
             for (int y = 0; y < GameDefines.BoardHeight; y++)
             {
                 for (int x = 0; x < GameDefines.BoardWidth; x++)
                 {
-                    Tiles[x, y] = new Tile(board.Tiles[x, y]);
+                    clone.Tiles[x, y] = Tiles[x, y].Clone();
                 }
             }
+
+            return clone;
         }
     }
 }

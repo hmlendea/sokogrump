@@ -11,7 +11,7 @@ namespace SokoGrump.GameLogic.GameManagers
     public class BoardManager : IBoardManager
     {
         Dictionary<string, Board> boards;
-        Dictionary<int, Tile> tiles;
+        Dictionary<TileId, Tile> tiles;
 
         public void LoadContent()
         {
@@ -27,9 +27,9 @@ namespace SokoGrump.GameLogic.GameManagers
 
         public void Update(double elapsedMiliseconds) { }
 
-        public Board GetBoard(int id) => new(boards[id.ToString()]);
+        public Board GetBoard(int id) => boards[id.ToString()].Clone();
 
-        public Tile GetTile(int id) => new(tiles[id]);
+        public Tile GetTile(TileId id) => tiles[id].Clone();
 
         public IEnumerable<Tile> GetTiles() => tiles.Values;
 
@@ -39,37 +39,37 @@ namespace SokoGrump.GameLogic.GameManagers
         {
             Tile terrainTile = new()
             {
-                Id = 0,
+                Id = TileId.Ground,
                 SpriteSheet = "SpriteSheets/brick",
                 TileType = TileType.Walkable
             };
             Tile wallTile = new()
             {
-                Id = 1,
+                Id = TileId.Wall,
                 SpriteSheet = "SpriteSheets/wall",
                 TileType = TileType.Solid
             };
             Tile boxTile = new()
             {
-                Id = 2,
+                Id = TileId.CrateOnGround,
                 SpriteSheet = "SpriteSheets/crate",
                 TileType = TileType.Moveable
             };
             Tile targetTile = new()
             {
-                Id = 3,
+                Id = TileId.EmptyTarget,
                 SpriteSheet = "Tiles/tile3/0",
                 TileType = TileType.Walkable
             };
             Tile completedTargetTile = new()
             {
-                Id = 5,
+                Id = TileId.CrateOnTarget,
                 SpriteSheet = "Tiles/tile5/0",
                 TileType = TileType.Moveable
             };
             Tile voidTile = new()
             {
-                Id = 7,
+                Id = TileId.Void,
                 SpriteSheet = "Tiles/tile7/0",
                 TileType = TileType.Solid
             };

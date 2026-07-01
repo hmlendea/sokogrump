@@ -20,7 +20,7 @@ namespace SokoGrump.GameLogic.Mapping
         /// <param name="tileEntity">World Tile entity.</param>
         internal static Tile ToDomainModel(this TileEntity tileEntity) => new()
         {
-            Id = tileEntity.Id,
+            Id = (TileId)tileEntity.Id,
             SpriteSheet = tileEntity.SpriteSheet,
             TileType = Enum.Parse<TileType>(tileEntity.TileType)
         };
@@ -32,7 +32,7 @@ namespace SokoGrump.GameLogic.Mapping
         /// <param name="tile">World Tile.</param>
         internal static TileEntity ToEntity(this Tile tile) => new()
         {
-            Id = tile.Id,
+            Id = (int)tile.Id,
             SpriteSheet = tile.SpriteSheet,
             TileType = tile.TileType.ToString()
         };

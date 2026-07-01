@@ -5,17 +5,38 @@ using NuciXNA.Graphics.SpriteEffects;
 using NuciXNA.Primitives;
 
 using SokoGrump.GameLogic.GameManagers;
+using SokoGrump.Models;
 using SokoGrump.Settings;
 
 namespace SokoGrump.Gui.SpriteEffects
 {
     public class TileSpriteSheetEffect : SpriteSheetEffect
     {
+        // Bitmask: N=8, W=4, S=2, E=1
+        static readonly Dictionary<int, Point2D> FrameMap = new()
+        {
+            { 0b0000, new Point2D(0, 0) }, // Single
+            { 0b0001, new Point2D(0, 2) }, // <
+            { 0b0010, new Point2D(0, 1) }, // ^
+            { 0b0011, new Point2D(0, 3) }, // TopLeftCorner
+            { 0b0100, new Point2D(2, 2) }, // >
+            { 0b0101, new Point2D(1, 2) }, // -
+            { 0b0110, new Point2D(2, 3) }, // TopRightCorner
+            { 0b0111, new Point2D(1, 3) }, // TopCorner
+            { 0b1000, new Point2D(2, 1) }, // v
+            { 0b1001, new Point2D(0, 5) }, // BottomLeftCorner
+            { 0b1010, new Point2D(1, 1) }, // |
+            { 0b1011, new Point2D(0, 4) }, // LeftCorner
+            { 0b1100, new Point2D(2, 5) }, // BottomRightCorner
+            { 0b1101, new Point2D(1, 5) }, // BottomCorner
+            { 0b1110, new Point2D(2, 4) }, // RightCorner
+            { 0b1111, new Point2D(1, 4) }, // Middle
+        };
         readonly IGameManager game;
 
         public Point2D TileLocation { get; set; }
 
-        public List<int> TilesWith { get; set; }
+        public List<TileId> TilesWith { get; set; }
 
         public TileSpriteSheetEffect(IGameManager game) : base()
         {
@@ -38,84 +59,23 @@ namespace SokoGrump.Gui.SpriteEffects
                 return;
             }
 
-            int idN = game.GetTile(TileLocation.X, TileLocation.Y - 1).Id;
-            int idW = game.GetTile(TileLocation.X - 1, TileLocation.Y).Id;
-            int idS = game.GetTile(TileLocation.X, TileLocation.Y + 1).Id;
-            int idE = game.GetTile(TileLocation.X + 1, TileLocation.Y).Id;
+            TileId idN = game.GetTile(TileLocation.X, TileLocation.Y - 1).Id;
+            TileId idW = game.GetTile(TileLocation.X - 1, TileLocation.Y).Id;
+            TileId idS = game.GetTile(TileLocation.X, TileLocation.Y + 1).Id;
+            TileId idE = game.GetTile(TileLocation.X + 1, TileLocation.Y).Id;
 
             bool tilesN = TilesWith.Contains(idN);
             bool tilesW = TilesWith.Contains(idW);
             bool tilesS = TilesWith.Contains(idS);
             bool tilesE = TilesWith.Contains(idE);
 
-            if (tilesN && tilesW && tilesS && tilesE) // Middle
-            {
-                CurrentFrame = new Point2D(1, 4);
-            }
-            else if (!tilesN && !tilesW && !tilesS && !tilesE) // Single
-            {
-                CurrentFrame = new Point2D(0, 0);
-            }
-            else if (!tilesN && !tilesW && tilesS && tilesE) // TopLeftCorner
-            {
-                CurrentFrame = new Point2D(0, 3);
-            }
-            else if (!tilesN && tilesW && tilesS && !tilesE) // TopRightCorner
-            {
-                CurrentFrame = new Point2D(2, 3);
-            }
-            else if (tilesN && !tilesW && !tilesS && tilesE) // BottomLeftCorner
-            {
-                CurrentFrame = new Point2D(0, 5);
-            }
-            else if (tilesN && tilesW && !tilesS && !tilesE) // BottomRightCorner
-            {
-                CurrentFrame = new Point2D(2, 5);
-            }
-            else if (!tilesN && tilesW && tilesS && tilesE) // TopCorner
-            {
-                CurrentFrame = new Point2D(1, 3);
-            }
-            else if (tilesN && !tilesW && tilesS && tilesE) // LeftCorner
-            {
-                CurrentFrame = new Point2D(0, 4);
-            }
-            else if (tilesN && tilesW && !tilesS && tilesE) // BottomCorner
-            {
-                CurrentFrame = new Point2D(1, 5);
-            }
-            else if (tilesN && tilesW && tilesS && !tilesE) // RightCorner
-            {
-                CurrentFrame = new Point2D(2, 4);
-            }
-            else if (!tilesN && !tilesW && tilesS && !tilesE) // ^
-            {
-                CurrentFrame = new Point2D(0, 1);
-            }
-            else if (tilesN && !tilesW && tilesS && !tilesE) // |
-            {
-                CurrentFrame = new Point2D(1, 1);
-            }
-            else if (tilesN && !tilesW && !tilesS && !tilesE) // v
-            {
-                CurrentFrame = new Point2D(2, 1);
-            }
-            else if (!tilesN && !tilesW && !tilesS && tilesE) // <
-            {
-                CurrentFrame = new Point2D(0, 2);
-            }
-            else if (!tilesN && tilesW && !tilesS && tilesE) // -
-            {
-                CurrentFrame = new Point2D(1, 2);
-            }
-            else if (!tilesN && tilesW && !tilesS && !tilesE) // >
-            {
-                CurrentFrame = new Point2D(2, 2);
-            }
-            else
-            {
-                CurrentFrame = new Point2D(0, 0);
-            }
+            int mask =
+                (tilesN ? 8 : 0) |
+                (tilesW ? 4 : 0) |
+                (tilesS ? 2 : 0) |
+                (tilesE ? 1 : 0);
+
+            CurrentFrame = FrameMap[mask];
         }
     }
 }
