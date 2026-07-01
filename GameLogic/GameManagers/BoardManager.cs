@@ -27,7 +27,7 @@ namespace SokoGrump.GameLogic.GameManagers
 
         public void Update(double elapsedMiliseconds) { }
 
-        public Board GetBoard(int id) => new(boards[id.ToString()]);
+        public Board GetBoard(int id) => boards[id.ToString()].Clone();
 
         public Tile GetTile(TileId id) => new(tiles[id]);
 

@@ -204,8 +204,8 @@ namespace SokoGrump.GameLogic.GameManagers
                 player.Location,
                 player.Direction,
                 player.MovesCount,
-                destX, destY, new Tile(board.Tiles[destX, destY]),
-                dest2X, dest2Y, new Tile(board.Tiles[dest2X, dest2Y]),
+                destX, destY, board.Tiles[destX, destY].Clone(),
+                dest2X, dest2Y, board.Tiles[dest2X, dest2Y].Clone(),
                 cratePushed);
         }
 

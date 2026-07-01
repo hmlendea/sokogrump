@@ -28,12 +28,12 @@
 
         public Tile() { }
 
-        public Tile(Tile tile)
+        public Tile Clone() => new()
         {
-            Id = tile.Id;
-            SpriteSheet = tile.SpriteSheet;
-            TileType = tile.TileType;
-            Variation = tile.Variation;
-        }
+            Id = Id,
+            SpriteSheet = SpriteSheet,
+            TileType = TileType,
+            Variation = Variation
+        };
     }
 }
