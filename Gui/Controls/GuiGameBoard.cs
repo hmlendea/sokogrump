@@ -25,8 +25,8 @@ namespace SokoGrump.Gui.Controls
     {
         Dictionary<int, TextureSprite> tileSprites;
         TextureSprite targetSprite;
-        TextureSprite playerSprite;
-        TextureSprite pushedBoxAnimSprite;
+        GuiImage playerAvatar;
+        GuiImage pushedBox;
 
         Point2D pushedBoxStartTile;
         bool isPushingBox;
@@ -43,13 +43,13 @@ namespace SokoGrump.Gui.Controls
             {
                 ContentFile = "SpriteSheets/target"
             };
-            playerSprite = new TextureSprite
+            playerAvatar = new GuiImage
             {
                 ContentFile = "SpriteSheets/player",
                 SourceRectangle = new Rectangle2D(0, 0, GameDefines.MapTileSize, GameDefines.MapTileSize),
                 SpriteSheetEffect = new PlayerSpriteSheetEffect(game),
                 MovementEffect = new MovementEffect(),
-                IsActive = true
+                AreEffectsActive = true
             };
 
             foreach (Tile tile in game.GetTiles())
@@ -77,21 +77,22 @@ namespace SokoGrump.Gui.Controls
             }
 
             targetSprite.LoadContent();
-            playerSprite.LoadContent();
-            playerSprite.SpriteSheetEffect.Activate();
+            playerAvatar.LoadContent();
+            playerAvatar.SpriteSheetEffect.Activate();
 
-            pushedBoxAnimSprite = new TextureSprite
+            pushedBox = new GuiImage
             {
                 ContentFile = tileSprites[(int)TileId.CrateOnGround].ContentFile,
                 SourceRectangle = new Rectangle2D(0, 0, GameDefines.MapTileSize, GameDefines.MapTileSize),
                 SpriteSheetEffect = new CrateSpriteSheetEffect(game),
                 MovementEffect = new MovementEffect(),
-                IsActive = true
+                AreEffectsActive = true
             };
-            pushedBoxAnimSprite.LoadContent();
-            pushedBoxAnimSprite.SpriteSheetEffect.Activate();
+            pushedBox.LoadContent();
+            pushedBox.SpriteSheetEffect.Activate();
 
-            playerSprite.MovementEffect.Deactivated += OnPlayerSpriteMovementEffectDeactivated;
+            playerAvatar.MovementEffect.Deactivated += OnPlayerSpriteMovementEffectDeactivated;
+            pushedBox.MovementEffect.Deactivated += OnPushedBoxMovementEffectDeactivated;
             InputManager.Instance.KeyboardKeyPressed += OnInputManagerKeyboardKeyPressed;
         }
 
@@ -102,12 +103,13 @@ namespace SokoGrump.Gui.Controls
         {
             tileSprites.Values.ToList().ForEach(x => x.UnloadContent());
             targetSprite.UnloadContent();
-            playerSprite.UnloadContent();
-            pushedBoxAnimSprite.UnloadContent();
+            playerAvatar.UnloadContent();
+            pushedBox.UnloadContent();
 
             tileSprites.Clear();
 
-            playerSprite.MovementEffect.Deactivated -= OnPlayerSpriteMovementEffectDeactivated;
+            playerAvatar.MovementEffect.Deactivated -= OnPlayerSpriteMovementEffectDeactivated;
+            pushedBox.MovementEffect.Deactivated -= OnPushedBoxMovementEffectDeactivated;
             InputManager.Instance.KeyboardKeyPressed -= OnInputManagerKeyboardKeyPressed;
         }
 
@@ -118,16 +120,16 @@ namespace SokoGrump.Gui.Controls
         protected override void DoUpdate(GameTime gameTime)
         {
             targetSprite.Update(gameTime);
-            playerSprite.Update(gameTime);
+            this.playerAvatar.Update(gameTime);
 
             if (isPushingBox)
             {
-                pushedBoxAnimSprite.Update(gameTime);
+                pushedBox.Update(gameTime);
             }
 
             Player player = game.GetPlayer();
 
-            playerSprite.Location = Location + player.Location * GameDefines.MapTileSize;
+            this.playerAvatar.Location = Location + player.Location * GameDefines.MapTileSize;
         }
 
         /// <summary>
@@ -219,18 +221,18 @@ namespace SokoGrump.Gui.Controls
                 targetSprite.Draw(spriteBatch);
             }
 
-            playerSprite.Draw(spriteBatch);
+            playerAvatar.Draw(spriteBatch);
 
             if (isPushingBox)
             {
-                pushedBoxAnimSprite.Tint = pushedBoxWasOnTarget ? Colour.Red : Colour.White;
-                pushedBoxAnimSprite.Draw(spriteBatch);
+                pushedBox.TintColour = pushedBoxWasOnTarget ? Colour.Red : Colour.White;
+                pushedBox.Draw(spriteBatch);
             }
         }
 
         void MovePlayer(MovementDirection direction)
         {
-            if (playerSprite.MovementEffect.IsActive)
+            if (this.playerAvatar.MovementEffect.IsActive)
             {
                 return;
             }
@@ -256,16 +258,16 @@ namespace SokoGrump.Gui.Controls
 
                 Point2D boxPixelStart = Location + pushedBoxStartTile * GameDefines.MapTileSize;
 
-                CrateSpriteSheetEffect crateEffect = (CrateSpriteSheetEffect)pushedBoxAnimSprite.SpriteSheetEffect;
+                CrateSpriteSheetEffect crateEffect = (CrateSpriteSheetEffect)pushedBox.SpriteSheetEffect;
                 crateEffect.TileLocation = pushedBoxStartTile;
                 crateEffect.Update(null);
 
-                pushedBoxAnimSprite.Location = boxPixelStart;
-                pushedBoxAnimSprite.MovementEffect.TargetLocation = boxPixelStart + new Point2D(dirX * GameDefines.MapTileSize, dirY * GameDefines.MapTileSize);
-                pushedBoxAnimSprite.MovementEffect.Activate();
+                pushedBox.Location = boxPixelStart;
+                pushedBox.MovementEffect.TargetLocation = boxPixelStart + new Point2D(dirX * GameDefines.MapTileSize, dirY * GameDefines.MapTileSize);
+                pushedBox.MovementEffect.Activate();
             }
 
-            Point2D targetLocation = playerSprite.Location;
+            Point2D targetLocation = this.playerAvatar.Location;
 
             if (direction is MovementDirection.North)
             {
@@ -284,13 +286,13 @@ namespace SokoGrump.Gui.Controls
                 targetLocation.X += GameDefines.MapTileSize;
             }
 
-            playerSprite.MovementEffect.TargetLocation = targetLocation;
-            playerSprite.MovementEffect.Activate();
+            this.playerAvatar.MovementEffect.TargetLocation = targetLocation;
+            this.playerAvatar.MovementEffect.Activate();
         }
 
         public void UndoPlayer()
         {
-            if (playerSprite.MovementEffect.IsActive || !game.CanUndo)
+            if (playerAvatar.MovementEffect.IsActive || !game.CanUndo)
             {
                 return;
             }
@@ -306,21 +308,24 @@ namespace SokoGrump.Gui.Controls
                 Point2D cratePixelStart = Location + undoInfo.CrateAnimStart * GameDefines.MapTileSize;
                 Point2D cratePixelEnd = Location + undoInfo.CrateAnimEnd * GameDefines.MapTileSize;
 
-                CrateSpriteSheetEffect crateEffect = (CrateSpriteSheetEffect)pushedBoxAnimSprite.SpriteSheetEffect;
+                CrateSpriteSheetEffect crateEffect = (CrateSpriteSheetEffect)pushedBox.SpriteSheetEffect;
                 crateEffect.TileLocation = undoInfo.CrateAnimStart;
                 crateEffect.Update(null);
 
-                pushedBoxAnimSprite.Location = cratePixelStart;
-                pushedBoxAnimSprite.MovementEffect.TargetLocation = cratePixelEnd;
-                pushedBoxAnimSprite.MovementEffect.Activate();
+                pushedBox.Location = cratePixelStart;
+                pushedBox.MovementEffect.TargetLocation = cratePixelEnd;
+                pushedBox.MovementEffect.Activate();
             }
 
             Point2D playerPixelTarget = Location + undoInfo.PlayerTarget * GameDefines.MapTileSize;
-            playerSprite.MovementEffect.TargetLocation = playerPixelTarget;
-            playerSprite.MovementEffect.Activate();
+            playerAvatar.MovementEffect.TargetLocation = playerPixelTarget;
+            playerAvatar.MovementEffect.Activate();
 
             isUndoAnimation = true;
         }
+
+        void OnPushedBoxMovementEffectDeactivated(object sender, EventArgs e)
+            => pushedBox.Location = pushedBox.MovementEffect.TargetLocation;
 
         void OnPlayerSpriteMovementEffectDeactivated(object sender, EventArgs e)
         {
@@ -339,7 +344,7 @@ namespace SokoGrump.Gui.Controls
             }
 
             player = game.GetPlayer();
-            playerSprite.Location = Location + player.Location * GameDefines.MapTileSize;
+            playerAvatar.Location = Location + player.Location * GameDefines.MapTileSize;
         }
 
         void OnInputManagerKeyboardKeyPressed(object sender, KeyboardKeyEventArgs e)
