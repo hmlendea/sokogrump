@@ -144,65 +144,76 @@ namespace SokoGrump.Gui.Controls
             {
                 for (int x = 0; x < GameDefines.BoardWidth; x++)
                 {
-                    if (isPushingBox && x.Equals(pushedBoxStartTile.X) && y.Equals(pushedBoxStartTile.Y))
-                    {
-                        TextureSprite floorSprite = tileSprites[TileId.Floor];
-                        floorSprite.Location = Location + new Point2D(x * GameDefines.MapTileSize, y * GameDefines.MapTileSize);
-                        TileSpriteSheetEffect floorEffect = (TileSpriteSheetEffect)floorSprite.SpriteSheetEffect;
-                        floorEffect.TileLocation = new Point2D(x, y);
-                        floorEffect.TilesWith = [TileId.Floor, TileId.CrateOnFloor, TileId.EmptyTarget, TileId.CrateOnTarget];
-                        floorEffect.Update(null);
-                        floorSprite.Tint = Colour.White;
-                        floorSprite.Draw(spriteBatch);
-                        continue;
-                    }
-
-                    Tile tile = game.GetTile(x, y);
-
-                    TextureSprite tileSprite = tileSprites[tile.Id];
-                    tileSprite.Location = Location + new Point2D(
-                        x * GameDefines.MapTileSize,
-                        y * GameDefines.MapTileSize);
-
-                    // TODO: This is temporary
-                    if (tile.Id.Equals(TileId.Floor) || tile.Id.Equals(TileId.Wall))
-                    {
-                        TileSpriteSheetEffect tileEffect = (TileSpriteSheetEffect)tileSprite.SpriteSheetEffect;
-
-                        tileEffect.TileLocation = new Point2D(x, y);
-
-                        if (tile.Id.Equals(TileId.Floor))
-                        {
-                            tileEffect.TilesWith = [TileId.Floor, TileId.CrateOnFloor, TileId.EmptyTarget, TileId.CrateOnTarget];
-                        }
-                        else if (tile.Id.Equals(TileId.Wall))
-                        {
-                            tileEffect.TilesWith = [TileId.Wall];
-                        }
-
-                        tileEffect.Update(null);
-                    }
-                    else if (tile.Id.Equals(TileId.CrateOnFloor))
-                    {
-                        CrateSpriteSheetEffect crateEffect = (CrateSpriteSheetEffect)tileSprite.SpriteSheetEffect;
-
-                        crateEffect.TileLocation = new Point2D(x, y);
-                        crateEffect.Update(null);
-                    }
-
-                    if (tile.Id.Equals(TileId.CrateOnFloor) && targets.Any(target => target.X.Equals(x) && target.Y.Equals(y)))
-                    {
-                        tileSprite.Tint = Colour.Red;
-                    }
-                    else
-                    {
-                        tileSprite.Tint = Colour.White;
-                    }
-
-                    tileSprite.Draw(spriteBatch);
+                    DrawTileAt(x, y, targets, spriteBatch);
                 }
             }
 
+            DrawTargetSprites(targets, spriteBatch);
+
+            playerAvatar.Draw(spriteBatch);
+
+            if (isPushingBox)
+            {
+                pushedBox.TintColour = pushedBoxWasOnTarget ? Colour.Red : Colour.White;
+                pushedBox.Draw(spriteBatch);
+            }
+        }
+
+        void DrawTileAt(int x, int y, List<Point2D> targets, SpriteBatch spriteBatch)
+        {
+            if (isPushingBox && x.Equals(pushedBoxStartTile.X) && y.Equals(pushedBoxStartTile.Y))
+            {
+                DrawFloorUnderPushedBox(x, y, spriteBatch);
+                return;
+            }
+
+            Tile tile = game.GetTile(x, y);
+            TextureSprite tileSprite = tileSprites[tile.Id];
+            tileSprite.Location = Location + new Point2D(x * GameDefines.MapTileSize, y * GameDefines.MapTileSize);
+
+            UpdateTileSpriteSheetEffect(x, y, tile, tileSprite);
+
+            tileSprite.Tint = tile.Id.Equals(TileId.CrateOnFloor) && targets.Any(target => target.X.Equals(x) && target.Y.Equals(y))
+                ? Colour.Red
+                : Colour.White;
+
+            tileSprite.Draw(spriteBatch);
+        }
+
+        void DrawFloorUnderPushedBox(int x, int y, SpriteBatch spriteBatch)
+        {
+            TextureSprite floorSprite = tileSprites[TileId.Floor];
+            floorSprite.Location = Location + new Point2D(x * GameDefines.MapTileSize, y * GameDefines.MapTileSize);
+            TileSpriteSheetEffect floorEffect = (TileSpriteSheetEffect)floorSprite.SpriteSheetEffect;
+            floorEffect.TileLocation = new Point2D(x, y);
+            floorEffect.TilesWith = [TileId.Floor, TileId.CrateOnFloor, TileId.EmptyTarget, TileId.CrateOnTarget];
+            floorEffect.Update(null);
+            floorSprite.Tint = Colour.White;
+            floorSprite.Draw(spriteBatch);
+        }
+
+        // TODO: This is temporary
+        void UpdateTileSpriteSheetEffect(int x, int y, Tile tile, TextureSprite tileSprite)
+        {
+            if (tile.Id.Equals(TileId.Floor) || tile.Id.Equals(TileId.Wall))
+            {
+                TileSpriteSheetEffect tileEffect = (TileSpriteSheetEffect)tileSprite.SpriteSheetEffect;
+                tileEffect.TileLocation = new Point2D(x, y);
+                tileEffect.TilesWith = tile.Id.Equals(TileId.Floor)
+                    ? [TileId.Floor, TileId.CrateOnFloor, TileId.EmptyTarget, TileId.CrateOnTarget]
+                    : [TileId.Wall];
+                tileEffect.Update(null);
+            }
+            else if (tile.Id.Equals(TileId.CrateOnFloor))
+            {
+                CrateSpriteSheetEffect crateEffect = (CrateSpriteSheetEffect)tileSprite.SpriteSheetEffect;
+                crateEffect.TileLocation = new Point2D(x, y);
+                crateEffect.Update(null);
+            }
+        }
+
+        void DrawTargetSprites(List<Point2D> targets, SpriteBatch spriteBatch)
+        {
             foreach (Point2D targetLocation in targets)
             {
                 Tile tile = game.GetTile(targetLocation.X, targetLocation.Y);
@@ -217,16 +228,7 @@ namespace SokoGrump.Gui.Controls
                 }
 
                 targetSprite.Location = Location + targetLocation * GameDefines.MapTileSize;
-
                 targetSprite.Draw(spriteBatch);
-            }
-
-            playerAvatar.Draw(spriteBatch);
-
-            if (isPushingBox)
-            {
-                pushedBox.TintColour = pushedBoxWasOnTarget ? Colour.Red : Colour.White;
-                pushedBox.Draw(spriteBatch);
             }
         }
 
@@ -267,26 +269,7 @@ namespace SokoGrump.Gui.Controls
                 pushedBox.MovementEffect.Activate();
             }
 
-            Point2D targetLocation = this.playerAvatar.Location;
-
-            if (direction is MovementDirection.North)
-            {
-                targetLocation.Y -= GameDefines.MapTileSize;
-            }
-            else if (direction is MovementDirection.West)
-            {
-                targetLocation.X -= GameDefines.MapTileSize;
-            }
-            else if (direction is MovementDirection.South)
-            {
-                targetLocation.Y += GameDefines.MapTileSize;
-            }
-            else if (direction is MovementDirection.East)
-            {
-                targetLocation.X += GameDefines.MapTileSize;
-            }
-
-            this.playerAvatar.MovementEffect.TargetLocation = targetLocation;
+            this.playerAvatar.MovementEffect.TargetLocation = this.playerAvatar.Location + new Point2D(dirX * GameDefines.MapTileSize, dirY * GameDefines.MapTileSize);
             this.playerAvatar.MovementEffect.Activate();
         }
 

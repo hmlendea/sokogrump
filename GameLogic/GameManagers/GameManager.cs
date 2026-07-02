@@ -59,7 +59,7 @@ namespace SokoGrump.GameLogic.GameManagers
 
         public void Update(double elapsedMiliseconds)
         {
-            Completed = board.Targets.All(targetLocation => board.Tiles[targetLocation.X, targetLocation.Y].Id.Equals(TileId.CrateOnFloor));
+            Completed = IsLevelCompleted();
 
             if (!Completed)
             {
@@ -68,6 +68,9 @@ namespace SokoGrump.GameLogic.GameManagers
 
             boardManager.Update(elapsedMiliseconds);
         }
+
+        bool IsLevelCompleted()
+            => board.Targets.All(targetLocation => board.Tiles[targetLocation.X, targetLocation.Y].Id.Equals(TileId.CrateOnFloor));
 
         /// <summary>
         /// Creates a new game.
@@ -151,20 +154,23 @@ namespace SokoGrump.GameLogic.GameManagers
 
             if (board.Tiles[destX, destY].TileType is TileType.Moveable)
             {
-                if ((dirX < 0 && player.Location.X >= 2) || (dirX > 0 && player.Location.X < GameDefines.BoardWidth - 2) ||
-                    (dirY < 0 && player.Location.Y >= 2) || (dirY > 0 && player.Location.Y < GameDefines.BoardHeight - 2))
-                {
-                    if (board.Tiles[destX, destY].Id.Equals(TileId.CrateOnFloor))
-                    {
-                        if (board.Tiles[dest2X, dest2Y].Id.Equals(TileId.Floor))
-                        {
-                            return true;
-                        }
-                    }
-                }
+                return CanPushCrate(dirX, dirY, destX, destY, dest2X, dest2Y);
             }
 
             return false;
+        }
+
+        bool CanPushCrate(int dirX, int dirY, int destX, int destY, int dest2X, int dest2Y)
+        {
+            bool dest2InBounds =
+                (dirX < 0 && player.Location.X >= 2) ||
+                (dirX > 0 && player.Location.X < GameDefines.BoardWidth - 2) ||
+                (dirY < 0 && player.Location.Y >= 2) ||
+                (dirY > 0 && player.Location.Y < GameDefines.BoardHeight - 2);
+
+            return dest2InBounds
+                && board.Tiles[destX, destY].Id.Equals(TileId.CrateOnFloor)
+                && board.Tiles[dest2X, dest2Y].Id.Equals(TileId.Floor);
         }
 
         /// <summary>
