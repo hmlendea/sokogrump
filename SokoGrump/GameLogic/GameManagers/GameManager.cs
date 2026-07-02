@@ -11,9 +11,9 @@ namespace SokoGrump.GameLogic.GameManagers
 {
     public class GameManager : IGameManager
     {
-        readonly BoardManager boardManager;
+        readonly IBoardManager boardManager;
 
-        Random random;
+        Random random = new();
 
         Board board;
         Player player;
@@ -49,9 +49,10 @@ namespace SokoGrump.GameLogic.GameManagers
         /// </summary>
         public GameManager() => boardManager = new BoardManager();
 
+        internal GameManager(IBoardManager boardManager) => this.boardManager = boardManager;
+
         public void LoadContent()
         {
-            random = new Random();
             boardManager.LoadContent();
         }
 
