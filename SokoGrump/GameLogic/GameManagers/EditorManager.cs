@@ -92,28 +92,30 @@ namespace SokoGrump.GameLogic.GameManagers
 
         public void SetTile(int x, int y, int tileId)
         {
-            if (tileId == 3)
+            TileId id = (TileId)tileId;
+
+            if (id.Equals(TileId.EmptyTarget))
             {
-                board.Tiles[x, y] = boardManager.GetTile(0);
+                board.Tiles[x, y] = boardManager.GetTile(TileId.Floor);
 
                 if (board.Targets.All(target => target.X != x || target.Y != y))
                 {
                     board.Targets.Add(new Point2D(x, y));
                 }
             }
-            else if (tileId == 4)
+            else if (id.Equals(TileId.PlayerOnFloor))
             {
                 board.PlayerStartLocation = new Point2D(x, y);
 
-                if (board.Tiles[x, y].Id != 0 &&
-                    board.Tiles[x, y].Id != 3)
+                if (!board.Tiles[x, y].Id.Equals(TileId.Floor) &&
+                    !board.Tiles[x, y].Id.Equals(TileId.EmptyTarget))
                 {
-                    board.Tiles[x, y] = boardManager.GetTile(0);
+                    board.Tiles[x, y] = boardManager.GetTile(TileId.Floor);
                 }
             }
-            else if (tileId == 5)
+            else if (id.Equals(TileId.CrateOnTarget))
             {
-                board.Tiles[x, y] = boardManager.GetTile(2);
+                board.Tiles[x, y] = boardManager.GetTile(TileId.CrateOnFloor);
 
                 if (board.Targets.All(target => target.X != x || target.Y != y))
                 {
@@ -122,7 +124,7 @@ namespace SokoGrump.GameLogic.GameManagers
             }
             else
             {
-                board.Tiles[x, y] = boardManager.GetTile(tileId);
+                board.Tiles[x, y] = boardManager.GetTile(id);
                 board.Targets.RemoveAll(target => target.X == x && target.Y == y);
             }
         }

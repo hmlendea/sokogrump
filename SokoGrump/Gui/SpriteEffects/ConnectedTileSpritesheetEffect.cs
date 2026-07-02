@@ -5,6 +5,7 @@ using NuciXNA.Graphics.SpriteEffects;
 using NuciXNA.Primitives;
 
 using SokoGrump.GameLogic.GameManagers;
+using SokoGrump.Models;
 using SokoGrump.Settings;
 
 namespace SokoGrump.Gui.SpriteEffects
@@ -16,13 +17,13 @@ namespace SokoGrump.Gui.SpriteEffects
 
         public Point2D TileLocation { get; set; }
 
-        public List<int> TilesWith { get; set; }
+        public List<TileId> TilesWith { get; set; }
 
         public ConnectedTileSpriteSheetEffect(IGameManager game)
             : base()
         {
             FrameAmount = new Size2D(3, 6);
-            TilesWith = new List<int>();
+            TilesWith = [];
 
             this.game = game;
         }
@@ -31,7 +32,7 @@ namespace SokoGrump.Gui.SpriteEffects
             : base()
         {
             FrameAmount = new Size2D(3, 6);
-            TilesWith = new List<int>();
+            TilesWith = [];
 
             this.editor = editor;
         }
@@ -49,11 +50,11 @@ namespace SokoGrump.Gui.SpriteEffects
                 return;
             }
 
-            int id = GetTileId(TileLocation.X, TileLocation.Y);
-            int idN = GetTileId(TileLocation.X, TileLocation.Y - 1);
-            int idW = GetTileId(TileLocation.X - 1, TileLocation.Y);
-            int idS = GetTileId(TileLocation.X, TileLocation.Y + 1);
-            int idE = GetTileId(TileLocation.X + 1, TileLocation.Y);
+            TileId id = GetTileId(TileLocation.X, TileLocation.Y);
+            TileId idN = GetTileId(TileLocation.X, TileLocation.Y - 1);
+            TileId idW = GetTileId(TileLocation.X - 1, TileLocation.Y);
+            TileId idS = GetTileId(TileLocation.X, TileLocation.Y + 1);
+            TileId idE = GetTileId(TileLocation.X + 1, TileLocation.Y);
 
             bool tilesN = TilesWith.Contains(idN);
             bool tilesW = TilesWith.Contains(idW);
@@ -130,20 +131,19 @@ namespace SokoGrump.Gui.SpriteEffects
             }
         }
 
-        private int GetTileId(int x, int y)
+        private TileId GetTileId(int x, int y)
         {
             if (game is not null)
             {
                 return game.GetTile(x, y).Id;
             }
-            else if (editor is not null)
+
+            if (editor is not null)
             {
                 return editor.GetTile(x, y).Id;
             }
-            else
-            {
-                return -1;
-            }
+
+            return TileId.None;
         }
     }
 }
