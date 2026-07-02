@@ -144,7 +144,7 @@ namespace SokoGrump.Gui.Controls
             {
                 for (int x = 0; x < GameDefines.BoardWidth; x++)
                 {
-                    if (isPushingBox && x == pushedBoxStartTile.X && y == pushedBoxStartTile.Y)
+                    if (isPushingBox && x.Equals(pushedBoxStartTile.X) && y.Equals(pushedBoxStartTile.Y))
                     {
                         TextureSprite floorSprite = tileSprites[TileId.Floor];
                         floorSprite.Location = Location + new Point2D(x * GameDefines.MapTileSize, y * GameDefines.MapTileSize);
@@ -208,8 +208,8 @@ namespace SokoGrump.Gui.Controls
                 Tile tile = game.GetTile(targetLocation.X, targetLocation.Y);
 
                 bool isAnimatedCratePos = isPushingBox
-                    && targetLocation.X == pushedBoxStartTile.X
-                    && targetLocation.Y == pushedBoxStartTile.Y;
+                    && targetLocation.X.Equals(pushedBoxStartTile.X)
+                    && targetLocation.Y.Equals(pushedBoxStartTile.Y);
 
                 if (tile.Id.Equals(TileId.CrateOnFloor) && !isAnimatedCratePos)
                 {
@@ -254,7 +254,7 @@ namespace SokoGrump.Gui.Controls
             {
                 pushedBoxStartTile = new Point2D(destX, destY);
                 isPushingBox = true;
-                pushedBoxWasOnTarget = game.GetTargets().Any(t => t.X == destX && t.Y == destY);
+                pushedBoxWasOnTarget = game.GetTargets().Any(t => t.X.Equals(destX) && t.Y.Equals(destY));
 
                 Point2D boxPixelStart = Location + pushedBoxStartTile * GameDefines.MapTileSize;
 
@@ -303,7 +303,7 @@ namespace SokoGrump.Gui.Controls
             {
                 pushedBoxStartTile = undoInfo.CrateAnimStart;
                 isPushingBox = true;
-                pushedBoxWasOnTarget = game.GetTargets().Any(t => t.X == undoInfo.CrateAnimStart.X && t.Y == undoInfo.CrateAnimStart.Y);
+                pushedBoxWasOnTarget = game.GetTargets().Any(t => t.X.Equals(undoInfo.CrateAnimStart.X) && t.Y.Equals(undoInfo.CrateAnimStart.Y));
 
                 Point2D cratePixelStart = Location + undoInfo.CrateAnimStart * GameDefines.MapTileSize;
                 Point2D cratePixelEnd = Location + undoInfo.CrateAnimEnd * GameDefines.MapTileSize;
