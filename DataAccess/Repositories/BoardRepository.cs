@@ -41,7 +41,7 @@ namespace SokoGrump.DataAccess.Repositories
                 {
                     int tileId = (int)char.GetNumericValue(rows[y][x]);
 
-                    if (((TileId)tileId).Equals(TileId.PlayerOnGround))
+                    if (((TileId)tileId).Equals(TileId.PlayerOnFloor))
                     {
                         boardEntity.PlayerStartLocationX = x;
                         boardEntity.PlayerStartLocationY = y;

@@ -39,7 +39,7 @@ namespace SokoGrump.GameLogic.GameManagers
         {
             Tile terrainTile = new()
             {
-                Id = TileId.Ground,
+                Id = TileId.Floor,
                 SpriteSheet = "SpriteSheets/brick",
                 TileType = TileType.Walkable
             };
@@ -51,7 +51,7 @@ namespace SokoGrump.GameLogic.GameManagers
             };
             Tile boxTile = new()
             {
-                Id = TileId.CrateOnGround,
+                Id = TileId.CrateOnFloor,
                 SpriteSheet = "SpriteSheets/crate",
                 TileType = TileType.Moveable
             };

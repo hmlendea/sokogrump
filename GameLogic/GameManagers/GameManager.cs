@@ -59,7 +59,7 @@ namespace SokoGrump.GameLogic.GameManagers
 
         public void Update(double elapsedMiliseconds)
         {
-            Completed = board.Targets.All(targetLocation => board.Tiles[targetLocation.X, targetLocation.Y].Id.Equals(TileId.CrateOnGround));
+            Completed = board.Targets.All(targetLocation => board.Tiles[targetLocation.X, targetLocation.Y].Id.Equals(TileId.CrateOnFloor));
 
             if (!Completed)
             {
@@ -92,12 +92,12 @@ namespace SokoGrump.GameLogic.GameManagers
                 {
                     if (board.Tiles[x, y].Id.Equals(TileId.EmptyTarget))
                     {
-                        board.Tiles[x, y] = boardManager.GetTile(TileId.Ground);
+                        board.Tiles[x, y] = boardManager.GetTile(TileId.Floor);
                     }
 
                     if (board.Tiles[x, y].Id.Equals(TileId.CrateOnTarget))
                     {
-                        board.Tiles[x, y] = boardManager.GetTile(TileId.CrateOnGround);
+                        board.Tiles[x, y] = boardManager.GetTile(TileId.CrateOnFloor);
                     }
                 }
             }
@@ -154,9 +154,9 @@ namespace SokoGrump.GameLogic.GameManagers
                 if ((dirX < 0 && player.Location.X >= 2) || (dirX > 0 && player.Location.X < GameDefines.BoardWidth - 2) ||
                     (dirY < 0 && player.Location.Y >= 2) || (dirY > 0 && player.Location.Y < GameDefines.BoardHeight - 2))
                 {
-                    if (board.Tiles[destX, destY].Id.Equals(TileId.CrateOnGround))
+                    if (board.Tiles[destX, destY].Id.Equals(TileId.CrateOnFloor))
                     {
-                        if (board.Tiles[dest2X, dest2Y].Id.Equals(TileId.Ground))
+                        if (board.Tiles[dest2X, dest2Y].Id.Equals(TileId.Floor))
                         {
                             return true;
                         }
@@ -227,15 +227,15 @@ namespace SokoGrump.GameLogic.GameManagers
                 return;
             }
 
-            if (!board.Tiles[destX, destY].Id.Equals(TileId.CrateOnGround) ||
-                !board.Tiles[dest2X, dest2Y].Id.Equals(TileId.Ground))
+            if (!board.Tiles[destX, destY].Id.Equals(TileId.CrateOnFloor) ||
+                !board.Tiles[dest2X, dest2Y].Id.Equals(TileId.Floor))
             {
                 return;
             }
 
             int variation = board.Tiles[destX, destY].Variation;
-            board.Tiles[destX, destY] = boardManager.GetTile(TileId.Ground);
-            board.Tiles[dest2X, dest2Y] = boardManager.GetTile(TileId.CrateOnGround);
+            board.Tiles[destX, destY] = boardManager.GetTile(TileId.Floor);
+            board.Tiles[dest2X, dest2Y] = boardManager.GetTile(TileId.CrateOnFloor);
             board.Tiles[dest2X, dest2Y].Variation = variation;
         }
 
@@ -294,7 +294,7 @@ namespace SokoGrump.GameLogic.GameManagers
             {
                 for (int x = 0; x < GameDefines.BoardWidth; x++)
                 {
-                    if (board.Tiles[x, y].Id.Equals(TileId.CrateOnGround))
+                    if (board.Tiles[x, y].Id.Equals(TileId.CrateOnFloor))
                     {
                         board.Tiles[x, y].Variation = random.Next(0, 11);
                     }
