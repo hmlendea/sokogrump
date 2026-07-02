@@ -296,7 +296,7 @@ namespace SokoGrump.GameLogic.GameManagers
                 {
                     if (board.Tiles[x, y].Id.Equals(TileId.CrateOnFloor))
                     {
-                        board.Tiles[x, y].Variation = random.Next(0, 11);
+                        board.Tiles[x, y].Variation = random.Next(0, GameDefines.CrateVariationCount);
                     }
                 }
             }

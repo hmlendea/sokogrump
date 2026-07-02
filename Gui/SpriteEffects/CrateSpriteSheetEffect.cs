@@ -3,6 +3,7 @@ using NuciXNA.Graphics.SpriteEffects;
 using NuciXNA.Primitives;
 
 using SokoGrump.GameLogic.GameManagers;
+using SokoGrump.Settings;
 
 namespace SokoGrump.Gui.SpriteEffects
 {
@@ -14,7 +15,7 @@ namespace SokoGrump.Gui.SpriteEffects
 
         public CrateSpriteSheetEffect(IGameManager game)
         {
-            FrameAmount = new Size2D(11, 1);
+            FrameAmount = new Size2D(GameDefines.CrateVariationCount, 1);
 
             this.game = game;
         }

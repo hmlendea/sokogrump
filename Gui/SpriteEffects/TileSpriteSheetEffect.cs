@@ -12,6 +12,9 @@ namespace SokoGrump.Gui.SpriteEffects
 {
     public class TileSpriteSheetEffect : SpriteSheetEffect
     {
+        const int SpriteSheetColumns = 3;
+        const int SpriteSheetRows = 6;
+
         // Bitmask: N=8, W=4, S=2, E=1
         static readonly Dictionary<int, Point2D> FrameMap = new()
         {
@@ -40,7 +43,7 @@ namespace SokoGrump.Gui.SpriteEffects
 
         public TileSpriteSheetEffect(IGameManager game) : base()
         {
-            FrameAmount = new Size2D(3, 6);
+            FrameAmount = new Size2D(SpriteSheetColumns, SpriteSheetRows);
             TilesWith = [];
 
             this.game = game;

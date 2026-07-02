@@ -9,11 +9,14 @@ namespace SokoGrump.Gui.SpriteEffects
 {
     public class PlayerSpriteSheetEffect : SpriteSheetEffect
     {
+        const int SpriteSheetColumns = 3;
+        const int SpriteSheetRows = 6;
+
         readonly IGameManager game;
 
         public PlayerSpriteSheetEffect(IGameManager game) : base()
         {
-            FrameAmount = new Size2D(3, 6);
+            FrameAmount = new Size2D(SpriteSheetColumns, SpriteSheetRows);
 
             this.game = game;
         }
