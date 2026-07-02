@@ -10,5 +10,7 @@
         public const int BoardWidth = 16;
 
         public const int BoardHeight = 14;
+
+        public const int CrateVariationCount = 11;
     }
 }

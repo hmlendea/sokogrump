@@ -74,15 +74,15 @@ namespace SokoGrump.Settings
         {
             bool graphicsChanged = false;
 
-            if (GraphicsManager.Instance.Graphics.IsFullScreen != GraphicsSettings.Fullscreen)
+            if (!GraphicsManager.Instance.Graphics.IsFullScreen.Equals(GraphicsSettings.Fullscreen))
             {
                 GraphicsManager.Instance.Graphics.IsFullScreen = GraphicsSettings.Fullscreen;
 
                 graphicsChanged = true;
             }
 
-            if (GraphicsManager.Instance.Graphics.PreferredBackBufferWidth != GraphicsSettings.Resolution.Width ||
-                GraphicsManager.Instance.Graphics.PreferredBackBufferHeight != GraphicsSettings.Resolution.Height)
+            if (!GraphicsManager.Instance.Graphics.PreferredBackBufferWidth.Equals(GraphicsSettings.Resolution.Width) ||
+                !GraphicsManager.Instance.Graphics.PreferredBackBufferHeight.Equals(GraphicsSettings.Resolution.Height))
             {
                 GraphicsManager.Instance.Graphics.PreferredBackBufferWidth = GraphicsSettings.Resolution.Width;
                 GraphicsManager.Instance.Graphics.PreferredBackBufferHeight = GraphicsSettings.Resolution.Height;

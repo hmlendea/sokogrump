@@ -122,7 +122,7 @@ namespace SokoGrump.Gui.Screens
         {
             string selectedLanguage = languageSelector.SelectedKey;
 
-            if (selectedLanguage == SettingsManager.Instance.UserData.Language)
+            if (selectedLanguage.Equals(SettingsManager.Instance.UserData.Language))
             {
                 return;
             }
