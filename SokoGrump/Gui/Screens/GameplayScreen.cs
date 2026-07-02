@@ -1,0 +1,163 @@
+﻿using System.IO;
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+using NuciXNA.Gui;
+using NuciXNA.Gui.Screens;
+using NuciXNA.Input;
+using NuciXNA.Primitives;
+
+using SokoGrump.GameLogic.GameManagers;
+using SokoGrump.Gui.Controls;
+using SokoGrump.Localisation;
+using SokoGrump.Settings;
+
+namespace SokoGrump.Gui.Screens
+{
+    /// <summary>
+    /// Gameplay screen.
+    /// </summary>
+    public class GameplayScreen : Screen
+    {
+        IGameManager game;
+
+        GuiButton retryButton;
+        GuiButton undoButton;
+        GuiInfoBar infoBar;
+        GuiGameBoard gameBoard;
+
+        readonly int level;
+
+        public GameplayScreen(int level)
+        {
+            this.level = level;
+
+            BackgroundColour = Colour.Black;
+            ForegroundColour = Colour.White;
+        }
+
+        /// <summary>
+        /// Loads the content.
+        /// </summary>
+        protected override void DoLoadContent()
+        {
+            game = new GameManager();
+            game.LoadContent();
+            game.NewGame(level);
+
+            retryButton = new GuiButton
+            {
+                ContentFile = "Buttons/refresh",
+                TooltipText = LocalisationManager.Instance.RetryTooltip
+            };
+            undoButton = new GuiButton
+            {
+                ContentFile = "Buttons/undo",
+                TooltipText = LocalisationManager.Instance.UndoTooltip
+            };
+            infoBar = new GuiInfoBar(game);
+            gameBoard = new GuiGameBoard(game)
+            {
+                Size = new Size2D(
+                    GameDefines.BoardWidth * GameDefines.MapTileSize,
+                    GameDefines.BoardHeight * GameDefines.MapTileSize)
+            };
+
+            GuiManager.Instance.RegisterControls(retryButton, undoButton, infoBar, gameBoard);
+            RegisterEvents();
+            SetChildrenProperties();
+        }
+
+        /// <summary>
+        /// Unloads the content.
+        /// </summary>
+        protected override void DoUnloadContent()
+        {
+            game.UnloadContent();
+            UnregisterEvents();
+
+            SettingsManager.Instance.SaveContent();
+        }
+
+        /// <summary>
+        /// Updates the content.
+        /// </summary>
+        /// <param name="gameTime">The game time.</param>
+        protected override void DoUpdate(GameTime gameTime)
+        {
+            game.Update(gameTime.ElapsedGameTime.TotalMilliseconds);
+
+            if (game.Completed)
+            {
+                int nextLevel = game.Level + 1;
+
+                if (File.Exists(Path.Combine("Levels", $"{nextLevel}.lvl")))
+                {
+                    ScreenManager.Instance.ChangeScreens(typeof(VictoryScreen), nextLevel);
+                    SettingsManager.Instance.UserData.LastLevel = nextLevel;
+                }
+                else
+                {
+                    ScreenManager.Instance.ChangeScreens<GameFinishedScreen>();
+                    SettingsManager.Instance.UserData.LastLevel = 0;
+                }
+            }
+
+            SetChildrenProperties();
+        }
+
+        /// <summary>
+        /// Draw the content on the specified spriteBatch.
+        /// </summary>
+        /// <param name="spriteBatch">Sprite batch.</param>
+        protected override void DoDraw(SpriteBatch spriteBatch) { }
+
+        /// <summary>
+        /// Registers the events.
+        /// </summary>
+        void RegisterEvents()
+        {
+            retryButton.Clicked += OnRetryButtonPressed;
+            undoButton.Clicked += OnUndoButtonPressed;
+        }
+
+        /// <summary>
+        /// Unregisters the events.
+        /// </summary>
+        void UnregisterEvents()
+        {
+            retryButton.Clicked -= OnRetryButtonPressed;
+            undoButton.Clicked -= OnUndoButtonPressed;
+        }
+
+        /// <summary>
+        /// Sets the properties of the child controls.
+        /// </summary>
+        void SetChildrenProperties()
+        {
+            retryButton.Location = new Point2D(ScreenManager.Instance.Size.Width - GameDefines.MapTileSize, 0);
+            retryButton.Size = new Size2D(GameDefines.MapTileSize, GameDefines.MapTileSize);
+            retryButton.BackgroundColour = BackgroundColour;
+            retryButton.ForegroundColour = ForegroundColour;
+
+            undoButton.Location = new Point2D(ScreenManager.Instance.Size.Width - GameDefines.MapTileSize * 2, 0);
+            undoButton.Size = new Size2D(GameDefines.MapTileSize, GameDefines.MapTileSize);
+            undoButton.BackgroundColour = BackgroundColour;
+            undoButton.ForegroundColour = ForegroundColour;
+
+            infoBar.Location = Point2D.Empty;
+            infoBar.Size = new Size2D(ScreenManager.Instance.Size.Width, 24);
+            infoBar.BackgroundColour = Colour.Transparent;
+            infoBar.ForegroundColour = ForegroundColour;
+
+            gameBoard.Location = new Point2D(
+                (ScreenManager.Instance.Size.Width - gameBoard.Size.Width) / 2,
+                (ScreenManager.Instance.Size.Height - gameBoard.Size.Height) / 2);
+        }
+
+        void OnRetryButtonPressed(object sender, MouseButtonEventArgs e) => game.Retry();
+
+        void OnUndoButtonPressed(object sender, MouseButtonEventArgs e) => gameBoard.UndoPlayer();
+    }
+}
