@@ -5,6 +5,7 @@ using NuciXNA.Graphics;
 using NuciXNA.Gui;
 using NuciXNA.Gui.Screens;
 using NuciXNA.Input;
+using NuciXNA.Primitives;
 
 using SokoGrump.Gui;
 using SokoGrump.Gui.Screens;
@@ -36,7 +37,11 @@ namespace SokoGrump
             Content.RootDirectory = "Content";
 
             fpsIndicator = new FpsIndicator();
-            cursor = new Cursor();
+            cursor = new Cursor
+            {
+                SpriteSize = new Size2D(64, 80),
+                Scale = new Scale2D(0.5f, 0.5f)
+            };
         }
 
         /// <summary>
