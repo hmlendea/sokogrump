@@ -92,7 +92,7 @@ namespace SokoGrump.Gui.Screens
             {
                 int nextLevel = game.Level + 1;
 
-                if (File.Exists(Path.Combine("Levels", $"{nextLevel}.lvl")))
+                if (File.Exists(Path.Combine(ApplicationPaths.LevelsDirectory, $"{nextLevel}.lvl")))
                 {
                     ScreenManager.Instance.ChangeScreens(typeof(VictoryScreen), nextLevel);
                     SettingsManager.Instance.UserData.LastLevel = nextLevel;
