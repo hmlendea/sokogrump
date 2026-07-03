@@ -81,6 +81,7 @@ namespace SokoGrump.Gui.Screens
         {
             InputManager.Instance.KeyboardKeyPressed += OnInputManagerKeyboardKeyPressed;
             InputManager.Instance.MouseButtonPressed += OnInputManagerMouseButtonPressed;
+            InputManager.Instance.GamepadButtonPressed += OnInputManagerGamepadButtonPressed;
         }
 
         /// <summary>
@@ -90,6 +91,7 @@ namespace SokoGrump.Gui.Screens
         {
             InputManager.Instance.KeyboardKeyPressed -= OnInputManagerKeyboardKeyPressed;
             InputManager.Instance.MouseButtonPressed -= OnInputManagerMouseButtonPressed;
+            InputManager.Instance.GamepadButtonPressed -= OnInputManagerGamepadButtonPressed;
         }
 
         /// <summary>
@@ -112,6 +114,8 @@ namespace SokoGrump.Gui.Screens
         void OnInputManagerKeyboardKeyPressed(object sender, KeyboardKeyEventArgs e) => ChangeScreen();
 
         void OnInputManagerMouseButtonPressed(object sender, MouseButtonEventArgs e) => ChangeScreen();
+
+        void OnInputManagerGamepadButtonPressed(object sender, GamepadButtonEventArgs e) => ChangeScreen();
 
         static void ChangeScreen() => ScreenManager.Instance.ChangeScreens<TitleScreen>();
     }

@@ -94,6 +94,7 @@ namespace SokoGrump.Gui.Controls
             playerAvatar.MovementEffect.Deactivated += OnPlayerSpriteMovementEffectDeactivated;
             pushedBox.MovementEffect.Deactivated += OnPushedBoxMovementEffectDeactivated;
             InputManager.Instance.KeyboardKeyPressed += OnInputManagerKeyboardKeyPressed;
+            InputManager.Instance.GamepadButtonPressed += OnInputManagerGamepadButtonPressed;
         }
 
         /// <summary>
@@ -111,6 +112,7 @@ namespace SokoGrump.Gui.Controls
             playerAvatar.MovementEffect.Deactivated -= OnPlayerSpriteMovementEffectDeactivated;
             pushedBox.MovementEffect.Deactivated -= OnPushedBoxMovementEffectDeactivated;
             InputManager.Instance.KeyboardKeyPressed -= OnInputManagerKeyboardKeyPressed;
+            InputManager.Instance.GamepadButtonPressed -= OnInputManagerGamepadButtonPressed;
         }
 
         /// <summary>
@@ -360,6 +362,41 @@ namespace SokoGrump.Gui.Controls
                     break;
 
                 case Keys.U:
+                    UndoPlayer();
+                    break;
+            }
+        }
+
+        void OnInputManagerGamepadButtonPressed(object sender, GamepadButtonEventArgs e)
+        {
+            switch (e.Button)
+            {
+                case Buttons.DPadUp:
+                case Buttons.LeftThumbstickUp:
+                    MovePlayer(MovementDirection.North);
+                    break;
+
+                case Buttons.DPadLeft:
+                case Buttons.LeftThumbstickLeft:
+                    MovePlayer(MovementDirection.West);
+                    break;
+
+                case Buttons.DPadDown:
+                case Buttons.LeftThumbstickDown:
+                    MovePlayer(MovementDirection.South);
+                    break;
+
+                case Buttons.DPadRight:
+                case Buttons.LeftThumbstickRight:
+                    MovePlayer(MovementDirection.East);
+                    break;
+
+                case Buttons.Y:
+                    isPushingBox = false;
+                    game.Retry();
+                    break;
+
+                case Buttons.B:
                     UndoPlayer();
                     break;
             }
