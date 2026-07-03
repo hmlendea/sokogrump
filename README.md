@@ -44,11 +44,13 @@ Download the latest packaged build from the [GitHub releases page](https://githu
 
 ### Requirements
 
-- .NET target framework: `net10.0`
-- MonoGame DesktopGL (or compatible runtime)
-- NuciXNA (restored automatically from NuGet)
+- [.NET 10 SDK](https://dotnet.microsoft.com/download)
+- MonoGame content build tools (`dotnet-mgcb`) — required to rebuild game assets
+- TrueType core fonts — required for font rendering on Linux (`fonts-freefont-ttf` or equivalent)
 
-The CI workflow installs `dotnet-mgcb` and TrueType core fonts before building on Ubuntu. If your local environment is missing MonoGame content build tooling or required fonts, install those before building.
+All NuGet dependencies (MonoGame, NuciXNA) are restored automatically by `dotnet restore`.
+
+On Ubuntu the CI workflow installs the missing tools with:
 
 ### Build
 
@@ -64,15 +66,57 @@ dotnet run
 
 The game stores settings and saved progress in the local application data directory under `SokoGrump`.
 
+### Test
+
+```bash
+dotnet test
+```
+
+### Release
+
+The repository includes `release.sh`, which delegates to the upstream deployment script used by the project maintainer.
+
+```bash
+bash ./release.sh 1.0.0
+```
+
+This script downloads and executes an external release helper from `https://raw.githubusercontent.com/hmlendea/deployment-scripts/master/release/dotnet/10.0.sh`.
+
+**Note:** Piping into `bash` is an intensely controversial topic. Please review any external scripts before running them in your environment!
+
 ## Project Structure
 
-- `Content/`: fonts, sprites, cursors, audio, and content pipeline assets
-- `DataAccess/`: level loading and storage-facing models
-- `GameLogic/`: board handling and gameplay rules
-- `Gui/`: screens, controls, and rendering helpers
-- `Levels/`: bundled `.lvl` files for all shipped stages
-- `Models/`: domain objects such as boards, tiles, and the player
-- `Settings/`: graphics, audio, and saved-user-data management
+The solution contains two projects:
+
+- **SokoGrump** — The game itself
+- **SokoGrump.UnitTests** — Unit tests covering game managers, board/tile mapping, and core models
+
+Key directories inside `SokoGrump/`:
+
+| Directory | Purpose |
+|-----------|---------|
+| `Content/` | Game assets: sprites, tiles, cursors, fonts, audio, and MonoGame content builder files |
+| `Data/` | Localisation resource files |
+| `DataAccess/` | Data persistence layer — repositories and data objects for boards and settings |
+| `GameLogic/` | Core puzzle logic — game manager, board mapping, move and undo handling |
+| `Gui/` | All UI — screens (title, gameplay, victory, game-finished, splash), controls, and sprite effects |
+| `Levels/` | 100 hand-authored puzzle levels (`0.lvl` – `99.lvl`) |
+| `Localisation/` | Localisation manager for multi-language text |
+| `Models/` | Core entity models: `Board`, `Player`, `Tile`, `TileType`, `TileId`, `MovementDirection`, `DirectionDelta` |
+| `Settings/` | Application-wide configuration: paths, graphics, audio, game defines, and user data |
+
+### Dependencies
+
+| Package | Purpose |
+|---------|---------|
+| `MonoGame.Framework.DesktopGL` | Cross-platform game framework |
+| `MonoGame.Content.Builder.Task` | Compiles game assets at build time |
+| `NuciXNA.DataAccess` | Content loading and data access utilities |
+| `NuciXNA.Graphics` | Graphics manager and sprite drawing helpers |
+| `NuciXNA.Gui` | GUI controls, screen manager, and cursor |
+| `NuciXNA.Input` | Keyboard and mouse input manager |
+| `NuciXNA.Primitives` | Reusable value types: `Point2D`, `Size2D`, `Scale2D`, `Colour` |
+| `NuciDAL` | Generic data-access-layer base classes |
 
 ## Contributing
 
