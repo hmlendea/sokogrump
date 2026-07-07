@@ -2,6 +2,7 @@ namespace SokoGrump.Models
 {
     public enum TileId
     {
+        None = -1,
         Floor = 0,
         Wall = 1,
         CrateOnFloor = 2,

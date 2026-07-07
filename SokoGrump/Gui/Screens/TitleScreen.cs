@@ -13,6 +13,7 @@ namespace SokoGrump.Gui.Screens
     {
         GuiMenuLink continueGameLink;
         GuiMenuLink newGameLink;
+        GuiMenuLink editorLink;
         GuiMenuLink settingsLink;
 
         /// <summary>
@@ -26,6 +27,12 @@ namespace SokoGrump.Gui.Screens
                 Text = LocalisationManager.Instance.NewGame,
                 TargetScreen = typeof(GameplayScreen),
                 Parameters = [default(int)]
+            };
+            editorLink = new GuiMenuLink
+            {
+                Id = nameof(editorLink),
+                Text = "Editor",
+                TargetScreen = typeof(EditorScreen)
             };
             settingsLink = new GuiMenuLink
             {
@@ -48,6 +55,7 @@ namespace SokoGrump.Gui.Screens
             }
 
             Items.Add(newGameLink);
+            Items.Add(editorLink);
             Items.Add(settingsLink);
 
             base.DoLoadContent();
