@@ -20,12 +20,12 @@ namespace SokoGrump.Gui.Screens
     /// </summary>
     public class GameplayScreen : Screen
     {
-        IGameManager game;
+        private IGameManager game;
 
-        GuiButton retryButton;
-        GuiButton undoButton;
-        GuiInfoBar infoBar;
-        GuiGameBoard gameBoard;
+        private GuiButton retryButton;
+        private GuiButton undoButton;
+        private GuiInfoBar infoBar;
+        private GuiGameBoard gameBoard;
 
         readonly int level;
 
@@ -116,25 +116,19 @@ namespace SokoGrump.Gui.Screens
         /// <summary>
         /// Registers the events.
         /// </summary>
-        void RegisterEvents()
+        private void RegisterEvents()
         {
             retryButton.Clicked += OnRetryButtonPressed;
             undoButton.Clicked += OnUndoButtonPressed;
         }
 
-        /// <summary>
-        /// Unregisters the events.
-        /// </summary>
-        void UnregisterEvents()
+        private void UnregisterEvents()
         {
             retryButton.Clicked -= OnRetryButtonPressed;
             undoButton.Clicked -= OnUndoButtonPressed;
         }
 
-        /// <summary>
-        /// Sets the properties of the child controls.
-        /// </summary>
-        void SetChildrenProperties()
+        private void SetChildrenProperties()
         {
             retryButton.Location = new Point2D(ScreenManager.Instance.Size.Width - GameDefines.MapTileSize, 0);
             retryButton.Size = new Size2D(GameDefines.MapTileSize, GameDefines.MapTileSize);
@@ -156,8 +150,8 @@ namespace SokoGrump.Gui.Screens
                 (ScreenManager.Instance.Size.Height - gameBoard.Size.Height) / 2);
         }
 
-        void OnRetryButtonPressed(object sender, MouseButtonEventArgs e) => game.Retry();
+        private void OnRetryButtonPressed(object sender, MouseButtonEventArgs e) => game.Retry();
 
-        void OnUndoButtonPressed(object sender, MouseButtonEventArgs e) => gameBoard.UndoPlayer();
+        private void OnUndoButtonPressed(object sender, MouseButtonEventArgs e) => gameBoard.UndoPlayer();
     }
 }

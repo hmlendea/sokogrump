@@ -14,6 +14,7 @@ namespace SokoGrump.Gui.Screens
     /// </summary>
     public class SplashScreen : Screen
     {
+        private static float InitialDelay => 2;
         /// <summary>
         /// Gets or sets the delay.
         /// </summary>
@@ -31,7 +32,7 @@ namespace SokoGrump.Gui.Screens
         /// </summary>
         public SplashScreen()
         {
-            Delay = 2;
+            Delay = InitialDelay;
             BackgroundColour = Colour.Black;
         }
 
@@ -77,25 +78,19 @@ namespace SokoGrump.Gui.Screens
         /// <summary>
         /// Registers the events.
         /// </summary>
-        void RegisterEvents()
+        private void RegisterEvents()
         {
             InputManager.Instance.KeyboardKeyPressed += OnInputManagerKeyboardKeyPressed;
             InputManager.Instance.MouseButtonPressed += OnInputManagerMouseButtonPressed;
         }
 
-        /// <summary>
-        /// Unregisters the events.
-        /// </summary>
-        void UnregisterEvents()
+        private void UnregisterEvents()
         {
             InputManager.Instance.KeyboardKeyPressed -= OnInputManagerKeyboardKeyPressed;
             InputManager.Instance.MouseButtonPressed -= OnInputManagerMouseButtonPressed;
         }
 
-        /// <summary>
-        /// Sets the properties of the child controls.
-        /// </summary>
-        void SetChildrenProperties()
+        private void SetChildrenProperties()
         {
             if (!LogoImage.SourceRectangle.IsEmpty)
             {
@@ -109,10 +104,10 @@ namespace SokoGrump.Gui.Screens
                 (ScreenManager.Instance.Size.Height - LogoImage.Size.Height) / 2);
         }
 
-        void OnInputManagerKeyboardKeyPressed(object sender, KeyboardKeyEventArgs e) => ChangeScreen();
+        private void OnInputManagerKeyboardKeyPressed(object sender, KeyboardKeyEventArgs e) => ChangeScreen();
 
-        void OnInputManagerMouseButtonPressed(object sender, MouseButtonEventArgs e) => ChangeScreen();
+        private void OnInputManagerMouseButtonPressed(object sender, MouseButtonEventArgs e) => ChangeScreen();
 
-        static void ChangeScreen() => ScreenManager.Instance.ChangeScreens<TitleScreen>();
+        private static void ChangeScreen() => ScreenManager.Instance.ChangeScreens<TitleScreen>();
     }
 }

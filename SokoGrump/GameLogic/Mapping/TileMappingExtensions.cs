@@ -26,11 +26,11 @@ namespace SokoGrump.GameLogic.Mapping
         };
 
         /// <summary>
-        /// Converts the domain model into an entity.
+        /// Converts the domain model into a data object.
         /// </summary>
-        /// <returns>The entity.</returns>
+        /// <returns>The data object.</returns>
         /// <param name="tile">World Tile.</param>
-        internal static TileEntity ToEntity(this Tile tile) => new()
+        internal static TileEntity ToDataObject(this Tile tile) => new()
         {
             Id = (int)tile.Id,
             SpriteSheet = tile.SpriteSheet,
@@ -46,12 +46,12 @@ namespace SokoGrump.GameLogic.Mapping
             => tileEntities.Select(tileEntity => tileEntity.ToDomainModel());
 
         /// <summary>
-        /// Converts the domain models into entities.
+        /// Converts the domain models into data objects.
         /// </summary>
-        /// <returns>The entities.</returns>
+        /// <returns>The data objects.</returns>
         /// <param name="tiles">World Tiles.</param>
-        internal static IEnumerable<TileEntity> ToEntities(this IEnumerable<Tile> tiles)
-            => tiles.Select(tile => tile.ToEntity());
+        internal static IEnumerable<TileEntity> ToDataObjects(this IEnumerable<Tile> tiles)
+            => tiles.Select(tile => tile.ToDataObject());
 
         /// <summary>
         /// Converts the entities into domain models.
@@ -60,29 +60,41 @@ namespace SokoGrump.GameLogic.Mapping
         /// <param name="tileEntities">World Tile entities.</param>
         internal static Tile[,] ToDomainModels(this TileEntity[,] tileEntities)
         {
-            int w = tileEntities.GetLength(0);
-            int h = tileEntities.GetLength(1);
+            int width = tileEntities.GetLength(0);
+            int height = tileEntities.GetLength(1);
 
-            Tile[,] tiles = new Tile[w, h];
+            Tile[,] tiles = new Tile[width, height];
 
-            Parallel.For(0, h, y => Parallel.For(0, w, x => tiles[x, y] = tileEntities[x, y].ToDomainModel()));
+            Parallel.For(
+                0,
+                height,
+                rowIndex => Parallel.For(
+                    0,
+                    width,
+                    columnIndex => tiles[columnIndex, rowIndex] = tileEntities[columnIndex, rowIndex].ToDomainModel()));
 
             return tiles;
         }
 
         /// <summary>
-        /// Converts the domain models into entities.
+        /// Converts the domain models into data objects.
         /// </summary>
-        /// <returns>The entities.</returns>
+        /// <returns>The data objects.</returns>
         /// <param name="tiles">World Tiles.</param>
-        internal static TileEntity[,] ToEntities(this Tile[,] tiles)
+        internal static TileEntity[,] ToDataObjects(this Tile[,] tiles)
         {
-            int w = tiles.GetLength(0);
-            int h = tiles.GetLength(1);
+            int width = tiles.GetLength(0);
+            int height = tiles.GetLength(1);
 
-            TileEntity[,] tileEntities = new TileEntity[w, h];
+            TileEntity[,] tileEntities = new TileEntity[width, height];
 
-            Parallel.For(0, h, y => Parallel.For(0, w, x => tileEntities[x, y] = tiles[x, y].ToEntity()));
+            Parallel.For(
+                0,
+                height,
+                rowIndex => Parallel.For(
+                    0,
+                    width,
+                    columnIndex => tileEntities[columnIndex, rowIndex] = tiles[columnIndex, rowIndex].ToDataObject()));
 
             return tileEntities;
         }

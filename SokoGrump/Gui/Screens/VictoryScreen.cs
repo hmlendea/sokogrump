@@ -15,6 +15,7 @@ namespace SokoGrump.Gui.Screens
     /// </summary>
     public class VictoryScreen : Screen
     {
+        private static float InitialDelay => 1;
         /// <summary>
         /// Gets or sets the delay.
         /// </summary>
@@ -36,7 +37,7 @@ namespace SokoGrump.Gui.Screens
         {
             this.level = level;
 
-            Delay = 1;
+            Delay = InitialDelay;
             BackgroundColour = Colour.Black;
         }
 
@@ -84,31 +85,26 @@ namespace SokoGrump.Gui.Screens
         protected override void DoDraw(SpriteBatch spriteBatch) { }
 
         /// <summary>
-        /// Registers the
-        void RegisterEvents()
+        /// Registers the events.
+        /// </summary>
+        private void RegisterEvents()
         {
             InputManager.Instance.KeyboardKeyPressed += OnInputManagerKeyboardKeyPressed;
             InputManager.Instance.MouseButtonPressed += OnInputManagerMouseButtonPressed;
         }
 
-        /// <summary>
-        /// Unregisters the events.
-        /// </summary>
-        void UnregisterEvents()
+        private void UnregisterEvents()
         {
             InputManager.Instance.KeyboardKeyPressed -= OnInputManagerKeyboardKeyPressed;
             InputManager.Instance.MouseButtonPressed -= OnInputManagerMouseButtonPressed;
         }
 
-        /// <summary>
-        /// Sets the properties of the child controls.
-        /// </summary>
-        void SetChildrenProperties() => Image.Size = ScreenManager.Instance.Size;
+        private void SetChildrenProperties() => Image.Size = ScreenManager.Instance.Size;
 
-        void OnInputManagerKeyboardKeyPressed(object sender, KeyboardKeyEventArgs e) => ChangeScreen();
+        private void OnInputManagerKeyboardKeyPressed(object sender, KeyboardKeyEventArgs e) => ChangeScreen();
 
-        void OnInputManagerMouseButtonPressed(object sender, MouseButtonEventArgs e) => ChangeScreen();
+        private void OnInputManagerMouseButtonPressed(object sender, MouseButtonEventArgs e) => ChangeScreen();
 
-        void ChangeScreen() => ScreenManager.Instance.ChangeScreens<GameplayScreen>(level);
+        private void ChangeScreen() => ScreenManager.Instance.ChangeScreens<GameplayScreen>(level);
     }
 }

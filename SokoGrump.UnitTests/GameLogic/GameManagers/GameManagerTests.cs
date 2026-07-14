@@ -14,22 +14,22 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
     [TestFixture]
     public class GameManagerTests
     {
-        Mock<IBoardManager> _boardManagerMock;
-        GameManager _gameManager;
+        Mock<IBoardManager> boardManagerMock;
+        GameManager gameManager;
 
         [SetUp]
         public void SetUp()
         {
-            _boardManagerMock = new Mock<IBoardManager>();
-            _boardManagerMock.Setup(m => m.GetTile(TileId.Floor)).Returns(() => BoardTestHelper.CreateFloorTile());
-            _boardManagerMock.Setup(m => m.GetTile(TileId.CrateOnFloor)).Returns(() => BoardTestHelper.CreateCrateTile());
-            _gameManager = new GameManager(_boardManagerMock.Object);
+            boardManagerMock = new Mock<IBoardManager>();
+            boardManagerMock.Setup(m => m.GetTile(TileId.Floor)).Returns(() => BoardTestHelper.CreateFloorTile());
+            boardManagerMock.Setup(m => m.GetTile(TileId.CrateOnFloor)).Returns(() => BoardTestHelper.CreateCrateTile());
+            gameManager = new GameManager(boardManagerMock.Object);
         }
 
-        void StartGameWithBoard(Board board, int level = 1)
+        private void StartGameWithBoard(Board board, int level = 1)
         {
-            _boardManagerMock.Setup(m => m.GetBoard(level)).Returns(board);
-            _gameManager.NewGame(level);
+            boardManagerMock.Setup(m => m.GetBoard(level)).Returns(board);
+            gameManager.NewGame(level);
         }
 
         // -------------------------------------------------------------------------
@@ -42,7 +42,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard();
             StartGameWithBoard(board, level: 3);
 
-            Assert.That(_gameManager.Level, Is.EqualTo(3));
+            Assert.That(gameManager.Level, Is.EqualTo(3));
         }
 
         [Test]
@@ -50,11 +50,11 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
         {
             Board board = BoardTestHelper.CreateBoard();
             StartGameWithBoard(board);
-            _gameManager.Update(500);
+            gameManager.Update(500);
 
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.ElapsedTime, Is.EqualTo(TimeSpan.Zero));
+            Assert.That(gameManager.ElapsedTime, Is.EqualTo(TimeSpan.Zero));
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[2, 2] = new Tile { Id = TileId.EmptyTarget, TileType = TileType.Walkable, SpriteSheet = "target" };
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.GetTile(2, 2).Id, Is.EqualTo(TileId.Floor));
+            Assert.That(gameManager.GetTile(2, 2).Id, Is.EqualTo(TileId.Floor));
         }
 
         [Test]
@@ -74,7 +74,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[2, 2] = new Tile { Id = TileId.CrateOnTarget, TileType = TileType.Moveable, SpriteSheet = "crate_target" };
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.GetTile(2, 2).Id, Is.EqualTo(TileId.CrateOnFloor));
+            Assert.That(gameManager.GetTile(2, 2).Id, Is.EqualTo(TileId.CrateOnFloor));
         }
 
         [Test]
@@ -82,11 +82,11 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
         {
             Board board = BoardTestHelper.CreateBoard();
             StartGameWithBoard(board);
-            _gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.North);
 
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanUndo, Is.False);
+            Assert.That(gameManager.CanUndo, Is.False);
         }
 
         [Test]
@@ -95,7 +95,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 6, playerY: 7);
             StartGameWithBoard(board);
 
-            Player player = _gameManager.GetPlayer();
+            Player player = gameManager.GetPlayer();
 
             Assert.That(player.Location.X, Is.EqualTo(6));
             Assert.That(player.Location.Y, Is.EqualTo(7));
@@ -108,7 +108,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             StartGameWithBoard(board);
 
             Assert.That(
-                _gameManager.GetPlayer().Direction,
+                gameManager.GetPlayer().Direction,
                 Is.EqualTo(MovementDirection.South));
         }
 
@@ -118,7 +118,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard();
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.GetPlayer().MovesCount, Is.EqualTo(0));
+            Assert.That(gameManager.GetPlayer().MovesCount, Is.EqualTo(0));
         }
 
         // -------------------------------------------------------------------------
@@ -131,9 +131,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard();
             StartGameWithBoard(board, level: 5);
 
-            _gameManager.Retry();
+            gameManager.Retry();
 
-            Assert.That(_gameManager.Level, Is.EqualTo(5));
+            Assert.That(gameManager.Level, Is.EqualTo(5));
         }
 
         [Test]
@@ -141,11 +141,11 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
         {
             Board board = BoardTestHelper.CreateBoard();
             StartGameWithBoard(board, level: 1);
-            _gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.North);
 
-            _gameManager.Retry();
+            gameManager.Retry();
 
-            Assert.That(_gameManager.CanUndo, Is.False);
+            Assert.That(gameManager.CanUndo, Is.False);
         }
 
         [Test]
@@ -153,11 +153,11 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
         {
             Board board = BoardTestHelper.CreateBoard(playerX: 6, playerY: 7);
             StartGameWithBoard(board);
-            _gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.North);
 
-            _gameManager.Retry();
+            gameManager.Retry();
 
-            Player player = _gameManager.GetPlayer();
+            Player player = gameManager.GetPlayer();
             Assert.That(player.Location.X, Is.EqualTo(6));
             Assert.That(player.Location.Y, Is.EqualTo(7));
         }
@@ -168,11 +168,11 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard();
             board.Targets.Add(new Point2D(2, 2));
             StartGameWithBoard(board);
-            _gameManager.Update(500);
+            gameManager.Update(500);
 
-            _gameManager.Retry();
+            gameManager.Retry();
 
-            Assert.That(_gameManager.ElapsedTime, Is.EqualTo(TimeSpan.Zero));
+            Assert.That(gameManager.ElapsedTime, Is.EqualTo(TimeSpan.Zero));
         }
 
         [Test]
@@ -180,11 +180,11 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
         {
             Board board = BoardTestHelper.CreateBoard();
             StartGameWithBoard(board);
-            _gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.North);
 
-            _gameManager.Retry();
+            gameManager.Retry();
 
-            Assert.That(_gameManager.GetPlayer().MovesCount, Is.EqualTo(0));
+            Assert.That(gameManager.GetPlayer().MovesCount, Is.EqualTo(0));
         }
 
         // -------------------------------------------------------------------------
@@ -197,9 +197,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard();
             StartGameWithBoard(board);
 
-            _gameManager.SetPlayerDirection(MovementDirection.North);
+            gameManager.SetPlayerDirection(MovementDirection.North);
 
-            Assert.That(_gameManager.GetPlayer().Direction, Is.EqualTo(MovementDirection.North));
+            Assert.That(gameManager.GetPlayer().Direction, Is.EqualTo(MovementDirection.North));
         }
 
         [Test]
@@ -207,12 +207,12 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
         {
             Board board = BoardTestHelper.CreateBoard();
             StartGameWithBoard(board);
-            _gameManager.SetPlayerDirection(MovementDirection.North);
+            gameManager.SetPlayerDirection(MovementDirection.North);
 
-            _gameManager.SetPlayerDirection(MovementDirection.South);
+            gameManager.SetPlayerDirection(MovementDirection.South);
 
             Assert.That(
-                _gameManager.GetPlayer().Direction,
+                gameManager.GetPlayer().Direction,
                 Is.EqualTo(MovementDirection.South));
         }
 
@@ -221,12 +221,12 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
         {
             Board board = BoardTestHelper.CreateBoard();
             StartGameWithBoard(board);
-            _gameManager.SetPlayerDirection(MovementDirection.North);
+            gameManager.SetPlayerDirection(MovementDirection.North);
 
-            _gameManager.SetPlayerDirection(MovementDirection.West);
+            gameManager.SetPlayerDirection(MovementDirection.West);
 
             Assert.That(
-                _gameManager.GetPlayer().Direction,
+                gameManager.GetPlayer().Direction,
                 Is.EqualTo(MovementDirection.West));
         }
 
@@ -235,12 +235,12 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
         {
             Board board = BoardTestHelper.CreateBoard();
             StartGameWithBoard(board);
-            _gameManager.SetPlayerDirection(MovementDirection.North);
+            gameManager.SetPlayerDirection(MovementDirection.North);
 
-            _gameManager.SetPlayerDirection(MovementDirection.East);
+            gameManager.SetPlayerDirection(MovementDirection.East);
 
             Assert.That(
-                _gameManager.GetPlayer().Direction,
+                gameManager.GetPlayer().Direction,
                 Is.EqualTo(MovementDirection.East));
         }
 
@@ -254,7 +254,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.North), Is.True);
+            Assert.That(gameManager.CanMove(MovementDirection.North), Is.True);
         }
 
         [Test]
@@ -263,7 +263,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.South), Is.True);
+            Assert.That(gameManager.CanMove(MovementDirection.South), Is.True);
         }
 
         [Test]
@@ -272,7 +272,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.West), Is.True);
+            Assert.That(gameManager.CanMove(MovementDirection.West), Is.True);
         }
 
         [Test]
@@ -281,7 +281,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.East), Is.True);
+            Assert.That(gameManager.CanMove(MovementDirection.East), Is.True);
         }
 
         [Test]
@@ -291,7 +291,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[4, 3] = BoardTestHelper.CreateWallTile();
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.North), Is.False);
+            Assert.That(gameManager.CanMove(MovementDirection.North), Is.False);
         }
 
         [Test]
@@ -301,7 +301,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[4, 5] = BoardTestHelper.CreateWallTile();
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.South), Is.False);
+            Assert.That(gameManager.CanMove(MovementDirection.South), Is.False);
         }
 
         [Test]
@@ -311,7 +311,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[3, 4] = BoardTestHelper.CreateWallTile();
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.West), Is.False);
+            Assert.That(gameManager.CanMove(MovementDirection.West), Is.False);
         }
 
         [Test]
@@ -321,7 +321,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[5, 4] = BoardTestHelper.CreateWallTile();
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.East), Is.False);
+            Assert.That(gameManager.CanMove(MovementDirection.East), Is.False);
         }
 
         [Test]
@@ -330,7 +330,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 0);
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.North), Is.False);
+            Assert.That(gameManager.CanMove(MovementDirection.North), Is.False);
         }
 
         [Test]
@@ -339,7 +339,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 13);
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.South), Is.False);
+            Assert.That(gameManager.CanMove(MovementDirection.South), Is.False);
         }
 
         [Test]
@@ -348,7 +348,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 0, playerY: 4);
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.West), Is.False);
+            Assert.That(gameManager.CanMove(MovementDirection.West), Is.False);
         }
 
         [Test]
@@ -357,7 +357,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 15, playerY: 4);
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.East), Is.False);
+            Assert.That(gameManager.CanMove(MovementDirection.East), Is.False);
         }
 
         [Test]
@@ -368,7 +368,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             // board.Tiles[4, 2] is already Floor
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.North), Is.True);
+            Assert.That(gameManager.CanMove(MovementDirection.North), Is.True);
         }
 
         [Test]
@@ -379,7 +379,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[4, 2] = BoardTestHelper.CreateWallTile();
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.North), Is.False);
+            Assert.That(gameManager.CanMove(MovementDirection.North), Is.False);
         }
 
         [Test]
@@ -391,7 +391,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[4, 0] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.North), Is.False);
+            Assert.That(gameManager.CanMove(MovementDirection.North), Is.False);
         }
 
         [Test]
@@ -401,7 +401,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[4, 5] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.South), Is.True);
+            Assert.That(gameManager.CanMove(MovementDirection.South), Is.True);
         }
 
         [Test]
@@ -412,7 +412,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[4, 6] = BoardTestHelper.CreateWallTile();
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.South), Is.False);
+            Assert.That(gameManager.CanMove(MovementDirection.South), Is.False);
         }
 
         [Test]
@@ -422,7 +422,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[4, 13] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.South), Is.False);
+            Assert.That(gameManager.CanMove(MovementDirection.South), Is.False);
         }
 
         [Test]
@@ -432,7 +432,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[3, 4] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.West), Is.True);
+            Assert.That(gameManager.CanMove(MovementDirection.West), Is.True);
         }
 
         [Test]
@@ -443,7 +443,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[2, 4] = BoardTestHelper.CreateWallTile();
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.West), Is.False);
+            Assert.That(gameManager.CanMove(MovementDirection.West), Is.False);
         }
 
         [Test]
@@ -453,7 +453,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[0, 4] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.West), Is.False);
+            Assert.That(gameManager.CanMove(MovementDirection.West), Is.False);
         }
 
         [Test]
@@ -463,7 +463,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[5, 4] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.East), Is.True);
+            Assert.That(gameManager.CanMove(MovementDirection.East), Is.True);
         }
 
         [Test]
@@ -474,7 +474,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[6, 4] = BoardTestHelper.CreateWallTile();
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.East), Is.False);
+            Assert.That(gameManager.CanMove(MovementDirection.East), Is.False);
         }
 
         [Test]
@@ -484,7 +484,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[15, 4] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.East), Is.False);
+            Assert.That(gameManager.CanMove(MovementDirection.East), Is.False);
         }
 
         [Test]
@@ -495,7 +495,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[4, 2] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanMove(MovementDirection.North), Is.False);
+            Assert.That(gameManager.CanMove(MovementDirection.North), Is.False);
         }
 
         // -------------------------------------------------------------------------
@@ -508,9 +508,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             StartGameWithBoard(board);
 
-            _gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.North);
 
-            Player player = _gameManager.GetPlayer();
+            Player player = gameManager.GetPlayer();
             Assert.That(player.Location.X, Is.EqualTo(4));
             Assert.That(player.Location.Y, Is.EqualTo(3));
         }
@@ -521,9 +521,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             StartGameWithBoard(board);
 
-            _gameManager.MovePlayer(MovementDirection.South);
+            gameManager.MovePlayer(MovementDirection.South);
 
-            Player player = _gameManager.GetPlayer();
+            Player player = gameManager.GetPlayer();
             Assert.That(player.Location.Y, Is.EqualTo(5));
         }
 
@@ -533,9 +533,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             StartGameWithBoard(board);
 
-            _gameManager.MovePlayer(MovementDirection.West);
+            gameManager.MovePlayer(MovementDirection.West);
 
-            Player player = _gameManager.GetPlayer();
+            Player player = gameManager.GetPlayer();
             Assert.That(player.Location.X, Is.EqualTo(3));
         }
 
@@ -545,9 +545,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             StartGameWithBoard(board);
 
-            _gameManager.MovePlayer(MovementDirection.East);
+            gameManager.MovePlayer(MovementDirection.East);
 
-            Player player = _gameManager.GetPlayer();
+            Player player = gameManager.GetPlayer();
             Assert.That(player.Location.X, Is.EqualTo(5));
         }
 
@@ -557,9 +557,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             StartGameWithBoard(board);
 
-            _gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.North);
 
-            Assert.That(_gameManager.GetPlayer().MovesCount, Is.EqualTo(1));
+            Assert.That(gameManager.GetPlayer().MovesCount, Is.EqualTo(1));
         }
 
         [Test]
@@ -568,9 +568,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             StartGameWithBoard(board);
 
-            _gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.North);
 
-            Assert.That(_gameManager.GetPlayer().Direction, Is.EqualTo(MovementDirection.North));
+            Assert.That(gameManager.GetPlayer().Direction, Is.EqualTo(MovementDirection.North));
         }
 
         [Test]
@@ -580,9 +580,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[4, 3] = BoardTestHelper.CreateWallTile();
             StartGameWithBoard(board);
 
-            _gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.North);
 
-            Player player = _gameManager.GetPlayer();
+            Player player = gameManager.GetPlayer();
             Assert.That(player.Location.X, Is.EqualTo(4));
             Assert.That(player.Location.Y, Is.EqualTo(4));
         }
@@ -594,9 +594,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[4, 3] = BoardTestHelper.CreateWallTile();
             StartGameWithBoard(board);
 
-            _gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.North);
 
-            Assert.That(_gameManager.GetPlayer().MovesCount, Is.EqualTo(0));
+            Assert.That(gameManager.GetPlayer().MovesCount, Is.EqualTo(0));
         }
 
         [Test]
@@ -606,9 +606,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[4, 3] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
 
-            _gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.North);
 
-            Player player = _gameManager.GetPlayer();
+            Player player = gameManager.GetPlayer();
             Assert.That(player.Location.X, Is.EqualTo(4));
             Assert.That(player.Location.Y, Is.EqualTo(3));
         }
@@ -620,9 +620,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[4, 3] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
 
-            _gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.North);
 
-            Assert.That(_gameManager.GetTile(4, 2).Id, Is.EqualTo(TileId.CrateOnFloor));
+            Assert.That(gameManager.GetTile(4, 2).Id, Is.EqualTo(TileId.CrateOnFloor));
         }
 
         [Test]
@@ -632,9 +632,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[4, 3] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
 
-            _gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.North);
 
-            Assert.That(_gameManager.GetTile(4, 3).Id, Is.EqualTo(TileId.Floor));
+            Assert.That(gameManager.GetTile(4, 3).Id, Is.EqualTo(TileId.Floor));
         }
 
         [Test]
@@ -644,9 +644,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[4, 5] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
 
-            _gameManager.MovePlayer(MovementDirection.South);
+            gameManager.MovePlayer(MovementDirection.South);
 
-            Player player = _gameManager.GetPlayer();
+            Player player = gameManager.GetPlayer();
             Assert.That(player.Location.X, Is.EqualTo(4));
             Assert.That(player.Location.Y, Is.EqualTo(5));
         }
@@ -658,9 +658,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[4, 5] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
 
-            _gameManager.MovePlayer(MovementDirection.South);
+            gameManager.MovePlayer(MovementDirection.South);
 
-            Assert.That(_gameManager.GetTile(4, 6).Id, Is.EqualTo(TileId.CrateOnFloor));
+            Assert.That(gameManager.GetTile(4, 6).Id, Is.EqualTo(TileId.CrateOnFloor));
         }
 
         [Test]
@@ -670,9 +670,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[4, 5] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
 
-            _gameManager.MovePlayer(MovementDirection.South);
+            gameManager.MovePlayer(MovementDirection.South);
 
-            Assert.That(_gameManager.GetTile(4, 5).Id, Is.EqualTo(TileId.Floor));
+            Assert.That(gameManager.GetTile(4, 5).Id, Is.EqualTo(TileId.Floor));
         }
 
         [Test]
@@ -682,9 +682,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[3, 4] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
 
-            _gameManager.MovePlayer(MovementDirection.West);
+            gameManager.MovePlayer(MovementDirection.West);
 
-            Player player = _gameManager.GetPlayer();
+            Player player = gameManager.GetPlayer();
             Assert.That(player.Location.X, Is.EqualTo(3));
             Assert.That(player.Location.Y, Is.EqualTo(4));
         }
@@ -696,9 +696,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[3, 4] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
 
-            _gameManager.MovePlayer(MovementDirection.West);
+            gameManager.MovePlayer(MovementDirection.West);
 
-            Assert.That(_gameManager.GetTile(2, 4).Id, Is.EqualTo(TileId.CrateOnFloor));
+            Assert.That(gameManager.GetTile(2, 4).Id, Is.EqualTo(TileId.CrateOnFloor));
         }
 
         [Test]
@@ -708,9 +708,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[3, 4] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
 
-            _gameManager.MovePlayer(MovementDirection.West);
+            gameManager.MovePlayer(MovementDirection.West);
 
-            Assert.That(_gameManager.GetTile(3, 4).Id, Is.EqualTo(TileId.Floor));
+            Assert.That(gameManager.GetTile(3, 4).Id, Is.EqualTo(TileId.Floor));
         }
 
         [Test]
@@ -720,9 +720,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[5, 4] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
 
-            _gameManager.MovePlayer(MovementDirection.East);
+            gameManager.MovePlayer(MovementDirection.East);
 
-            Player player = _gameManager.GetPlayer();
+            Player player = gameManager.GetPlayer();
             Assert.That(player.Location.X, Is.EqualTo(5));
             Assert.That(player.Location.Y, Is.EqualTo(4));
         }
@@ -734,9 +734,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[5, 4] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
 
-            _gameManager.MovePlayer(MovementDirection.East);
+            gameManager.MovePlayer(MovementDirection.East);
 
-            Assert.That(_gameManager.GetTile(6, 4).Id, Is.EqualTo(TileId.CrateOnFloor));
+            Assert.That(gameManager.GetTile(6, 4).Id, Is.EqualTo(TileId.CrateOnFloor));
         }
 
         [Test]
@@ -746,9 +746,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[5, 4] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
 
-            _gameManager.MovePlayer(MovementDirection.East);
+            gameManager.MovePlayer(MovementDirection.East);
 
-            Assert.That(_gameManager.GetTile(5, 4).Id, Is.EqualTo(TileId.Floor));
+            Assert.That(gameManager.GetTile(5, 4).Id, Is.EqualTo(TileId.Floor));
         }
 
         [Test]
@@ -758,9 +758,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[4, 3] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
 
-            _gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.North);
 
-            Assert.That(_gameManager.GetPlayer().MovesCount, Is.EqualTo(1));
+            Assert.That(gameManager.GetPlayer().MovesCount, Is.EqualTo(1));
         }
 
         // -------------------------------------------------------------------------
@@ -773,7 +773,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard();
             StartGameWithBoard(board);
 
-            Assert.That(_gameManager.CanUndo, Is.False);
+            Assert.That(gameManager.CanUndo, Is.False);
         }
 
         [Test]
@@ -781,9 +781,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
         {
             Board board = BoardTestHelper.CreateBoard();
             StartGameWithBoard(board);
-            _gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.North);
 
-            Assert.That(_gameManager.CanUndo, Is.True);
+            Assert.That(gameManager.CanUndo, Is.True);
         }
 
         [Test]
@@ -791,10 +791,10 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
         {
             Board board = BoardTestHelper.CreateBoard();
             StartGameWithBoard(board);
-            _gameManager.MovePlayer(MovementDirection.North);
-            _gameManager.Undo();
+            gameManager.MovePlayer(MovementDirection.North);
+            gameManager.Undo();
 
-            Assert.That(_gameManager.CanUndo, Is.False);
+            Assert.That(gameManager.CanUndo, Is.False);
         }
 
         // -------------------------------------------------------------------------
@@ -807,9 +807,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             StartGameWithBoard(board);
 
-            _gameManager.Undo();
+            gameManager.Undo();
 
-            Player player = _gameManager.GetPlayer();
+            Player player = gameManager.GetPlayer();
             Assert.That(player.Location.X, Is.EqualTo(4));
             Assert.That(player.Location.Y, Is.EqualTo(4));
         }
@@ -819,11 +819,11 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
         {
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             StartGameWithBoard(board);
-            _gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.North);
 
-            _gameManager.Undo();
+            gameManager.Undo();
 
-            Player player = _gameManager.GetPlayer();
+            Player player = gameManager.GetPlayer();
             Assert.That(player.Location.X, Is.EqualTo(4));
             Assert.That(player.Location.Y, Is.EqualTo(4));
         }
@@ -833,11 +833,11 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
         {
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             StartGameWithBoard(board);
-            _gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.North);
 
-            _gameManager.Undo();
+            gameManager.Undo();
 
-            Assert.That(_gameManager.GetPlayer().MovesCount, Is.EqualTo(0));
+            Assert.That(gameManager.GetPlayer().MovesCount, Is.EqualTo(0));
         }
 
         [Test]
@@ -845,12 +845,12 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
         {
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             StartGameWithBoard(board);
-            MovementDirection originalDirection = _gameManager.GetPlayer().Direction;
-            _gameManager.MovePlayer(MovementDirection.North);
+            MovementDirection originalDirection = gameManager.GetPlayer().Direction;
+            gameManager.MovePlayer(MovementDirection.North);
 
-            _gameManager.Undo();
+            gameManager.Undo();
 
-            Assert.That(_gameManager.GetPlayer().Direction, Is.EqualTo(originalDirection));
+            Assert.That(gameManager.GetPlayer().Direction, Is.EqualTo(originalDirection));
         }
 
         [Test]
@@ -859,11 +859,11 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             board.Tiles[4, 3] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
-            _gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.North);
 
-            _gameManager.Undo();
+            gameManager.Undo();
 
-            Assert.That(_gameManager.GetTile(4, 3).Id, Is.EqualTo(TileId.CrateOnFloor));
+            Assert.That(gameManager.GetTile(4, 3).Id, Is.EqualTo(TileId.CrateOnFloor));
         }
 
         [Test]
@@ -872,11 +872,11 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             board.Tiles[4, 3] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
-            _gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.North);
 
-            _gameManager.Undo();
+            gameManager.Undo();
 
-            Assert.That(_gameManager.GetTile(4, 2).Id, Is.EqualTo(TileId.Floor));
+            Assert.That(gameManager.GetTile(4, 2).Id, Is.EqualTo(TileId.Floor));
         }
 
         [Test]
@@ -884,13 +884,13 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
         {
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             StartGameWithBoard(board);
-            _gameManager.MovePlayer(MovementDirection.North);
-            _gameManager.MovePlayer(MovementDirection.West);
+            gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.West);
 
-            _gameManager.Undo();
-            _gameManager.Undo();
+            gameManager.Undo();
+            gameManager.Undo();
 
-            Player player = _gameManager.GetPlayer();
+            Player player = gameManager.GetPlayer();
             Assert.That(player.Location.X, Is.EqualTo(4));
             Assert.That(player.Location.Y, Is.EqualTo(4));
         }
@@ -900,13 +900,13 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
         {
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             StartGameWithBoard(board);
-            _gameManager.MovePlayer(MovementDirection.North);
-            _gameManager.MovePlayer(MovementDirection.West);
+            gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.West);
 
-            _gameManager.Undo();
-            _gameManager.Undo();
+            gameManager.Undo();
+            gameManager.Undo();
 
-            Assert.That(_gameManager.GetPlayer().MovesCount, Is.EqualTo(0));
+            Assert.That(gameManager.GetPlayer().MovesCount, Is.EqualTo(0));
         }
 
         [Test]
@@ -915,11 +915,11 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             board.Tiles[4, 5] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
-            _gameManager.MovePlayer(MovementDirection.South);
+            gameManager.MovePlayer(MovementDirection.South);
 
-            _gameManager.Undo();
+            gameManager.Undo();
 
-            Assert.That(_gameManager.GetTile(4, 5).Id, Is.EqualTo(TileId.CrateOnFloor));
+            Assert.That(gameManager.GetTile(4, 5).Id, Is.EqualTo(TileId.CrateOnFloor));
         }
 
         [Test]
@@ -928,11 +928,11 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             board.Tiles[4, 5] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
-            _gameManager.MovePlayer(MovementDirection.South);
+            gameManager.MovePlayer(MovementDirection.South);
 
-            _gameManager.Undo();
+            gameManager.Undo();
 
-            Assert.That(_gameManager.GetTile(4, 6).Id, Is.EqualTo(TileId.Floor));
+            Assert.That(gameManager.GetTile(4, 6).Id, Is.EqualTo(TileId.Floor));
         }
 
         [Test]
@@ -941,11 +941,11 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             board.Tiles[3, 4] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
-            _gameManager.MovePlayer(MovementDirection.West);
+            gameManager.MovePlayer(MovementDirection.West);
 
-            _gameManager.Undo();
+            gameManager.Undo();
 
-            Assert.That(_gameManager.GetTile(3, 4).Id, Is.EqualTo(TileId.CrateOnFloor));
+            Assert.That(gameManager.GetTile(3, 4).Id, Is.EqualTo(TileId.CrateOnFloor));
         }
 
         [Test]
@@ -954,11 +954,11 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             board.Tiles[5, 4] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
-            _gameManager.MovePlayer(MovementDirection.East);
+            gameManager.MovePlayer(MovementDirection.East);
 
-            _gameManager.Undo();
+            gameManager.Undo();
 
-            Assert.That(_gameManager.GetTile(5, 4).Id, Is.EqualTo(TileId.CrateOnFloor));
+            Assert.That(gameManager.GetTile(5, 4).Id, Is.EqualTo(TileId.CrateOnFloor));
         }
 
         // -------------------------------------------------------------------------
@@ -970,9 +970,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
         {
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             StartGameWithBoard(board);
-            _gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.North);
 
-            UndoInfo undoInfo = _gameManager.PeekUndo();
+            UndoInfo undoInfo = gameManager.PeekUndo();
 
             Assert.That(undoInfo.PlayerTarget.X, Is.EqualTo(4));
             Assert.That(undoInfo.PlayerTarget.Y, Is.EqualTo(4));
@@ -983,9 +983,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
         {
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             StartGameWithBoard(board);
-            _gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.North);
 
-            UndoInfo undoInfo = _gameManager.PeekUndo();
+            UndoInfo undoInfo = gameManager.PeekUndo();
 
             Assert.That(undoInfo.CratePushed, Is.False);
         }
@@ -996,9 +996,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             board.Tiles[4, 3] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
-            _gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.North);
 
-            UndoInfo undoInfo = _gameManager.PeekUndo();
+            UndoInfo undoInfo = gameManager.PeekUndo();
 
             Assert.That(undoInfo.CratePushed, Is.True);
         }
@@ -1010,9 +1010,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             board.Tiles[4, 3] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
-            _gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.North);
 
-            UndoInfo undoInfo = _gameManager.PeekUndo();
+            UndoInfo undoInfo = gameManager.PeekUndo();
 
             Assert.That(undoInfo.CrateAnimStart.X, Is.EqualTo(4));
             Assert.That(undoInfo.CrateAnimStart.Y, Is.EqualTo(2));
@@ -1025,9 +1025,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             board.Tiles[4, 3] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
-            _gameManager.MovePlayer(MovementDirection.North);
+            gameManager.MovePlayer(MovementDirection.North);
 
-            UndoInfo undoInfo = _gameManager.PeekUndo();
+            UndoInfo undoInfo = gameManager.PeekUndo();
 
             Assert.That(undoInfo.CrateAnimEnd.X, Is.EqualTo(4));
             Assert.That(undoInfo.CrateAnimEnd.Y, Is.EqualTo(3));
@@ -1038,9 +1038,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
         {
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             StartGameWithBoard(board);
-            _gameManager.MovePlayer(MovementDirection.South);
+            gameManager.MovePlayer(MovementDirection.South);
 
-            UndoInfo undoInfo = _gameManager.PeekUndo();
+            UndoInfo undoInfo = gameManager.PeekUndo();
 
             Assert.That(undoInfo.PlayerTarget.X, Is.EqualTo(4));
             Assert.That(undoInfo.PlayerTarget.Y, Is.EqualTo(4));
@@ -1052,9 +1052,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             board.Tiles[4, 5] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
-            _gameManager.MovePlayer(MovementDirection.South);
+            gameManager.MovePlayer(MovementDirection.South);
 
-            UndoInfo undoInfo = _gameManager.PeekUndo();
+            UndoInfo undoInfo = gameManager.PeekUndo();
 
             Assert.That(undoInfo.CratePushed, Is.True);
         }
@@ -1065,9 +1065,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             board.Tiles[4, 5] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
-            _gameManager.MovePlayer(MovementDirection.South);
+            gameManager.MovePlayer(MovementDirection.South);
 
-            UndoInfo undoInfo = _gameManager.PeekUndo();
+            UndoInfo undoInfo = gameManager.PeekUndo();
 
             Assert.That(undoInfo.CrateAnimStart.X, Is.EqualTo(4));
             Assert.That(undoInfo.CrateAnimStart.Y, Is.EqualTo(6));
@@ -1079,9 +1079,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
             board.Tiles[4, 5] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
-            _gameManager.MovePlayer(MovementDirection.South);
+            gameManager.MovePlayer(MovementDirection.South);
 
-            UndoInfo undoInfo = _gameManager.PeekUndo();
+            UndoInfo undoInfo = gameManager.PeekUndo();
 
             Assert.That(undoInfo.CrateAnimEnd.X, Is.EqualTo(4));
             Assert.That(undoInfo.CrateAnimEnd.Y, Is.EqualTo(5));
@@ -1099,7 +1099,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Targets.Add(new Point2D(7, 2));
             StartGameWithBoard(board);
 
-            List<Point2D> targets = _gameManager.GetTargets();
+            List<Point2D> targets = gameManager.GetTargets();
 
             Assert.That(targets.Count, Is.EqualTo(2));
         }
@@ -1110,7 +1110,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard();
             StartGameWithBoard(board);
 
-            List<Point2D> targets = _gameManager.GetTargets();
+            List<Point2D> targets = gameManager.GetTargets();
 
             Assert.That(targets, Is.Empty);
         }
@@ -1126,9 +1126,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             // board.Targets is empty by default
             StartGameWithBoard(board);
 
-            _gameManager.Update(0);
+            gameManager.Update(0);
 
-            Assert.That(_gameManager.Completed, Is.True);
+            Assert.That(gameManager.Completed, Is.True);
         }
 
         [Test]
@@ -1139,9 +1139,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[2, 2] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
 
-            _gameManager.Update(0);
+            gameManager.Update(0);
 
-            Assert.That(_gameManager.Completed, Is.True);
+            Assert.That(gameManager.Completed, Is.True);
         }
 
         [Test]
@@ -1152,9 +1152,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             // Tiles[2, 2] is Floor (not CrateOnFloor)
             StartGameWithBoard(board);
 
-            _gameManager.Update(0);
+            gameManager.Update(0);
 
-            Assert.That(_gameManager.Completed, Is.False);
+            Assert.That(gameManager.Completed, Is.False);
         }
 
         [Test]
@@ -1164,9 +1164,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Targets.Add(new Point2D(2, 2));
             StartGameWithBoard(board);
 
-            _gameManager.Update(500);
+            gameManager.Update(500);
 
-            Assert.That(_gameManager.ElapsedTime, Is.EqualTo(TimeSpan.FromMilliseconds(500)));
+            Assert.That(gameManager.ElapsedTime, Is.EqualTo(TimeSpan.FromMilliseconds(500)));
         }
 
         [Test]
@@ -1177,9 +1177,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Tiles[2, 2] = BoardTestHelper.CreateCrateTile();
             StartGameWithBoard(board);
 
-            _gameManager.Update(500);
+            gameManager.Update(500);
 
-            Assert.That(_gameManager.ElapsedTime, Is.EqualTo(TimeSpan.Zero));
+            Assert.That(gameManager.ElapsedTime, Is.EqualTo(TimeSpan.Zero));
         }
 
         [Test]
@@ -1189,10 +1189,10 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Targets.Add(new Point2D(2, 2));
             StartGameWithBoard(board);
 
-            _gameManager.Update(200);
-            _gameManager.Update(300);
+            gameManager.Update(200);
+            gameManager.Update(300);
 
-            Assert.That(_gameManager.ElapsedTime, Is.EqualTo(TimeSpan.FromMilliseconds(500)));
+            Assert.That(gameManager.ElapsedTime, Is.EqualTo(TimeSpan.FromMilliseconds(500)));
         }
     }
 }

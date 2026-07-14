@@ -18,10 +18,10 @@ namespace SokoGrump.Gui.Controls
 
         public string ContentFile { get; set; }
 
-        GuiImage image;
-        GuiTooltip tooltip;
-        int _frameSize;
-        bool _hasPressedFrame;
+        private GuiImage image;
+        private GuiTooltip tooltip;
+        private int frameSize;
+        private bool hasPressedFrame;
 
         public GuiButton() => FontName = "ButtonFont";
 
@@ -49,43 +49,50 @@ namespace SokoGrump.Gui.Controls
 
         protected override void DoDraw(SpriteBatch spriteBatch) { }
 
-        void RegisterEvents()
+        private void RegisterEvents()
         {
             MouseEntered += OnMouseEntered;
             MouseLeft += OnMouseLeft;
         }
 
-        void UnregisterEvents()
+        private void UnregisterEvents()
         {
             MouseEntered -= OnMouseEntered;
             MouseLeft -= OnMouseLeft;
         }
 
-        void SetChildrenProperties()
+        private void SetChildrenProperties()
         {
-            if (_frameSize == 0 && image.SourceRectangle.Height > 0 &&
+            if (frameSize == 0 && image.SourceRectangle.Height > 0 &&
                 image.SourceRectangle.Width > image.SourceRectangle.Height)
             {
-                _frameSize = image.SourceRectangle.Height;
-                _hasPressedFrame = image.SourceRectangle.Width >= _frameSize * 3;
+                frameSize = image.SourceRectangle.Height;
+                hasPressedFrame = image.SourceRectangle.Width >= frameSize * 3;
             }
 
-            if (_frameSize > 0)
+            if (frameSize > 0)
             {
                 bool isPressed = IsHovered && InputManager.Instance.IsMouseButtonDown(MouseButton.Left);
 
-                int frameIndex = (_hasPressedFrame && isPressed) ? 2
-                               : IsHovered ? 1
-                               : 0;
+                int frameIndex = 0;
 
-                image.SourceRectangle = new Rectangle2D(frameIndex * _frameSize, 0, _frameSize, _frameSize);
+                if (hasPressedFrame && isPressed)
+                {
+                    frameIndex = 2;
+                }
+                else if (IsHovered)
+                {
+                    frameIndex = 1;
+                }
+
+                image.SourceRectangle = new Rectangle2D(frameIndex * frameSize, 0, frameSize, frameSize);
             }
 
             tooltip.Text = TooltipText;
             tooltip.Location = new Point2D(0, Size.Height);
         }
 
-        void OnMouseEntered(object sender, MouseEventArgs e)
+        private void OnMouseEntered(object sender, MouseEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(tooltip.Text))
             {
@@ -93,6 +100,6 @@ namespace SokoGrump.Gui.Controls
             }
         }
 
-        void OnMouseLeft(object sender, MouseEventArgs e) => tooltip.Hide();
+        private void OnMouseLeft(object sender, MouseEventArgs e) => tooltip.Hide();
     }
 }

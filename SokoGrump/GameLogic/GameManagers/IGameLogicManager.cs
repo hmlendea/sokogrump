@@ -15,6 +15,6 @@
         /// <summary>
         /// Updates the content;
         /// </summary>
-        void Update(double elapsedMiliseconds);
+        void Update(double elapsedMilliseconds);
     }
 }

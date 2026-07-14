@@ -11,8 +11,8 @@ namespace SokoGrump.Gui.SpriteEffects
 {
     public class PlayerSpriteSheetEffect : SpriteSheetEffect
     {
-        const int SpriteSheetColumns = 3;
-        const int SpriteSheetRows = 6;
+        private static int SpriteSheetColumns => 3;
+        private static int SpriteSheetRows => 6;
 
         static readonly Dictionary<MovementDirection, Point2D> DirectionFrames = new()
         {
@@ -22,9 +22,9 @@ namespace SokoGrump.Gui.SpriteEffects
             { MovementDirection.West,  new Point2D(1, 1) },
         };
 
-        readonly IGameManager game;
+        private readonly IGameManager game;
 
-        public PlayerSpriteSheetEffect(IGameManager game) : base()
+        public PlayerSpriteSheetEffect(IGameManager game)
         {
             FrameAmount = new Size2D(SpriteSheetColumns, SpriteSheetRows);
 

@@ -35,7 +35,7 @@ namespace SokoGrump.GameLogic.Mapping
                 {
                     TileId tileId = (TileId)boardEntity.Tiles[x, y].Id;
 
-                    if (tileId.Equals(TileId.EmptyTarget) || tileId.Equals(TileId.CrateOnTarget))
+                    if (tileId == TileId.EmptyTarget || tileId == TileId.CrateOnTarget)
                     {
                         board.Targets.Add(new Point2D(x, y));
                     }
@@ -46,16 +46,16 @@ namespace SokoGrump.GameLogic.Mapping
         }
 
         /// <summary>
-        /// Converts the domain model into an entity.
+        /// Converts the domain model into a data object.
         /// </summary>
-        /// <returns>The entity.</returns>
+        /// <returns>The data object.</returns>
         /// <param name="board">Board.</param>
-        internal static BoardEntity ToEntity(this Board board) => new()
+        internal static BoardEntity ToDataObject(this Board board) => new()
         {
             Id = board.Id,
             PlayerStartLocationX = board.PlayerStartLocation.X,
             PlayerStartLocationY = board.PlayerStartLocation.Y,
-            Tiles = board.Tiles.ToEntities()
+            Tiles = board.Tiles.ToDataObjects()
         };
 
         /// <summary>
@@ -67,11 +67,11 @@ namespace SokoGrump.GameLogic.Mapping
             => boardEntities.Select(boardEntity => boardEntity.ToDomainModel());
 
         /// <summary>
-        /// Converts the domain models into entities.
+        /// Converts the domain models into data objects.
         /// </summary>
-        /// <returns>The entities.</returns>
+        /// <returns>The data objects.</returns>
         /// <param name="boards">Boards.</param>
-        internal static IEnumerable<BoardEntity> ToEntities(this IEnumerable<Board> boards)
-            => boards.Select(board => board.ToEntity());
+        internal static IEnumerable<BoardEntity> ToDataObjects(this IEnumerable<Board> boards)
+            => boards.Select(board => board.ToDataObject());
     }
 }

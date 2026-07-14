@@ -20,12 +20,12 @@ namespace SokoGrump.Gui.Screens
     /// </summary>
     public class SettingsScreen : MenuScreen
     {
-        GuiMenuToggle fullScreenToggle;
-        GuiMenuListSelector languageSelector;
-        GuiMenuLink backLink;
+        private GuiMenuToggle fullScreenToggle;
+        private GuiMenuListSelector languageSelector;
+        private GuiMenuLink backLink;
 
-        SortedDictionary<string, string> availableLanguages;
-        bool initialLanguageSelectionPending;
+        private SortedDictionary<string, string> availableLanguages;
+        private bool initialLanguageSelectionPending;
 
         /// <summary>
         /// Loads the content.
@@ -100,29 +100,26 @@ namespace SokoGrump.Gui.Screens
         /// <summary>
         /// Registers the events.
         /// </summary>
-        void RegisterEvents()
+        private void RegisterEvents()
         {
             fullScreenToggle.StateChanged += OnFullscreenToggleStateChanged;
             languageSelector.SelectedItemChanged += OnLanguageSelectorSelectedItemChanged;
         }
 
-        /// <summary>
-        /// Unregisters the events.
-        /// </summary>
-        void UnregisterEvents()
+        private void UnregisterEvents()
         {
             fullScreenToggle.StateChanged -= OnFullscreenToggleStateChanged;
             languageSelector.SelectedItemChanged -= OnLanguageSelectorSelectedItemChanged;
         }
 
-        void OnFullscreenToggleStateChanged(object sender, EventArgs e)
+        private void OnFullscreenToggleStateChanged(object sender, EventArgs e)
             => SettingsManager.Instance.GraphicsSettings.Fullscreen = fullScreenToggle.IsOn;
 
-        void OnLanguageSelectorSelectedItemChanged(object sender, EventArgs e)
+        private void OnLanguageSelectorSelectedItemChanged(object sender, EventArgs e)
         {
             string selectedLanguage = languageSelector.SelectedKey;
 
-            if (selectedLanguage.Equals(SettingsManager.Instance.UserData.Language))
+            if (string.Equals(selectedLanguage, SettingsManager.Instance.UserData.Language))
             {
                 return;
             }
@@ -132,9 +129,9 @@ namespace SokoGrump.Gui.Screens
             ScreenManager.Instance.ChangeScreens<SettingsScreen>();
         }
 
-        static SortedDictionary<string, string> GetAvailableLanguages()
+        private static SortedDictionary<string, string> GetAvailableLanguages()
         {
-            SortedDictionary<string, string> languages = new();
+            SortedDictionary<string, string> languages = [];
             JsonFileObject<LocalisationData> jsonManager = new();
 
             foreach (string file in Directory.GetFiles(ApplicationPaths.LocalisationDirectory, "*.json"))

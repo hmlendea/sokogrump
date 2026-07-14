@@ -9,7 +9,6 @@ namespace SokoGrump.Settings
     /// </summary>
     public class SettingsManager : Singleton<SettingsManager>
     {
-
         public AudioSettings AudioSettings { get; set; }
 
         public GraphicsSettings GraphicsSettings { get; set; }
@@ -39,15 +38,6 @@ namespace SokoGrump.Settings
         {
             if (!File.Exists(ApplicationPaths.SettingsFile))
             {
-                //tring logMessage = "Settings file is missing. Using default settings.";
-                //Dictionary<LogInfoKey, string> logDetails = new Dictionary<LogInfoKey, string>
-                //{
-                //    { LogInfoKey.FileName, ApplicationPaths.SettingsFile }
-                //};
-
-                // TODO: Logging
-                //LogManager.Instance.Warn(Operation.SettingsLoading, OperationStatus.Failure, logMessage, logDetails);
-
                 SaveContent();
                 return;
             }
@@ -74,15 +64,15 @@ namespace SokoGrump.Settings
         {
             bool graphicsChanged = false;
 
-            if (!GraphicsManager.Instance.Graphics.IsFullScreen.Equals(GraphicsSettings.Fullscreen))
+            if (GraphicsManager.Instance.Graphics.IsFullScreen != GraphicsSettings.Fullscreen)
             {
                 GraphicsManager.Instance.Graphics.IsFullScreen = GraphicsSettings.Fullscreen;
 
                 graphicsChanged = true;
             }
 
-            if (!GraphicsManager.Instance.Graphics.PreferredBackBufferWidth.Equals(GraphicsSettings.Resolution.Width) ||
-                !GraphicsManager.Instance.Graphics.PreferredBackBufferHeight.Equals(GraphicsSettings.Resolution.Height))
+            if (GraphicsManager.Instance.Graphics.PreferredBackBufferWidth != GraphicsSettings.Resolution.Width ||
+                GraphicsManager.Instance.Graphics.PreferredBackBufferHeight != GraphicsSettings.Resolution.Height)
             {
                 GraphicsManager.Instance.Graphics.PreferredBackBufferWidth = GraphicsSettings.Resolution.Width;
                 GraphicsManager.Instance.Graphics.PreferredBackBufferHeight = GraphicsSettings.Resolution.Height;

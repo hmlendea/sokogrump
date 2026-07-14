@@ -2,15 +2,12 @@
 {
     public static class GameDefines
     {
-        /// <summary>
-        /// The map tile size.
-        /// </summary>
-        public const int MapTileSize = 48;
+        public static int MapTileSize => 48;
 
-        public const int BoardWidth = 16;
+        public static int BoardWidth => 16;
 
-        public const int BoardHeight = 14;
+        public static int BoardHeight => 14;
 
-        public const int CrateVariationCount = 11;
+        public static int CrateVariationCount => 11;
     }
 }

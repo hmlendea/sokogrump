@@ -12,8 +12,8 @@ namespace SokoGrump.Gui.SpriteEffects
 {
     public class TileSpriteSheetEffect : SpriteSheetEffect
     {
-        const int SpriteSheetColumns = 3;
-        const int SpriteSheetRows = 6;
+        private static int SpriteSheetColumns => 3;
+        private static int SpriteSheetRows => 6;
 
         // Bitmask: N=8, W=4, S=2, E=1
         static readonly Dictionary<int, Point2D> FrameMap = new()
@@ -35,7 +35,7 @@ namespace SokoGrump.Gui.SpriteEffects
             { 0b1110, new Point2D(2, 4) }, // RightCorner
             { 0b1111, new Point2D(1, 4) }, // Middle
         };
-        readonly IGameManager game;
+        private readonly IGameManager game;
 
         public Point2D TileLocation { get; set; }
 
@@ -55,9 +55,9 @@ namespace SokoGrump.Gui.SpriteEffects
         /// <param name="gameTime">Game time.</param>
         protected override void DoUpdate(GameTime gameTime)
         {
-            // TODO: Dirty fix
-            if (TileLocation.X.Equals(0) || TileLocation.X.Equals(GameDefines.BoardWidth - 1) ||
-                TileLocation.Y.Equals(0) || TileLocation.Y.Equals(GameDefines.BoardHeight - 1))
+            // TODO: Dirty fix.
+            if (TileLocation.X == 0 || TileLocation.X == GameDefines.BoardWidth - 1 ||
+                TileLocation.Y == 0 || TileLocation.Y == GameDefines.BoardHeight - 1)
             {
                 return;
             }
