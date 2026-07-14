@@ -101,6 +101,26 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Assert.That(player.Location.Y, Is.EqualTo(7));
         }
 
+        [Test]
+        public void GivenBoard_WhenNewGame_ThenPlayerDirectionIsSouth()
+        {
+            Board board = BoardTestHelper.CreateBoard();
+            StartGameWithBoard(board);
+
+            Assert.That(
+                _gameManager.GetPlayer().Direction,
+                Is.EqualTo(MovementDirection.South));
+        }
+
+        [Test]
+        public void GivenBoard_WhenNewGame_ThenPlayerMovesCountIsZero()
+        {
+            Board board = BoardTestHelper.CreateBoard();
+            StartGameWithBoard(board);
+
+            Assert.That(_gameManager.GetPlayer().MovesCount, Is.EqualTo(0));
+        }
+
         // -------------------------------------------------------------------------
         // Retry
         // -------------------------------------------------------------------------
@@ -128,6 +148,45 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Assert.That(_gameManager.CanUndo, Is.False);
         }
 
+        [Test]
+        public void GivenMoveMade_WhenRetry_ThenPlayerLocationIsReset()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 6, playerY: 7);
+            StartGameWithBoard(board);
+            _gameManager.MovePlayer(MovementDirection.North);
+
+            _gameManager.Retry();
+
+            Player player = _gameManager.GetPlayer();
+            Assert.That(player.Location.X, Is.EqualTo(6));
+            Assert.That(player.Location.Y, Is.EqualTo(7));
+        }
+
+        [Test]
+        public void GivenElapsedTime_WhenRetry_ThenElapsedTimeIsReset()
+        {
+            Board board = BoardTestHelper.CreateBoard();
+            board.Targets.Add(new Point2D(2, 2));
+            StartGameWithBoard(board);
+            _gameManager.Update(500);
+
+            _gameManager.Retry();
+
+            Assert.That(_gameManager.ElapsedTime, Is.EqualTo(TimeSpan.Zero));
+        }
+
+        [Test]
+        public void GivenMoveMade_WhenRetry_ThenMovesCountIsReset()
+        {
+            Board board = BoardTestHelper.CreateBoard();
+            StartGameWithBoard(board);
+            _gameManager.MovePlayer(MovementDirection.North);
+
+            _gameManager.Retry();
+
+            Assert.That(_gameManager.GetPlayer().MovesCount, Is.EqualTo(0));
+        }
+
         // -------------------------------------------------------------------------
         // SetPlayerDirection
         // -------------------------------------------------------------------------
@@ -141,6 +200,48 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             _gameManager.SetPlayerDirection(MovementDirection.North);
 
             Assert.That(_gameManager.GetPlayer().Direction, Is.EqualTo(MovementDirection.North));
+        }
+
+        [Test]
+        public void GivenNorthDirection_WhenSetPlayerDirectionSouth_ThenDirectionIsSouth()
+        {
+            Board board = BoardTestHelper.CreateBoard();
+            StartGameWithBoard(board);
+            _gameManager.SetPlayerDirection(MovementDirection.North);
+
+            _gameManager.SetPlayerDirection(MovementDirection.South);
+
+            Assert.That(
+                _gameManager.GetPlayer().Direction,
+                Is.EqualTo(MovementDirection.South));
+        }
+
+        [Test]
+        public void GivenNorthDirection_WhenSetPlayerDirectionWest_ThenDirectionIsWest()
+        {
+            Board board = BoardTestHelper.CreateBoard();
+            StartGameWithBoard(board);
+            _gameManager.SetPlayerDirection(MovementDirection.North);
+
+            _gameManager.SetPlayerDirection(MovementDirection.West);
+
+            Assert.That(
+                _gameManager.GetPlayer().Direction,
+                Is.EqualTo(MovementDirection.West));
+        }
+
+        [Test]
+        public void GivenNorthDirection_WhenSetPlayerDirectionEast_ThenDirectionIsEast()
+        {
+            Board board = BoardTestHelper.CreateBoard();
+            StartGameWithBoard(board);
+            _gameManager.SetPlayerDirection(MovementDirection.North);
+
+            _gameManager.SetPlayerDirection(MovementDirection.East);
+
+            Assert.That(
+                _gameManager.GetPlayer().Direction,
+                Is.EqualTo(MovementDirection.East));
         }
 
         // -------------------------------------------------------------------------
@@ -293,6 +394,110 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Assert.That(_gameManager.CanMove(MovementDirection.North), Is.False);
         }
 
+        [Test]
+        public void GivenCrateWithFloorBehindSouth_WhenCanMoveSouth_ThenReturnsTrue()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            board.Tiles[4, 5] = BoardTestHelper.CreateCrateTile();
+            StartGameWithBoard(board);
+
+            Assert.That(_gameManager.CanMove(MovementDirection.South), Is.True);
+        }
+
+        [Test]
+        public void GivenCrateWithWallBehindSouth_WhenCanMoveSouth_ThenReturnsFalse()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            board.Tiles[4, 5] = BoardTestHelper.CreateCrateTile();
+            board.Tiles[4, 6] = BoardTestHelper.CreateWallTile();
+            StartGameWithBoard(board);
+
+            Assert.That(_gameManager.CanMove(MovementDirection.South), Is.False);
+        }
+
+        [Test]
+        public void GivenCrateAtSouthEdge_WhenCanMoveSouth_ThenReturnsFalse()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 12);
+            board.Tiles[4, 13] = BoardTestHelper.CreateCrateTile();
+            StartGameWithBoard(board);
+
+            Assert.That(_gameManager.CanMove(MovementDirection.South), Is.False);
+        }
+
+        [Test]
+        public void GivenCrateWithFloorBehindWest_WhenCanMoveWest_ThenReturnsTrue()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            board.Tiles[3, 4] = BoardTestHelper.CreateCrateTile();
+            StartGameWithBoard(board);
+
+            Assert.That(_gameManager.CanMove(MovementDirection.West), Is.True);
+        }
+
+        [Test]
+        public void GivenCrateWithWallBehindWest_WhenCanMoveWest_ThenReturnsFalse()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            board.Tiles[3, 4] = BoardTestHelper.CreateCrateTile();
+            board.Tiles[2, 4] = BoardTestHelper.CreateWallTile();
+            StartGameWithBoard(board);
+
+            Assert.That(_gameManager.CanMove(MovementDirection.West), Is.False);
+        }
+
+        [Test]
+        public void GivenCrateAtWestEdge_WhenCanMoveWest_ThenReturnsFalse()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 1, playerY: 4);
+            board.Tiles[0, 4] = BoardTestHelper.CreateCrateTile();
+            StartGameWithBoard(board);
+
+            Assert.That(_gameManager.CanMove(MovementDirection.West), Is.False);
+        }
+
+        [Test]
+        public void GivenCrateWithFloorBehindEast_WhenCanMoveEast_ThenReturnsTrue()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            board.Tiles[5, 4] = BoardTestHelper.CreateCrateTile();
+            StartGameWithBoard(board);
+
+            Assert.That(_gameManager.CanMove(MovementDirection.East), Is.True);
+        }
+
+        [Test]
+        public void GivenCrateWithWallBehindEast_WhenCanMoveEast_ThenReturnsFalse()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            board.Tiles[5, 4] = BoardTestHelper.CreateCrateTile();
+            board.Tiles[6, 4] = BoardTestHelper.CreateWallTile();
+            StartGameWithBoard(board);
+
+            Assert.That(_gameManager.CanMove(MovementDirection.East), Is.False);
+        }
+
+        [Test]
+        public void GivenCrateAtEastEdge_WhenCanMoveEast_ThenReturnsFalse()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 14, playerY: 4);
+            board.Tiles[15, 4] = BoardTestHelper.CreateCrateTile();
+            StartGameWithBoard(board);
+
+            Assert.That(_gameManager.CanMove(MovementDirection.East), Is.False);
+        }
+
+        [Test]
+        public void GivenTwoAdjacentCratesNorth_WhenCanMoveNorth_ThenReturnsFalse()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            board.Tiles[4, 3] = BoardTestHelper.CreateCrateTile();
+            board.Tiles[4, 2] = BoardTestHelper.CreateCrateTile();
+            StartGameWithBoard(board);
+
+            Assert.That(_gameManager.CanMove(MovementDirection.North), Is.False);
+        }
+
         // -------------------------------------------------------------------------
         // MovePlayer
         // -------------------------------------------------------------------------
@@ -432,6 +637,132 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Assert.That(_gameManager.GetTile(4, 3).Id, Is.EqualTo(TileId.Floor));
         }
 
+        [Test]
+        public void GivenCrateAhead_WhenMovePlayerSouth_ThenPlayerMovesSouth()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            board.Tiles[4, 5] = BoardTestHelper.CreateCrateTile();
+            StartGameWithBoard(board);
+
+            _gameManager.MovePlayer(MovementDirection.South);
+
+            Player player = _gameManager.GetPlayer();
+            Assert.That(player.Location.X, Is.EqualTo(4));
+            Assert.That(player.Location.Y, Is.EqualTo(5));
+        }
+
+        [Test]
+        public void GivenCrateAhead_WhenMovePlayerSouth_ThenCrateMovesForward()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            board.Tiles[4, 5] = BoardTestHelper.CreateCrateTile();
+            StartGameWithBoard(board);
+
+            _gameManager.MovePlayer(MovementDirection.South);
+
+            Assert.That(_gameManager.GetTile(4, 6).Id, Is.EqualTo(TileId.CrateOnFloor));
+        }
+
+        [Test]
+        public void GivenCrateAhead_WhenMovePlayerSouth_ThenCrateOriginalPositionBecomesFloor()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            board.Tiles[4, 5] = BoardTestHelper.CreateCrateTile();
+            StartGameWithBoard(board);
+
+            _gameManager.MovePlayer(MovementDirection.South);
+
+            Assert.That(_gameManager.GetTile(4, 5).Id, Is.EqualTo(TileId.Floor));
+        }
+
+        [Test]
+        public void GivenCrateAhead_WhenMovePlayerWest_ThenPlayerMovesWest()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            board.Tiles[3, 4] = BoardTestHelper.CreateCrateTile();
+            StartGameWithBoard(board);
+
+            _gameManager.MovePlayer(MovementDirection.West);
+
+            Player player = _gameManager.GetPlayer();
+            Assert.That(player.Location.X, Is.EqualTo(3));
+            Assert.That(player.Location.Y, Is.EqualTo(4));
+        }
+
+        [Test]
+        public void GivenCrateAhead_WhenMovePlayerWest_ThenCrateMovesForward()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            board.Tiles[3, 4] = BoardTestHelper.CreateCrateTile();
+            StartGameWithBoard(board);
+
+            _gameManager.MovePlayer(MovementDirection.West);
+
+            Assert.That(_gameManager.GetTile(2, 4).Id, Is.EqualTo(TileId.CrateOnFloor));
+        }
+
+        [Test]
+        public void GivenCrateAhead_WhenMovePlayerWest_ThenCrateOriginalPositionBecomesFloor()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            board.Tiles[3, 4] = BoardTestHelper.CreateCrateTile();
+            StartGameWithBoard(board);
+
+            _gameManager.MovePlayer(MovementDirection.West);
+
+            Assert.That(_gameManager.GetTile(3, 4).Id, Is.EqualTo(TileId.Floor));
+        }
+
+        [Test]
+        public void GivenCrateAhead_WhenMovePlayerEast_ThenPlayerMovesEast()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            board.Tiles[5, 4] = BoardTestHelper.CreateCrateTile();
+            StartGameWithBoard(board);
+
+            _gameManager.MovePlayer(MovementDirection.East);
+
+            Player player = _gameManager.GetPlayer();
+            Assert.That(player.Location.X, Is.EqualTo(5));
+            Assert.That(player.Location.Y, Is.EqualTo(4));
+        }
+
+        [Test]
+        public void GivenCrateAhead_WhenMovePlayerEast_ThenCrateMovesForward()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            board.Tiles[5, 4] = BoardTestHelper.CreateCrateTile();
+            StartGameWithBoard(board);
+
+            _gameManager.MovePlayer(MovementDirection.East);
+
+            Assert.That(_gameManager.GetTile(6, 4).Id, Is.EqualTo(TileId.CrateOnFloor));
+        }
+
+        [Test]
+        public void GivenCrateAhead_WhenMovePlayerEast_ThenCrateOriginalPositionBecomesFloor()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            board.Tiles[5, 4] = BoardTestHelper.CreateCrateTile();
+            StartGameWithBoard(board);
+
+            _gameManager.MovePlayer(MovementDirection.East);
+
+            Assert.That(_gameManager.GetTile(5, 4).Id, Is.EqualTo(TileId.Floor));
+        }
+
+        [Test]
+        public void GivenCratePushed_WhenMovePlayer_ThenMovesCountIsIncremented()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            board.Tiles[4, 3] = BoardTestHelper.CreateCrateTile();
+            StartGameWithBoard(board);
+
+            _gameManager.MovePlayer(MovementDirection.North);
+
+            Assert.That(_gameManager.GetPlayer().MovesCount, Is.EqualTo(1));
+        }
+
         // -------------------------------------------------------------------------
         // CanUndo
         // -------------------------------------------------------------------------
@@ -548,6 +879,88 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Assert.That(_gameManager.GetTile(4, 2).Id, Is.EqualTo(TileId.Floor));
         }
 
+        [Test]
+        public void GivenTwoMoves_WhenUndoTwice_ThenPlayerReturnsToStartLocation()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            StartGameWithBoard(board);
+            _gameManager.MovePlayer(MovementDirection.North);
+            _gameManager.MovePlayer(MovementDirection.West);
+
+            _gameManager.Undo();
+            _gameManager.Undo();
+
+            Player player = _gameManager.GetPlayer();
+            Assert.That(player.Location.X, Is.EqualTo(4));
+            Assert.That(player.Location.Y, Is.EqualTo(4));
+        }
+
+        [Test]
+        public void GivenTwoMoves_WhenUndoTwice_ThenMovesCountIsZero()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            StartGameWithBoard(board);
+            _gameManager.MovePlayer(MovementDirection.North);
+            _gameManager.MovePlayer(MovementDirection.West);
+
+            _gameManager.Undo();
+            _gameManager.Undo();
+
+            Assert.That(_gameManager.GetPlayer().MovesCount, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void GivenCratePushedSouth_WhenUndo_ThenCrateReturnsToOriginalPosition()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            board.Tiles[4, 5] = BoardTestHelper.CreateCrateTile();
+            StartGameWithBoard(board);
+            _gameManager.MovePlayer(MovementDirection.South);
+
+            _gameManager.Undo();
+
+            Assert.That(_gameManager.GetTile(4, 5).Id, Is.EqualTo(TileId.CrateOnFloor));
+        }
+
+        [Test]
+        public void GivenCratePushedSouth_WhenUndo_ThenCrateForwardPositionBecomesFloor()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            board.Tiles[4, 5] = BoardTestHelper.CreateCrateTile();
+            StartGameWithBoard(board);
+            _gameManager.MovePlayer(MovementDirection.South);
+
+            _gameManager.Undo();
+
+            Assert.That(_gameManager.GetTile(4, 6).Id, Is.EqualTo(TileId.Floor));
+        }
+
+        [Test]
+        public void GivenCratePushedWest_WhenUndo_ThenCrateReturnsToOriginalPosition()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            board.Tiles[3, 4] = BoardTestHelper.CreateCrateTile();
+            StartGameWithBoard(board);
+            _gameManager.MovePlayer(MovementDirection.West);
+
+            _gameManager.Undo();
+
+            Assert.That(_gameManager.GetTile(3, 4).Id, Is.EqualTo(TileId.CrateOnFloor));
+        }
+
+        [Test]
+        public void GivenCratePushedEast_WhenUndo_ThenCrateReturnsToOriginalPosition()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            board.Tiles[5, 4] = BoardTestHelper.CreateCrateTile();
+            StartGameWithBoard(board);
+            _gameManager.MovePlayer(MovementDirection.East);
+
+            _gameManager.Undo();
+
+            Assert.That(_gameManager.GetTile(5, 4).Id, Is.EqualTo(TileId.CrateOnFloor));
+        }
+
         // -------------------------------------------------------------------------
         // PeekUndo
         // -------------------------------------------------------------------------
@@ -618,6 +1031,88 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
 
             Assert.That(undoInfo.CrateAnimEnd.X, Is.EqualTo(4));
             Assert.That(undoInfo.CrateAnimEnd.Y, Is.EqualTo(3));
+        }
+
+        [Test]
+        public void GivenPlayerMovedSouth_WhenPeekUndo_ThenPlayerTargetIsOriginalLocation()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            StartGameWithBoard(board);
+            _gameManager.MovePlayer(MovementDirection.South);
+
+            UndoInfo undoInfo = _gameManager.PeekUndo();
+
+            Assert.That(undoInfo.PlayerTarget.X, Is.EqualTo(4));
+            Assert.That(undoInfo.PlayerTarget.Y, Is.EqualTo(4));
+        }
+
+        [Test]
+        public void GivenCratePushedSouth_WhenPeekUndo_ThenCratePushedIsTrue()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            board.Tiles[4, 5] = BoardTestHelper.CreateCrateTile();
+            StartGameWithBoard(board);
+            _gameManager.MovePlayer(MovementDirection.South);
+
+            UndoInfo undoInfo = _gameManager.PeekUndo();
+
+            Assert.That(undoInfo.CratePushed, Is.True);
+        }
+
+        [Test]
+        public void GivenCratePushedSouth_WhenPeekUndo_ThenCrateAnimStartIsWhereCrateEnded()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            board.Tiles[4, 5] = BoardTestHelper.CreateCrateTile();
+            StartGameWithBoard(board);
+            _gameManager.MovePlayer(MovementDirection.South);
+
+            UndoInfo undoInfo = _gameManager.PeekUndo();
+
+            Assert.That(undoInfo.CrateAnimStart.X, Is.EqualTo(4));
+            Assert.That(undoInfo.CrateAnimStart.Y, Is.EqualTo(6));
+        }
+
+        [Test]
+        public void GivenCratePushedSouth_WhenPeekUndo_ThenCrateAnimEndIsWhereCrateCameFrom()
+        {
+            Board board = BoardTestHelper.CreateBoard(playerX: 4, playerY: 4);
+            board.Tiles[4, 5] = BoardTestHelper.CreateCrateTile();
+            StartGameWithBoard(board);
+            _gameManager.MovePlayer(MovementDirection.South);
+
+            UndoInfo undoInfo = _gameManager.PeekUndo();
+
+            Assert.That(undoInfo.CrateAnimEnd.X, Is.EqualTo(4));
+            Assert.That(undoInfo.CrateAnimEnd.Y, Is.EqualTo(5));
+        }
+
+        // -------------------------------------------------------------------------
+        // GetTargets
+        // -------------------------------------------------------------------------
+
+        [Test]
+        public void GivenBoardWithTargets_WhenGetTargets_ThenTargetsAreReturned()
+        {
+            Board board = BoardTestHelper.CreateBoard();
+            board.Targets.Add(new Point2D(3, 5));
+            board.Targets.Add(new Point2D(7, 2));
+            StartGameWithBoard(board);
+
+            List<Point2D> targets = _gameManager.GetTargets();
+
+            Assert.That(targets.Count, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void GivenBoardWithNoTargets_WhenGetTargets_ThenEmptyListIsReturned()
+        {
+            Board board = BoardTestHelper.CreateBoard();
+            StartGameWithBoard(board);
+
+            List<Point2D> targets = _gameManager.GetTargets();
+
+            Assert.That(targets, Is.Empty);
         }
 
         // -------------------------------------------------------------------------
