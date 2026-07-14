@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
 using NuciXNA.DataAccess.Content;
 using NuciXNA.Graphics;
 using NuciXNA.Gui;
@@ -17,13 +18,13 @@ namespace SokoGrump
     /// <summary>
     /// This is the main type for the game.
     /// </summary>
-    public class GameWindow : Game
+    public sealed class GameWindow : Game
     {
-        readonly GraphicsDeviceManager graphics;
+        private readonly GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
-        readonly FpsIndicator fpsIndicator;
-        readonly Cursor cursor;
+        private readonly FpsIndicator fpsIndicator;
+        private readonly Cursor cursor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameWindow"/> class.
@@ -74,7 +75,7 @@ namespace SokoGrump
         {
             ScreenManager.Instance.UnloadContent();
 
-            FpsIndicator.UnloadContent();
+            fpsIndicator.UnloadContent();
             cursor.UnloadContent();
         }
 

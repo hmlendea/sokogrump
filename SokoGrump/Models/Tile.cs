@@ -1,6 +1,6 @@
 ﻿namespace SokoGrump.Models
 {
-    public class Tile
+    public sealed class Tile
     {
         /// <summary>
         /// Gets or sets the identifier.

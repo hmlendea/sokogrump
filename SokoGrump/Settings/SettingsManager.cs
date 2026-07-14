@@ -7,7 +7,7 @@ namespace SokoGrump.Settings
     /// <summary>
     /// Settings manager.
     /// </summary>
-    public class SettingsManager : Singleton<SettingsManager>
+    public sealed class SettingsManager : Singleton<SettingsManager>
     {
         public AudioSettings AudioSettings { get; set; }
 

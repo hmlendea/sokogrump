@@ -8,7 +8,7 @@ using SokoGrump.Settings;
 
 namespace SokoGrump.GameLogic.GameManagers
 {
-    public class BoardManager : IBoardManager
+    public sealed class BoardManager : IBoardManager
     {
         private Dictionary<string, Board> boards;
         private Dictionary<TileId, Tile> tiles;

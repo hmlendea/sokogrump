@@ -9,11 +9,11 @@ namespace SokoGrump.Gui.Screens
     /// <summary>
     /// Title screen.
     /// </summary>
-    public class TitleScreen : MenuScreen
+    public sealed class TitleScreen : MenuScreen
     {
-        GuiMenuLink continueGameLink;
-        GuiMenuLink newGameLink;
-        GuiMenuLink settingsLink;
+        private GuiMenuLink continueGameLink;
+        private GuiMenuLink newGameLink;
+        private GuiMenuLink settingsLink;
 
         /// <summary>
         /// Loads the content.

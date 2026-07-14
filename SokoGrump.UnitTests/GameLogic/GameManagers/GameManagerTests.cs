@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Moq;
 using NUnit.Framework;
@@ -12,7 +13,7 @@ using SokoGrump.UnitTests.Helpers;
 namespace SokoGrump.UnitTests.GameLogic.GameManagers
 {
     [TestFixture]
-    public class GameManagerTests
+    public sealed class GameManagerTests
     {
         Mock<IBoardManager> boardManagerMock;
         GameManager gameManager;
@@ -1099,9 +1100,9 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             board.Targets.Add(new Point2D(7, 2));
             StartGameWithBoard(board);
 
-            List<Point2D> targets = gameManager.GetTargets();
+            IEnumerable<Point2D> targets = gameManager.GetTargets();
 
-            Assert.That(targets.Count, Is.EqualTo(2));
+            Assert.That(targets.Count(), Is.EqualTo(2));
         }
 
         [Test]
@@ -1110,7 +1111,7 @@ namespace SokoGrump.UnitTests.GameLogic.GameManagers
             Board board = BoardTestHelper.CreateBoard();
             StartGameWithBoard(board);
 
-            List<Point2D> targets = gameManager.GetTargets();
+            IEnumerable<Point2D> targets = gameManager.GetTargets();
 
             Assert.That(targets, Is.Empty);
         }

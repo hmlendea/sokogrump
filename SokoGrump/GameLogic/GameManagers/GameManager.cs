@@ -9,16 +9,16 @@ using SokoGrump.Settings;
 
 namespace SokoGrump.GameLogic.GameManagers
 {
-    public class GameManager : IGameManager
+    public sealed class GameManager : IGameManager
     {
-        readonly IBoardManager boardManager;
+        private readonly IBoardManager boardManager;
 
         private readonly Random random = new();
 
         private Board board;
         private Player player;
 
-        readonly record struct MoveSnapshot(
+        private readonly record struct MoveSnapshot(
             Point2D PlayerLocation,
             MovementDirection PlayerDirection,
             int MovesCount,
@@ -42,7 +42,7 @@ namespace SokoGrump.GameLogic.GameManagers
 
         public bool CanUndo => undoHistory.Count > 0;
 
-        readonly Stack<MoveSnapshot> undoHistory = new();
+        private readonly Stack<MoveSnapshot> undoHistory = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameEngine"/> class.
@@ -283,7 +283,7 @@ namespace SokoGrump.GameLogic.GameManagers
                 new Point2D(snapshot.CrateFromX, snapshot.CrateFromY));
         }
 
-        public List<Point2D> GetTargets() => board.Targets;
+        public IEnumerable<Point2D> GetTargets() => board.Targets;
 
         public Player GetPlayer() => player;
 

@@ -18,7 +18,7 @@ namespace SokoGrump.Gui.Screens
     /// <summary>
     /// Gameplay screen.
     /// </summary>
-    public class GameplayScreen : Screen
+    public sealed class GameplayScreen : Screen
     {
         private IGameManager game;
 
@@ -27,7 +27,7 @@ namespace SokoGrump.Gui.Screens
         private GuiInfoBar infoBar;
         private GuiGameBoard gameBoard;
 
-        readonly int level;
+        private readonly int level;
 
         public GameplayScreen(int level)
         {

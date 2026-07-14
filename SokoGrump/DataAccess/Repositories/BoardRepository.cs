@@ -17,7 +17,7 @@ namespace SokoGrump.DataAccess.Repositories
     /// Initializes a new instance of the <see cref="BoardRepository"/> class.
     /// </remarks>
     /// <param name="boardsDirectory">File name.</param>
-    public class BoardRepository(string boardsDirectory) : Repository<string, BoardEntity>
+    public sealed class BoardRepository(string boardsDirectory) : Repository<string, BoardEntity>
     {
         /// <summary>
         /// Get the board with the specified identifier.

@@ -6,7 +6,7 @@ using SokoGrump.UnitTests.Helpers;
 namespace SokoGrump.UnitTests.Models
 {
     [TestFixture]
-    public class TileTests
+    public sealed class TileTests
     {
         // -------------------------------------------------------------------------
         // Clone

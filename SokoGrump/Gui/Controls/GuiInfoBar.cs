@@ -78,7 +78,9 @@ namespace SokoGrump.Gui.Controls
 
         private void SetChildrenProperties()
         {
-            foreach (GuiText text in new[] { timerText, movesText, levelText })
+            GuiText[] infoTexts = [timerText, movesText, levelText];
+
+            foreach (GuiText text in infoTexts)
             {
                 text.BackgroundColour = BackgroundColour;
                 text.ForegroundColour = ForegroundColour;

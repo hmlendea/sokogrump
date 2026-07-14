@@ -9,6 +9,7 @@ namespace SokoGrump.Settings
         private static int DefaultResolutionWidth => 1280;
 
         private static int DefaultResolutionHeight => 720;
+
         /// <summary>
         /// Gets the resolution.
         /// </summary>

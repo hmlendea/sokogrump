@@ -5,7 +5,9 @@ using System.IO;
 using System.Linq;
 
 using Microsoft.Xna.Framework;
+
 using NuciDAL.IO;
+
 using NuciXNA.Gui.Controls;
 using NuciXNA.Gui.Screens;
 
@@ -18,7 +20,7 @@ namespace SokoGrump.Gui.Screens
     /// <summary>
     /// Settings screen.
     /// </summary>
-    public class SettingsScreen : MenuScreen
+    public sealed class SettingsScreen : MenuScreen
     {
         private GuiMenuToggle fullScreenToggle;
         private GuiMenuListSelector languageSelector;

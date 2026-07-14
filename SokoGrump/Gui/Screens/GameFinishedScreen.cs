@@ -13,7 +13,7 @@ namespace SokoGrump.Gui.Screens
     /// <summary>
     /// Victory screen.
     /// </summary>
-    public class GameFinishedScreen : Screen
+    public sealed class GameFinishedScreen : Screen
     {
         private static float InitialDelay => 5;
         /// <summary>

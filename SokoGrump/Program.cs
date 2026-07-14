@@ -18,10 +18,10 @@ namespace SokoGrump
 {
 #if __IOS__ || __TVOS__
     [Register("AppDelegate")]
-    class Program : UIApplicationDelegate
-    
+    public sealed class Program : UIApplicationDelegate
+
 #else
-    static class Program
+    internal static class Program
 #endif
     {
         public static GameWindow Game { get; private set; }
@@ -49,14 +49,15 @@ namespace SokoGrump
 #if !MONOMAC && !__IOS__ && !__TVOS__
         [STAThread]
 #endif
-        static void Main()
+        private static void Main()
         {
             PrepareFiles();
 
 #if MONOMAC
             NSApplication.Init ();
 
-            using (var p = new NSAutoreleasePool ()) {
+            using (NSAutoreleasePool p = new())
+            {
                 NSApplication.SharedApplication.Delegate = new AppDelegate();
                 NSApplication.Main(args);
             }
@@ -76,7 +77,7 @@ namespace SokoGrump
     }
 
 #if MONOMAC
-    class AppDelegate : NSApplicationDelegate
+    internal sealed class AppDelegate : NSApplicationDelegate
     {
         public override void FinishedLaunching (MonoMac.Foundation.NSObject notification)
         {
@@ -93,6 +94,6 @@ namespace SokoGrump
         {
             return true;
         }
-    }  
+    }
 #endif
 }

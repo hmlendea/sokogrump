@@ -10,7 +10,7 @@ namespace SokoGrump.Gui.Controls
     /// <summary>
     /// Button GUI element.
     /// </summary>
-    public class GuiButton : GuiControl, IGuiControl
+    public sealed class GuiButton : GuiControl, IGuiControl
     {
         public string Text { get; set; }
 

@@ -8,7 +8,7 @@ using SokoGrump.UnitTests.Helpers;
 namespace SokoGrump.UnitTests.Models
 {
     [TestFixture]
-    public class BoardTests
+    public sealed class BoardTests
     {
         // -------------------------------------------------------------------------
         // Clone

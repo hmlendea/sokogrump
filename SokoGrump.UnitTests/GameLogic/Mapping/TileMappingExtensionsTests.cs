@@ -11,7 +11,7 @@ using SokoGrump.UnitTests.Helpers;
 namespace SokoGrump.UnitTests.GameLogic.Mapping
 {
     [TestFixture]
-    public class TileMappingExtensionsTests
+    public sealed class TileMappingExtensionsTests
     {
         // -------------------------------------------------------------------------
         // TileEntity.ToDomainModel

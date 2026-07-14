@@ -12,7 +12,7 @@ namespace SokoGrump.Gui.Screens
     /// <summary>
     /// Splash screen.
     /// </summary>
-    public class SplashScreen : Screen
+    public sealed class SplashScreen : Screen
     {
         private static float InitialDelay => 2;
         /// <summary>

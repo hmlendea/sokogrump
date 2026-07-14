@@ -15,7 +15,7 @@ namespace SokoGrump.GameLogic.GameManagers
         TimeSpan ElapsedTime { get; }
 
         Player GetPlayer();
-        List<Point2D> GetTargets();
+        IEnumerable<Point2D> GetTargets();
         Tile GetTile(int x, int y);
         IEnumerable<Tile> GetTiles();
 

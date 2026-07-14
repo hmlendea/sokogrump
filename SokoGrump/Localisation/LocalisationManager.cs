@@ -9,7 +9,7 @@ using SokoGrump.Settings;
 
 namespace SokoGrump.Localisation
 {
-    public class LocalisationManager : Singleton<LocalisationManager>
+    public sealed class LocalisationManager : Singleton<LocalisationManager>
     {
         private static string FallbackLanguage => "en";
 
@@ -81,7 +81,7 @@ namespace SokoGrump.Localisation
             }
         }
 
-        static IEnumerable<string> GetSystemLanguageCandidates()
+        private static IEnumerable<string> GetSystemLanguageCandidates()
         {
             CultureInfo culture = CultureInfo.CurrentUICulture;
 

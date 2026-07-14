@@ -13,7 +13,7 @@ namespace SokoGrump.Gui.Screens
     /// <summary>
     /// Victory screen.
     /// </summary>
-    public class VictoryScreen : Screen
+    public sealed class VictoryScreen : Screen
     {
         private static float InitialDelay => 1;
         /// <summary>
@@ -28,7 +28,7 @@ namespace SokoGrump.Gui.Screens
         /// <value>The logo.</value>
         public GuiImage Image { get; set; }
 
-        readonly int level;
+        private readonly int level;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VictoryScreen"/> class.

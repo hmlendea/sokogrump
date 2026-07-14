@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+
 using NuciXNA.Graphics.Drawing;
 using NuciXNA.Graphics.SpriteEffects;
 using NuciXNA.Gui.Controls;
@@ -21,7 +22,7 @@ namespace SokoGrump.Gui.Controls
     /// <summary>
     /// World map GUI element.
     /// </summary>
-    public class GuiGameBoard(IGameManager game) : GuiControl
+    public sealed class GuiGameBoard(IGameManager game) : GuiControl
     {
         private Dictionary<TileId, TextureSprite> tileSprites;
         private TextureSprite targetSprite;
@@ -142,7 +143,7 @@ namespace SokoGrump.Gui.Controls
         /// <param name="spriteBatch">Sprite batch.</param>
         protected override void DoDraw(SpriteBatch spriteBatch)
         {
-            List<Point2D> targets = game.GetTargets();
+            IEnumerable<Point2D> targets = game.GetTargets();
 
             for (int y = 0; y < GameDefines.BoardHeight; y++)
             {
@@ -158,12 +159,20 @@ namespace SokoGrump.Gui.Controls
 
             if (isPushingBox)
             {
-                pushedBox.TintColour = pushedBoxWasOnTarget ? Colour.Red : Colour.White;
+                if (pushedBoxWasOnTarget)
+                {
+                    pushedBox.TintColour = Colour.Red;
+                }
+                else
+                {
+                    pushedBox.TintColour = Colour.White;
+                }
+
                 pushedBox.Draw(spriteBatch);
             }
         }
 
-        private void DrawTileAt(int x, int y, List<Point2D> targets, SpriteBatch spriteBatch)
+        private void DrawTileAt(int x, int y, IEnumerable<Point2D> targets, SpriteBatch spriteBatch)
         {
             if (isPushingBox && x == pushedBoxStartTile.X && y == pushedBoxStartTile.Y)
             {
@@ -211,9 +220,16 @@ namespace SokoGrump.Gui.Controls
             {
                 TileSpriteSheetEffect tileEffect = (TileSpriteSheetEffect)tileSprite.SpriteSheetEffect;
                 tileEffect.TileLocation = new Point2D(x, y);
-                tileEffect.TilesWith = tile.Id == TileId.Floor
-                    ? [TileId.Floor, TileId.CrateOnFloor, TileId.EmptyTarget, TileId.CrateOnTarget]
-                    : [TileId.Wall];
+
+                if (tile.Id == TileId.Floor)
+                {
+                    tileEffect.TilesWith = [TileId.Floor, TileId.CrateOnFloor, TileId.EmptyTarget, TileId.CrateOnTarget];
+                }
+                else
+                {
+                    tileEffect.TilesWith = [TileId.Wall];
+                }
+
                 tileEffect.Update(null);
             }
             else if (tile.Id == TileId.CrateOnFloor)
@@ -224,7 +240,7 @@ namespace SokoGrump.Gui.Controls
             }
         }
 
-        private void DrawTargetSprites(List<Point2D> targets, SpriteBatch spriteBatch)
+        private void DrawTargetSprites(IEnumerable<Point2D> targets, SpriteBatch spriteBatch)
         {
             foreach (Point2D targetLocation in targets)
             {

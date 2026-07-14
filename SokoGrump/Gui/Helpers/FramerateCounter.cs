@@ -6,11 +6,11 @@ namespace SokoGrump.Gui.Helpers
     /// <summary>
     /// Framerate counter.
     /// </summary>
-    public class FramerateCounter : Singleton<FramerateCounter>
+    public sealed class FramerateCounter : Singleton<FramerateCounter>
     {
         private static int MaximumSamples => 100;
 
-        private readonly Queue<float> sampleBuffer;
+        private readonly Queue<float> sampleBuffer = new Queue<float>();
 
         /// <summary>
         /// Gets the total number of frames.
@@ -35,11 +35,6 @@ namespace SokoGrump.Gui.Helpers
         /// </summary>
         /// <value>The current frames per second.</value>
         public float CurrentFramesPerSecond { get; private set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FramerateCounter"/> class.
-        /// </summary>
-        public FramerateCounter() => sampleBuffer = new Queue<float>();
 
         /// <summary>
         /// Updates the framerate.

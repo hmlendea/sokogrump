@@ -12,7 +12,7 @@ using SokoGrump.UnitTests.Helpers;
 namespace SokoGrump.UnitTests.GameLogic.Mapping
 {
     [TestFixture]
-    public class BoardMappingExtensionsTests
+    public sealed class BoardMappingExtensionsTests
     {
         // -------------------------------------------------------------------------
         // BoardEntity.ToDomainModel

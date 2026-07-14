@@ -5,7 +5,7 @@ namespace SokoGrump
     public abstract class Singleton<T> where T : class, new()
     {
         protected static volatile T instance;
-        static readonly Lock syncRoot = new();
+        private static readonly Lock syncRoot = new();
 
         protected static void SetInstance(T value) => instance = value;
 
