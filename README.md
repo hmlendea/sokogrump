@@ -15,7 +15,9 @@ The game includes 100 hand-authored levels with progressively harder layouts. Yo
 
 - 100 included puzzle levels
 - Keyboard-driven gameplay with mouse support for menus
-- Move counter and current-level display during play
+- Undo last move support
+- Elapsed time, move counter, and level display during play
+- Bilingual interface (English and Romanian)
 - Continue Game support through saved progress
 - Fullscreen toggle in the settings menu
 - Cross-platform DesktopGL build
@@ -28,7 +30,8 @@ Each level is played on a fixed grid. The player can move freely, but crates can
 
 - `W`, `A`, `S`, `D` or arrow keys: move
 - `R`: restart the current level
-- Mouse: navigate menus and use the on-screen retry button
+- `U`: undo last move
+- Mouse: navigate menus and use the on-screen retry and undo buttons
 
 ## Installation
 
@@ -40,28 +43,26 @@ Each level is played on a fixed grid. The player can move freely, but crates can
 
 Download the latest packaged build from the [GitHub releases page](https://github.com/hmlendea/sokogrump/releases/latest).
 
-## Running From Source
+## Development
 
 ### Requirements
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download)
-- MonoGame content build tools (`dotnet-mgcb`) — required to rebuild game assets
-- TrueType core fonts — required for font rendering on Linux (`fonts-freefont-ttf` or equivalent)
+- MonoGame content build tools (`dotnet-mgcb`) - required to rebuild game assets
+- TrueType core fonts - required for font rendering on Linux (`fonts-freefont-ttf` or equivalent)
 
 All NuGet dependencies (MonoGame, NuciXNA) are restored automatically by `dotnet restore`.
-
-On Ubuntu the CI workflow installs the missing tools with:
 
 ### Build
 
 ```bash
-dotnet build
+dotnet build SokoGrump
 ```
 
 ### Run
 
 ```bash
-dotnet run
+dotnet run --project SokoGrump
 ```
 
 The game stores settings and saved progress in the local application data directory under `SokoGrump`.
@@ -69,7 +70,7 @@ The game stores settings and saved progress in the local application data direct
 ### Test
 
 ```bash
-dotnet test
+dotnet test SokoGrump.slnx
 ```
 
 ### Release
@@ -88,8 +89,8 @@ This script downloads and executes an external release helper from `https://raw.
 
 The solution contains two projects:
 
-- **SokoGrump** — The game itself
-- **SokoGrump.UnitTests** — Unit tests covering game managers, board/tile mapping, and core models
+- **SokoGrump**: The game itself
+- **SokoGrump.UnitTests**: Unit tests covering game managers, board/tile mapping, and core models
 
 Key directories inside `SokoGrump/`:
 
@@ -97,10 +98,10 @@ Key directories inside `SokoGrump/`:
 |-----------|---------|
 | `Content/` | Game assets: sprites, tiles, cursors, fonts, audio, and MonoGame content builder files |
 | `Data/` | Localisation resource files |
-| `DataAccess/` | Data persistence layer — repositories and data objects for boards and settings |
-| `GameLogic/` | Core puzzle logic — game manager, board mapping, move and undo handling |
-| `Gui/` | All UI — screens (title, gameplay, victory, game-finished, splash), controls, and sprite effects |
-| `Levels/` | 100 hand-authored puzzle levels (`0.lvl` – `99.lvl`) |
+| `DataAccess/` | Data persistence layer - repositories and data objects for boards and settings |
+| `GameLogic/` | Core puzzle logic - game manager, board mapping, move and undo handling |
+| `Gui/` | All UI - screens (title, gameplay, victory, game-finished, splash), controls, and sprite effects |
+| `Levels/` | 100 hand-authored puzzle levels (`0.lvl` to `99.lvl`) |
 | `Localisation/` | Localisation manager for multi-language text |
 | `Models/` | Core entity models: `Board`, `Player`, `Tile`, `TileType`, `TileId`, `MovementDirection`, `DirectionDelta` |
 | `Settings/` | Application-wide configuration: paths, graphics, audio, game defines, and user data |
@@ -120,16 +121,18 @@ Key directories inside `SokoGrump/`:
 
 ## Contributing
 
-Contributions are welcome.
+Contributions are welcome. Please:
+- Keep changes cross-platform
+- Keep pull requests focused and consistent with the existing code style
+- Update documentation when behaviour changes
+- Add or update tests for new behaviour
 
-Please:
+## Support
 
-- keep changes cross-platform
-- keep pull requests focused and consistent with existing style
-- update documentation when behaviour changes
-- add or update tests for new behaviour
+If you find this project useful, consider [funding it](https://hmlendea.go.ro/funding) or giving a ⭐️ on GitHub!
 
-# Links
+## Links
+
 - [Latest release](https://github.com/hmlendea/sokogrump/releases/latest)
 - [FlatHub release](https://flathub.org/apps/details/ro.go.hmlendea.SokoGrump)
 - [FlatHub repository](https://github.com/flathub/ro.go.hmlendea.SokoGrump)
