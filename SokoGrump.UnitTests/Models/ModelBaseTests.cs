@@ -5,7 +5,7 @@ using SokoGrump.Models;
 namespace SokoGrump.UnitTests.Models
 {
     [TestFixture]
-    public class ModelBaseTests
+    public sealed class ModelBaseTests
     {
         // -------------------------------------------------------------------------
         // Equals(ModelBase)

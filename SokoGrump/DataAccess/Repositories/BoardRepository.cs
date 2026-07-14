@@ -17,7 +17,7 @@ namespace SokoGrump.DataAccess.Repositories
     /// Initializes a new instance of the <see cref="BoardRepository"/> class.
     /// </remarks>
     /// <param name="boardsDirectory">File name.</param>
-    public class BoardRepository(string boardsDirectory) : Repository<string, BoardEntity>
+    public sealed class BoardRepository(string boardsDirectory) : Repository<string, BoardEntity>
     {
         /// <summary>
         /// Get the board with the specified identifier.
@@ -41,13 +41,13 @@ namespace SokoGrump.DataAccess.Repositories
                 {
                     int tileId = (int)char.GetNumericValue(rows[y][x]);
 
-                    if (((TileId)tileId).Equals(TileId.PlayerOnFloor))
+                    if ((TileId)tileId == TileId.PlayerOnFloor)
                     {
                         boardEntity.PlayerStartLocationX = x;
                         boardEntity.PlayerStartLocationY = y;
                         boardEntity.Tiles[x, y] = tileEntities[0];
                     }
-                    else if (((TileId)tileId).Equals(TileId.PlayerOnTarget))
+                    else if ((TileId)tileId == TileId.PlayerOnTarget)
                     {
                         boardEntity.PlayerStartLocationX = x;
                         boardEntity.PlayerStartLocationY = y;
@@ -60,15 +60,7 @@ namespace SokoGrump.DataAccess.Repositories
                 }
             }
 
-            // TODO: Logging
-            //LogManager.Instance.Info(
-            //    Operation.WorldLoading,
-            //    OperationStatus.Success,
-            //    new Dictionary<LogInfoKey, string>
-            //    {
-            //        { LogInfoKey.FileName, levelFile }
-            //    });
-
+            // TODO: Logging.
             return boardEntity;
         }
 
@@ -114,43 +106,43 @@ namespace SokoGrump.DataAccess.Repositories
 
         public void ApplyChanges() { }
 
-        static Dictionary<int, TileEntity> GetTileEntities()
+        private static Dictionary<int, TileEntity> GetTileEntities()
         {
             Dictionary<int, TileEntity> tiles = [];
 
             TileEntity terrainTile = new()
             {
-                Id = 0,
+                Id = (int)TileId.Floor,
                 SpriteSheet = "SpriteSheets/brick",
                 TileType = "Walkable"
             };
             TileEntity wallTile = new()
             {
-                Id = 1,
+                Id = (int)TileId.Wall,
                 SpriteSheet = "SpriteSheets/wall",
                 TileType = "Solid"
             };
             TileEntity boxTile = new()
             {
-                Id = 2,
+                Id = (int)TileId.CrateOnFloor,
                 SpriteSheet = "SpriteSheets/crate",
                 TileType = "Moveable"
             };
             TileEntity targetTile = new()
             {
-                Id = 3,
+                Id = (int)TileId.EmptyTarget,
                 SpriteSheet = "Tiles/tile3/0",
                 TileType = "Walkable"
             };
             TileEntity completedTargetTile = new()
             {
-                Id = 5,
+                Id = (int)TileId.CrateOnTarget,
                 SpriteSheet = "Tiles/tile5/0",
                 TileType = "Moveable"
             };
             TileEntity voidTile = new()
             {
-                Id = 7,
+                Id = (int)TileId.Void,
                 SpriteSheet = "Tiles/tile7/0",
                 TileType = "Solid"
             };

@@ -12,7 +12,7 @@ using SokoGrump.UnitTests.Helpers;
 namespace SokoGrump.UnitTests.GameLogic.Mapping
 {
     [TestFixture]
-    public class BoardMappingExtensionsTests
+    public sealed class BoardMappingExtensionsTests
     {
         // -------------------------------------------------------------------------
         // BoardEntity.ToDomainModel
@@ -68,7 +68,7 @@ namespace SokoGrump.UnitTests.GameLogic.Mapping
 
             Board board = entity.ToDomainModel();
 
-            Assert.That(board.Targets.Any(t => t.X.Equals(2) && t.Y.Equals(1)), Is.True);
+            Assert.That(board.Targets.Any(target => target.X == 2 && target.Y == 1), Is.True);
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace SokoGrump.UnitTests.GameLogic.Mapping
 
             Board board = entity.ToDomainModel();
 
-            Assert.That(board.Targets.Any(t => t.X.Equals(1) && t.Y.Equals(3)), Is.True);
+            Assert.That(board.Targets.Any(target => target.X == 1 && target.Y == 3), Is.True);
         }
 
         [Test]
@@ -120,39 +120,39 @@ namespace SokoGrump.UnitTests.GameLogic.Mapping
         }
 
         // -------------------------------------------------------------------------
-        // Board.ToEntity
+        // Board.ToDataObject
         // -------------------------------------------------------------------------
 
         [Test]
-        public void GivenBoard_WhenToEntity_ThenIdIsPreserved()
+        public void GivenBoard_WhenToDataObject_ThenIdIsPreserved()
         {
             BoardEntity entity = BoardTestHelper.CreateBoardEntity();
             entity.Id = "99";
             Board board = entity.ToDomainModel();
 
-            BoardEntity result = board.ToEntity();
+            BoardEntity result = board.ToDataObject();
 
             Assert.That(result.Id, Is.EqualTo("99"));
         }
 
         [Test]
-        public void GivenBoard_WhenToEntity_ThenPlayerStartLocationXIsPreserved()
+        public void GivenBoard_WhenToDataObject_ThenPlayerStartLocationXIsPreserved()
         {
             BoardEntity entity = BoardTestHelper.CreateBoardEntity(playerX: 7, playerY: 2);
             Board board = entity.ToDomainModel();
 
-            BoardEntity result = board.ToEntity();
+            BoardEntity result = board.ToDataObject();
 
             Assert.That(result.PlayerStartLocationX, Is.EqualTo(7));
         }
 
         [Test]
-        public void GivenBoard_WhenToEntity_ThenPlayerStartLocationYIsPreserved()
+        public void GivenBoard_WhenToDataObject_ThenPlayerStartLocationYIsPreserved()
         {
             BoardEntity entity = BoardTestHelper.CreateBoardEntity(playerX: 7, playerY: 2);
             Board board = entity.ToDomainModel();
 
-            BoardEntity result = board.ToEntity();
+            BoardEntity result = board.ToDataObject();
 
             Assert.That(result.PlayerStartLocationY, Is.EqualTo(2));
         }
@@ -177,11 +177,11 @@ namespace SokoGrump.UnitTests.GameLogic.Mapping
         }
 
         // -------------------------------------------------------------------------
-        // IEnumerable<Board>.ToEntities
+        // IEnumerable<Board>.ToDataObjects
         // -------------------------------------------------------------------------
 
         [Test]
-        public void GivenBoardCollection_WhenToEntities_ThenAllEntitiesAreMapped()
+        public void GivenBoardCollection_WhenToDataObjects_ThenAllEntitiesAreMapped()
         {
             BoardEntity entity1 = BoardTestHelper.CreateBoardEntity();
             entity1.Id = "A";
@@ -190,7 +190,7 @@ namespace SokoGrump.UnitTests.GameLogic.Mapping
 
             List<BoardEntity> entities = new List<BoardEntity> { entity1, entity2 }
                 .ToDomainModels()
-                .ToEntities()
+                .ToDataObjects()
                 .ToList();
 
             Assert.That(entities.Count, Is.EqualTo(2));

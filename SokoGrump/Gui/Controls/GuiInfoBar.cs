@@ -12,11 +12,11 @@ namespace SokoGrump.Gui.Controls
 {
     public sealed class GuiInfoBar : GuiControl
     {
-        readonly IGameManager game;
+        private readonly IGameManager game;
 
-        GuiText timerText;
-        GuiText movesText;
-        GuiText levelText;
+        private GuiText timerText;
+        private GuiText movesText;
+        private GuiText levelText;
 
         public GuiInfoBar(IGameManager game)
         {
@@ -32,7 +32,7 @@ namespace SokoGrump.Gui.Controls
         {
             timerText = new GuiText
             {
-                Location = new Point2D(0, 0),
+                Location = Point2D.Empty,
                 Size = new Size2D(160, Size.Height),
                 HorizontalAlignment = Alignment.Beginning,
                 VerticalAlignment = Alignment.Middle
@@ -76,9 +76,11 @@ namespace SokoGrump.Gui.Controls
         /// <param name="spriteBatch">Sprite batch.</param>
         protected override void DoDraw(SpriteBatch spriteBatch) { }
 
-        void SetChildrenProperties()
+        private void SetChildrenProperties()
         {
-            foreach (GuiText text in new[] { timerText, movesText, levelText })
+            GuiText[] infoTexts = [timerText, movesText, levelText];
+
+            foreach (GuiText text in infoTexts)
             {
                 text.BackgroundColour = BackgroundColour;
                 text.ForegroundColour = ForegroundColour;

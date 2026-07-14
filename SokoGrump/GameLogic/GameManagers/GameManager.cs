@@ -9,16 +9,16 @@ using SokoGrump.Settings;
 
 namespace SokoGrump.GameLogic.GameManagers
 {
-    public class GameManager : IGameManager
+    public sealed class GameManager : IGameManager
     {
-        readonly IBoardManager boardManager;
+        private readonly IBoardManager boardManager;
 
-        Random random = new();
+        private readonly Random random = new();
 
-        Board board;
-        Player player;
+        private Board board;
+        private Player player;
 
-        readonly record struct MoveSnapshot(
+        private readonly record struct MoveSnapshot(
             Point2D PlayerLocation,
             MovementDirection PlayerDirection,
             int MovesCount,
@@ -42,7 +42,7 @@ namespace SokoGrump.GameLogic.GameManagers
 
         public bool CanUndo => undoHistory.Count > 0;
 
-        readonly Stack<MoveSnapshot> undoHistory = new();
+        private readonly Stack<MoveSnapshot> undoHistory = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameEngine"/> class.
@@ -58,20 +58,20 @@ namespace SokoGrump.GameLogic.GameManagers
 
         public void UnloadContent() => boardManager.UnloadContent();
 
-        public void Update(double elapsedMiliseconds)
+        public void Update(double elapsedMilliseconds)
         {
             Completed = IsLevelCompleted();
 
             if (!Completed)
             {
-                ElapsedTime += TimeSpan.FromMilliseconds(elapsedMiliseconds);
+                ElapsedTime += TimeSpan.FromMilliseconds(elapsedMilliseconds);
             }
 
-            boardManager.Update(elapsedMiliseconds);
+            boardManager.Update(elapsedMilliseconds);
         }
 
-        bool IsLevelCompleted()
-            => board.Targets.All(targetLocation => board.Tiles[targetLocation.X, targetLocation.Y].Id.Equals(TileId.CrateOnFloor));
+        private bool IsLevelCompleted()
+            => board.Targets.All(targetLocation => board.Tiles[targetLocation.X, targetLocation.Y].Id == TileId.CrateOnFloor);
 
         /// <summary>
         /// Creates a new game.
@@ -94,12 +94,12 @@ namespace SokoGrump.GameLogic.GameManagers
             {
                 for (int x = 0; x < GameDefines.BoardWidth; x++)
                 {
-                    if (board.Tiles[x, y].Id.Equals(TileId.EmptyTarget))
+                    if (board.Tiles[x, y].Id == TileId.EmptyTarget)
                     {
                         board.Tiles[x, y] = boardManager.GetTile(TileId.Floor);
                     }
 
-                    if (board.Tiles[x, y].Id.Equals(TileId.CrateOnTarget))
+                    if (board.Tiles[x, y].Id == TileId.CrateOnTarget)
                     {
                         board.Tiles[x, y] = boardManager.GetTile(TileId.CrateOnFloor);
                     }
@@ -118,7 +118,7 @@ namespace SokoGrump.GameLogic.GameManagers
         public void SetPlayerDirection(MovementDirection direction)
             => player.Direction = direction;
 
-        static DirectionDelta? GetDirectionDelta(MovementDirection direction) => direction switch
+        private static DirectionDelta? GetDirectionDelta(MovementDirection direction) => direction switch
         {
             MovementDirection.North => new DirectionDelta(0, -1),
             MovementDirection.West  => new DirectionDelta(-1, 0),
@@ -161,17 +161,19 @@ namespace SokoGrump.GameLogic.GameManagers
             return false;
         }
 
-        bool CanPushCrate(int dirX, int dirY, int destX, int destY, int dest2X, int dest2Y)
+        private bool CanPushCrate(int dirX, int dirY, int destX, int destY, int dest2X, int dest2Y)
         {
-            bool dest2InBounds =
-                (dirX < 0 && player.Location.X >= 2) ||
-                (dirX > 0 && player.Location.X < GameDefines.BoardWidth - 2) ||
-                (dirY < 0 && player.Location.Y >= 2) ||
-                (dirY > 0 && player.Location.Y < GameDefines.BoardHeight - 2);
+            return IsDestinationTwoInBounds(dirX, dirY)
+                && board.Tiles[destX, destY].Id == TileId.CrateOnFloor
+                && board.Tiles[dest2X, dest2Y].Id == TileId.Floor;
+        }
 
-            return dest2InBounds
-                && board.Tiles[destX, destY].Id.Equals(TileId.CrateOnFloor)
-                && board.Tiles[dest2X, dest2Y].Id.Equals(TileId.Floor);
+        private bool IsDestinationTwoInBounds(int dirX, int dirY)
+        {
+            return (dirX < 0 && player.Location.X >= 2) ||
+                   (dirX > 0 && player.Location.X < GameDefines.BoardWidth - 2) ||
+                   (dirY < 0 && player.Location.Y >= 2) ||
+                   (dirY > 0 && player.Location.Y < GameDefines.BoardHeight - 2);
         }
 
         /// <summary>
@@ -203,7 +205,7 @@ namespace SokoGrump.GameLogic.GameManagers
             CommitMove(dirX, dirY, snapshot);
         }
 
-        MoveSnapshot CreateMoveSnapshot(int destX, int destY, int dest2X, int dest2Y)
+        private MoveSnapshot CreateMoveSnapshot(int destX, int destY, int dest2X, int dest2Y)
         {
             bool cratePushed = board.Tiles[destX, destY].TileType is TileType.Moveable;
 
@@ -216,26 +218,20 @@ namespace SokoGrump.GameLogic.GameManagers
                 cratePushed);
         }
 
-        void TryPushCrate(int dirX, int dirY, int destX, int destY, int dest2X, int dest2Y)
+        private void TryPushCrate(int dirX, int dirY, int destX, int destY, int dest2X, int dest2Y)
         {
             if (board.Tiles[destX, destY].TileType is not TileType.Moveable)
             {
                 return;
             }
 
-            bool canReachDest2 =
-                (dirX < 0 && player.Location.X >= 2) ||
-                (dirX > 0 && player.Location.X < GameDefines.BoardWidth - 2) ||
-                (dirY < 0 && player.Location.Y >= 2) ||
-                (dirY > 0 && player.Location.Y < GameDefines.BoardHeight - 2);
-
-            if (!canReachDest2)
+            if (!IsDestinationTwoInBounds(dirX, dirY))
             {
                 return;
             }
 
-            if (!board.Tiles[destX, destY].Id.Equals(TileId.CrateOnFloor) ||
-                !board.Tiles[dest2X, dest2Y].Id.Equals(TileId.Floor))
+            if (board.Tiles[destX, destY].Id != TileId.CrateOnFloor ||
+                board.Tiles[dest2X, dest2Y].Id != TileId.Floor)
             {
                 return;
             }
@@ -246,7 +242,7 @@ namespace SokoGrump.GameLogic.GameManagers
             board.Tiles[dest2X, dest2Y].Variation = variation;
         }
 
-        void CommitMove(int dirX, int dirY, MoveSnapshot snapshot)
+        private void CommitMove(int dirX, int dirY, MoveSnapshot snapshot)
         {
             player.MovesCount += 1;
             player.Location = new Point2D(
@@ -287,7 +283,7 @@ namespace SokoGrump.GameLogic.GameManagers
                 new Point2D(snapshot.CrateFromX, snapshot.CrateFromY));
         }
 
-        public List<Point2D> GetTargets() => board.Targets;
+        public IEnumerable<Point2D> GetTargets() => board.Targets;
 
         public Player GetPlayer() => player;
 
@@ -295,13 +291,13 @@ namespace SokoGrump.GameLogic.GameManagers
 
         public IEnumerable<Tile> GetTiles() => boardManager.GetTiles();
 
-        void GenerateVariations()
+        private void GenerateVariations()
         {
             for (int y = 0; y < GameDefines.BoardHeight; y++)
             {
                 for (int x = 0; x < GameDefines.BoardWidth; x++)
                 {
-                    if (board.Tiles[x, y].Id.Equals(TileId.CrateOnFloor))
+                    if (board.Tiles[x, y].Id == TileId.CrateOnFloor)
                     {
                         board.Tiles[x, y].Variation = random.Next(0, GameDefines.CrateVariationCount);
                     }

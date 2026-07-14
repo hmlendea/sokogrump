@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+
 using NuciXNA.Graphics.SpriteEffects;
 using NuciXNA.Primitives;
 
@@ -7,9 +8,9 @@ using SokoGrump.Settings;
 
 namespace SokoGrump.Gui.SpriteEffects
 {
-    public class CrateSpriteSheetEffect : SpriteSheetEffect
+    public sealed class CrateSpriteSheetEffect : SpriteSheetEffect
     {
-        readonly IGameManager game;
+        private readonly IGameManager game;
 
         public Point2D TileLocation { get; set; }
 

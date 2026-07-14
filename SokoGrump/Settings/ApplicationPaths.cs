@@ -9,13 +9,16 @@ namespace SokoGrump.Settings
     /// </summary>
     public static class ApplicationPaths
     {
-        static readonly string rootDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        private static readonly string rootDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
         /// <summary>
         /// Gets the user data directory.
         /// </summary>
         /// <value>The user data directory.</value>
-        public static string UserDataDirectory => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "SokoGrump");
+        public static string UserDataDirectory
+            => Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "SokoGrump");
         
         /// <summary>
         /// Gets the logs directory path.
@@ -30,9 +33,9 @@ namespace SokoGrump.Settings
         public static string SettingsFile => Path.Combine(UserDataDirectory, "Settings.xml");
 
         /// <summary>
-        /// Gets the word lists directory.
+        /// Gets the levels directory.
         /// </summary>
-        /// <value>The word lists directory.</value>
+        /// <value>The levels directory.</value>
         public static string LevelsDirectory => Path.Combine(rootDirectory, "Levels");
 
         public static string DataDirectory => Path.Combine(rootDirectory, "Data");

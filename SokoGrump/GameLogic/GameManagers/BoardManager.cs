@@ -8,10 +8,10 @@ using SokoGrump.Settings;
 
 namespace SokoGrump.GameLogic.GameManagers
 {
-    public class BoardManager : IBoardManager
+    public sealed class BoardManager : IBoardManager
     {
-        Dictionary<string, Board> boards;
-        Dictionary<TileId, Tile> tiles;
+        private Dictionary<string, Board> boards;
+        private Dictionary<TileId, Tile> tiles;
 
         public void LoadContent()
         {
@@ -25,7 +25,7 @@ namespace SokoGrump.GameLogic.GameManagers
             tiles.Clear();
         }
 
-        public void Update(double elapsedMiliseconds) { }
+        public void Update(double elapsedMilliseconds) { }
 
         public Board GetBoard(int id) => boards[id.ToString()].Clone();
 
@@ -33,9 +33,14 @@ namespace SokoGrump.GameLogic.GameManagers
 
         public IEnumerable<Tile> GetTiles() => tiles.Values;
 
-        void LoadBoards() => boards = new BoardRepository(ApplicationPaths.LevelsDirectory).GetAll().ToDictionary(x => x.Id, x => x.ToDomainModel());
+        private void LoadBoards()
+            => boards = new BoardRepository(ApplicationPaths.LevelsDirectory)
+                .GetAll()
+                .ToDictionary(
+                    boardEntity => boardEntity.Id,
+                    boardEntity => boardEntity.ToDomainModel());
 
-        void LoadTiles()
+        private void LoadTiles()
         {
             Tile terrainTile = new()
             {

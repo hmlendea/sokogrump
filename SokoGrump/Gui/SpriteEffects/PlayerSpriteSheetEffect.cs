@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
+
 using NuciXNA.Graphics.SpriteEffects;
 using NuciXNA.Primitives;
 
@@ -9,12 +10,12 @@ using SokoGrump.Models;
 
 namespace SokoGrump.Gui.SpriteEffects
 {
-    public class PlayerSpriteSheetEffect : SpriteSheetEffect
+    public sealed class PlayerSpriteSheetEffect : SpriteSheetEffect
     {
-        const int SpriteSheetColumns = 3;
-        const int SpriteSheetRows = 6;
+        private static int SpriteSheetColumns => 3;
+        private static int SpriteSheetRows => 6;
 
-        static readonly Dictionary<MovementDirection, Point2D> DirectionFrames = new()
+        private static readonly Dictionary<MovementDirection, Point2D> DirectionFrames = new()
         {
             { MovementDirection.South, new Point2D(0, 0) },
             { MovementDirection.North, new Point2D(1, 0) },
@@ -22,9 +23,9 @@ namespace SokoGrump.Gui.SpriteEffects
             { MovementDirection.West,  new Point2D(1, 1) },
         };
 
-        readonly IGameManager game;
+        private readonly IGameManager game;
 
-        public PlayerSpriteSheetEffect(IGameManager game) : base()
+        public PlayerSpriteSheetEffect(IGameManager game)
         {
             FrameAmount = new Size2D(SpriteSheetColumns, SpriteSheetRows);
 

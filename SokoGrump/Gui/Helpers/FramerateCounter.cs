@@ -6,9 +6,11 @@ namespace SokoGrump.Gui.Helpers
     /// <summary>
     /// Framerate counter.
     /// </summary>
-    public class FramerateCounter : Singleton<FramerateCounter>
+    public sealed class FramerateCounter : Singleton<FramerateCounter>
     {
-        readonly Queue<float> sampleBuffer;
+        private static int MaximumSamples => 100;
+
+        private readonly Queue<float> sampleBuffer = new Queue<float>();
 
         /// <summary>
         /// Gets the total number of frames.
@@ -35,16 +37,6 @@ namespace SokoGrump.Gui.Helpers
         public float CurrentFramesPerSecond { get; private set; }
 
         /// <summary>
-        /// The maximum number of samples.
-        /// </summary>
-        public const int MAXIMUM_SAMPLES = 100;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FramerateCounter"/> class.
-        /// </summary>
-        public FramerateCounter() => sampleBuffer = new Queue<float>();
-
-        /// <summary>
         /// Updates the framerate.
         /// </summary>
         /// <param name="deltaTime">Delta time.</param>
@@ -54,10 +46,10 @@ namespace SokoGrump.Gui.Helpers
 
             sampleBuffer.Enqueue(CurrentFramesPerSecond);
 
-            if (sampleBuffer.Count > MAXIMUM_SAMPLES)
+            if (sampleBuffer.Count > MaximumSamples)
             {
                 sampleBuffer.Dequeue();
-                AverageFramesPerSecond = sampleBuffer.Average(i => i);
+                AverageFramesPerSecond = sampleBuffer.Average(sample => sample);
             }
             else
             {

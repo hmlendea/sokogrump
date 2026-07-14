@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
+
 using NuciXNA.Graphics.SpriteEffects;
 using NuciXNA.Primitives;
 
@@ -10,13 +11,18 @@ using SokoGrump.Settings;
 
 namespace SokoGrump.Gui.SpriteEffects
 {
-    public class TileSpriteSheetEffect : SpriteSheetEffect
+    public sealed class TileSpriteSheetEffect : SpriteSheetEffect
     {
-        const int SpriteSheetColumns = 3;
-        const int SpriteSheetRows = 6;
+        private static int SpriteSheetColumns => 3;
+        private static int SpriteSheetRows => 6;
+
+        private static int NorthBit => 8;
+        private static int WestBit => 4;
+        private static int SouthBit => 2;
+        private static int EastBit => 1;
 
         // Bitmask: N=8, W=4, S=2, E=1
-        static readonly Dictionary<int, Point2D> FrameMap = new()
+        private static readonly Dictionary<int, Point2D> FrameMap = new()
         {
             { 0b0000, new Point2D(0, 0) }, // Single
             { 0b0001, new Point2D(0, 2) }, // <
@@ -35,7 +41,7 @@ namespace SokoGrump.Gui.SpriteEffects
             { 0b1110, new Point2D(2, 4) }, // RightCorner
             { 0b1111, new Point2D(1, 4) }, // Middle
         };
-        readonly IGameManager game;
+        private readonly IGameManager game;
 
         public Point2D TileLocation { get; set; }
 
@@ -55,9 +61,9 @@ namespace SokoGrump.Gui.SpriteEffects
         /// <param name="gameTime">Game time.</param>
         protected override void DoUpdate(GameTime gameTime)
         {
-            // TODO: Dirty fix
-            if (TileLocation.X.Equals(0) || TileLocation.X.Equals(GameDefines.BoardWidth - 1) ||
-                TileLocation.Y.Equals(0) || TileLocation.Y.Equals(GameDefines.BoardHeight - 1))
+            // TODO: Dirty fix.
+            if (TileLocation.X == 0 || TileLocation.X == GameDefines.BoardWidth - 1 ||
+                TileLocation.Y == 0 || TileLocation.Y == GameDefines.BoardHeight - 1)
             {
                 return;
             }
@@ -72,11 +78,27 @@ namespace SokoGrump.Gui.SpriteEffects
             bool tilesS = TilesWith.Contains(idS);
             bool tilesE = TilesWith.Contains(idE);
 
-            int mask =
-                (tilesN ? 8 : 0) |
-                (tilesW ? 4 : 0) |
-                (tilesS ? 2 : 0) |
-                (tilesE ? 1 : 0);
+            int mask = 0;
+
+            if (tilesN)
+            {
+                mask |= NorthBit;
+            }
+
+            if (tilesW)
+            {
+                mask |= WestBit;
+            }
+
+            if (tilesS)
+            {
+                mask |= SouthBit;
+            }
+
+            if (tilesE)
+            {
+                mask |= EastBit;
+            }
 
             CurrentFrame = FrameMap[mask];
         }

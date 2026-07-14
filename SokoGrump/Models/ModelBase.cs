@@ -68,7 +68,7 @@ namespace SokoGrump.Models
                 return true;
             }
 
-            if (!obj.GetType().Equals(GetType()))
+            if (obj.GetType() != GetType())
             {
                 return false;
             }
@@ -85,9 +85,26 @@ namespace SokoGrump.Models
         {
             unchecked
             {
-                return ((Id is not null ? Id.GetHashCode() : 0) * 397) ^
-                       (Name is not null ? Name.GetHashCode() : 0) ^
-                       (Description is not null ? Description.GetHashCode() : 0);
+                int idHash = 0;
+                int nameHash = 0;
+                int descriptionHash = 0;
+
+                if (Id is not null)
+                {
+                    idHash = Id.GetHashCode();
+                }
+
+                if (Name is not null)
+                {
+                    nameHash = Name.GetHashCode();
+                }
+
+                if (Description is not null)
+                {
+                    descriptionHash = Description.GetHashCode();
+                }
+
+                return ((idHash * 397) ^ nameHash) ^ descriptionHash;
             }
         }
     }

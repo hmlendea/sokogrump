@@ -11,7 +11,7 @@ using SokoGrump.UnitTests.Helpers;
 namespace SokoGrump.UnitTests.GameLogic.Mapping
 {
     [TestFixture]
-    public class TileMappingExtensionsTests
+    public sealed class TileMappingExtensionsTests
     {
         // -------------------------------------------------------------------------
         // TileEntity.ToDomainModel
@@ -78,65 +78,65 @@ namespace SokoGrump.UnitTests.GameLogic.Mapping
         }
 
         // -------------------------------------------------------------------------
-        // Tile.ToEntity
+        // Tile.ToDataObject
         // -------------------------------------------------------------------------
 
         [Test]
-        public void GivenFloorTile_WhenToEntity_ThenIdIsZero()
+        public void GivenFloorTile_WhenToDataObject_ThenIdIsZero()
         {
             Tile tile = BoardTestHelper.CreateFloorTile();
 
-            TileEntity entity = tile.ToEntity();
+            TileEntity entity = tile.ToDataObject();
 
             Assert.That(entity.Id, Is.EqualTo((int)TileId.Floor));
         }
 
         [Test]
-        public void GivenWallTile_WhenToEntity_ThenIdIsOne()
+        public void GivenWallTile_WhenToDataObject_ThenIdIsOne()
         {
             Tile tile = BoardTestHelper.CreateWallTile();
 
-            TileEntity entity = tile.ToEntity();
+            TileEntity entity = tile.ToDataObject();
 
             Assert.That(entity.Id, Is.EqualTo((int)TileId.Wall));
         }
 
         [Test]
-        public void GivenTile_WhenToEntity_ThenSpriteSheetIsPreserved()
+        public void GivenTile_WhenToDataObject_ThenSpriteSheetIsPreserved()
         {
             Tile tile = new() { Id = TileId.Floor, SpriteSheet = "SpriteSheets/brick", TileType = TileType.Walkable };
 
-            TileEntity entity = tile.ToEntity();
+            TileEntity entity = tile.ToDataObject();
 
             Assert.That(entity.SpriteSheet, Is.EqualTo("SpriteSheets/brick"));
         }
 
         [Test]
-        public void GivenWalkableTile_WhenToEntity_ThenTileTypeStringIsWalkable()
+        public void GivenWalkableTile_WhenToDataObject_ThenTileTypeStringIsWalkable()
         {
             Tile tile = BoardTestHelper.CreateFloorTile();
 
-            TileEntity entity = tile.ToEntity();
+            TileEntity entity = tile.ToDataObject();
 
             Assert.That(entity.TileType, Is.EqualTo("Walkable"));
         }
 
         [Test]
-        public void GivenSolidTile_WhenToEntity_ThenTileTypeStringIsSolid()
+        public void GivenSolidTile_WhenToDataObject_ThenTileTypeStringIsSolid()
         {
             Tile tile = BoardTestHelper.CreateWallTile();
 
-            TileEntity entity = tile.ToEntity();
+            TileEntity entity = tile.ToDataObject();
 
             Assert.That(entity.TileType, Is.EqualTo("Solid"));
         }
 
         [Test]
-        public void GivenMoveableTile_WhenToEntity_ThenTileTypeStringIsMoveable()
+        public void GivenMoveableTile_WhenToDataObject_ThenTileTypeStringIsMoveable()
         {
             Tile tile = BoardTestHelper.CreateCrateTile();
 
-            TileEntity entity = tile.ToEntity();
+            TileEntity entity = tile.ToDataObject();
 
             Assert.That(entity.TileType, Is.EqualTo("Moveable"));
         }
@@ -162,11 +162,11 @@ namespace SokoGrump.UnitTests.GameLogic.Mapping
         }
 
         // -------------------------------------------------------------------------
-        // IEnumerable<Tile>.ToEntities
+        // IEnumerable<Tile>.ToDataObjects
         // -------------------------------------------------------------------------
 
         [Test]
-        public void GivenTileCollection_WhenToEntities_ThenAllEntitiesAreMapped()
+        public void GivenTileCollection_WhenToDataObjects_ThenAllEntitiesAreMapped()
         {
             List<Tile> tiles =
             [
@@ -174,7 +174,7 @@ namespace SokoGrump.UnitTests.GameLogic.Mapping
                 BoardTestHelper.CreateWallTile(),
             ];
 
-            List<TileEntity> entities = tiles.ToEntities().ToList();
+            List<TileEntity> entities = tiles.ToDataObjects().ToList();
 
             Assert.That(entities.Count, Is.EqualTo(2));
             Assert.That(entities[0].Id, Is.EqualTo((int)TileId.Floor));
@@ -221,11 +221,11 @@ namespace SokoGrump.UnitTests.GameLogic.Mapping
         }
 
         // -------------------------------------------------------------------------
-        // Tile[,].ToEntities
+        // Tile[,].ToDataObjects
         // -------------------------------------------------------------------------
 
         [Test]
-        public void GivenTileGrid_WhenToEntities_ThenDimensionsArePreserved()
+        public void GivenTileGrid_WhenToDataObjects_ThenDimensionsArePreserved()
         {
             Tile[,] tiles = new Tile[3, 2];
 
@@ -237,14 +237,14 @@ namespace SokoGrump.UnitTests.GameLogic.Mapping
                 }
             }
 
-            TileEntity[,] entities = tiles.ToEntities();
+            TileEntity[,] entities = tiles.ToDataObjects();
 
             Assert.That(entities.GetLength(0), Is.EqualTo(3));
             Assert.That(entities.GetLength(1), Is.EqualTo(2));
         }
 
         [Test]
-        public void GivenTileGrid_WhenToEntities_ThenAllEntitiesAreMapped()
+        public void GivenTileGrid_WhenToDataObjects_ThenAllEntitiesAreMapped()
         {
             Tile[,] tiles = new Tile[2, 2];
             tiles[0, 0] = BoardTestHelper.CreateFloorTile();
@@ -252,7 +252,7 @@ namespace SokoGrump.UnitTests.GameLogic.Mapping
             tiles[0, 1] = BoardTestHelper.CreateCrateTile();
             tiles[1, 1] = BoardTestHelper.CreateFloorTile();
 
-            TileEntity[,] entities = tiles.ToEntities();
+            TileEntity[,] entities = tiles.ToDataObjects();
 
             Assert.That(entities[0, 0].Id, Is.EqualTo((int)TileId.Floor));
             Assert.That(entities[1, 0].Id, Is.EqualTo((int)TileId.Wall));

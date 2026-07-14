@@ -6,7 +6,7 @@ using SokoGrump.Settings;
 
 namespace SokoGrump.Models
 {
-    public class Board : ModelBase
+    public sealed class Board : ModelBase
     {
         /// <summary>
         /// Gets or sets the player start location.

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
 using NuciXNA.DataAccess.Content;
 using NuciXNA.Graphics;
 using NuciXNA.Gui;
@@ -17,13 +18,13 @@ namespace SokoGrump
     /// <summary>
     /// This is the main type for the game.
     /// </summary>
-    public class GameWindow : Game
+    public sealed class GameWindow : Game
     {
-        readonly GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        private readonly GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
 
-        readonly FpsIndicator fpsIndicator;
-        readonly Cursor cursor;
+        private readonly FpsIndicator fpsIndicator;
+        private readonly Cursor cursor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameWindow"/> class.
@@ -52,12 +53,6 @@ namespace SokoGrump
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: Logging
-            //LogManager.Instance.LogsDirectory = ApplicationPaths.LogsDirectory;
-            //LogManager.Instance.LoadContent();
-
-            //LogManager.Instance.Info(Operation.GameStart, OperationStatus.Started);
-
             GraphicsManager.Instance.SpriteBatch = spriteBatch;
             GraphicsManager.Instance.Graphics = graphics;
 
@@ -71,9 +66,6 @@ namespace SokoGrump
 
             fpsIndicator.LoadContent();
             cursor.LoadContent();
-
-            // TODO: Logging
-            //LogManager.Instance.Info(Operation.GameStart, OperationStatus.Success);
         }
 
         /// <summary>
@@ -81,17 +73,10 @@ namespace SokoGrump
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Logging
-            //LogManager.Instance.Info(Operation.GameStop, OperationStatus.Started);
-
             ScreenManager.Instance.UnloadContent();
 
-            FpsIndicator.UnloadContent();
+            fpsIndicator.UnloadContent();
             cursor.UnloadContent();
-
-            // TODO: Logging
-            //LogManager.Instance.Info(Operation.GameStop, OperationStatus.Success);
-            //LogManager.Instance.UnloadContent();
         }
 
         /// <summary>
@@ -108,8 +93,9 @@ namespace SokoGrump
             {
                 InputManager.Instance.Update(Window);
             }
-            else // TODO: It shouldn't reset them every single tick when the window's not active
+            else
             {
+                // TODO: It shouldn't reset them every single tick when the window is not active.
                 InputManager.Instance.ResetInputStates();
             }
 

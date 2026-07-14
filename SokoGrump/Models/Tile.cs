@@ -1,6 +1,6 @@
 ﻿namespace SokoGrump.Models
 {
-    public class Tile
+    public sealed class Tile
     {
         /// <summary>
         /// Gets or sets the identifier.
@@ -25,8 +25,6 @@
         /// </summary>
         /// <value>The variation.</value>
         public int Variation { get; set; }
-
-        public Tile() { }
 
         public Tile Clone() => new()
         {

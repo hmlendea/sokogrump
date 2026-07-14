@@ -1,8 +1,9 @@
 ﻿namespace SokoGrump.Settings
 {
-    public class UserData
+    public sealed class UserData
     {
         public int LastLevel { get; set; }
+
         public string Language { get; set; }
     }
 }

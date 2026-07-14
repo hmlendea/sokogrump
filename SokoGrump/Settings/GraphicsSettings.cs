@@ -4,8 +4,12 @@ using NuciXNA.Primitives;
 
 namespace SokoGrump.Settings
 {
-    public class GraphicsSettings
+    public sealed class GraphicsSettings
     {
+        private static int DefaultResolutionWidth => 1280;
+
+        private static int DefaultResolutionHeight => 720;
+
         /// <summary>
         /// Gets the resolution.
         /// </summary>
@@ -21,7 +25,7 @@ namespace SokoGrump.Settings
                         GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
                 }
 
-                return new Size2D(1280, 720);
+                return new Size2D(DefaultResolutionWidth, DefaultResolutionHeight);
             }
         }
 

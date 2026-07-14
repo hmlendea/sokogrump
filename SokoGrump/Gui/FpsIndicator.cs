@@ -13,11 +13,11 @@ namespace SokoGrump.Gui
     /// <summary>
     /// FPS indicator.
     /// </summary>
-    public class FpsIndicator
+    public sealed class FpsIndicator
     {
-        GameTime gameTime;
-        SpriteFont fpsFont;
-        string fpsString;
+        private GameTime gameTime;
+        private SpriteFont fpsFont;
+        private string fpsString;
 
         /// <summary>
         /// Gets or sets the location.
@@ -38,7 +38,7 @@ namespace SokoGrump.Gui
         /// <summary>
         /// Unloads the content.
         /// </summary>
-        public static void UnloadContent() { }
+        public void UnloadContent() { }
 
         /// <summary>
         /// Updates the content.
