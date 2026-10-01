@@ -108,6 +108,8 @@ Key directories inside `SokoGrump/`:
 
 See [`ARCHITECTURE.md`](ARCHITECTURE.md) for the current runtime, component, data, dependency, deployment, and testing boundaries.
 
+See [`docs/`](docs/) for focused implementation documentation covering architecture, runtime flows, gameplay rules, data and content formats, and development verification.
+
 ### Dependencies
 
 | Package | Purpose |
