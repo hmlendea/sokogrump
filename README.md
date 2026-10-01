@@ -106,6 +106,8 @@ Key directories inside `SokoGrump/`:
 | `Models/` | Core entity models: `Board`, `Player`, `Tile`, `TileType`, `TileId`, `MovementDirection`, `DirectionDelta` |
 | `Settings/` | Application-wide configuration: paths, graphics, audio, game defines, and user data |
 
+See [`ARCHITECTURE.md`](ARCHITECTURE.md) for the current runtime, component, data, dependency, deployment, and testing boundaries.
+
 ### Dependencies
 
 | Package | Purpose |
