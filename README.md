@@ -127,6 +127,10 @@ See [`docs/`](docs/) for focused implementation documentation covering architect
 
 See [PRIVACY.md](PRIVACY.md) for a description of how SokoGrump handles personal data.
 
+## Security
+
+See [SECURITY.md](SECURITY.md) for the security policy and vulnerability reporting process.
+
 ## Contributing
 
 Contributions are welcome. Please:
