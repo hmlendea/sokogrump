@@ -123,6 +123,10 @@ See [`docs/`](docs/) for focused implementation documentation covering architect
 | `NuciXNA.Primitives` | Reusable value types: `Point2D`, `Size2D`, `Scale2D`, `Colour` |
 | `NuciDAL` | Generic data-access-layer base classes |
 
+## Privacy
+
+See [PRIVACY.md](PRIVACY.md) for a description of how SokoGrump handles personal data.
+
 ## Contributing
 
 Contributions are welcome. Please:
