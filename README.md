@@ -139,6 +139,8 @@ Contributions are welcome. Please:
 - Update documentation when behaviour changes
 - Add or update tests for new behaviour
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+
 ## Support
 
 If you find this project useful, consider [funding it](https://hmlendea.go.ro/funding) or giving a ⭐️ on GitHub!
